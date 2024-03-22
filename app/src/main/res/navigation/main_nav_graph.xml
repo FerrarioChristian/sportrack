@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/fragment_homepage">
+
+    <fragment
+        android:id="@+id/fragment_schedule"
+        android:name="it.unimib.icasiduso.sportrack.ui.ScheduleFragment"
+        android:label="fragment_schedule"
+        tools:layout="@layout/fragment_schedule" />
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:name="it.unimib.icasiduso.sportrack.ui.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/fragment_training"
+        android:name="it.unimib.icasiduso.sportrack.ui.TrainingFragment"
+        android:label="fragment_training"
+        tools:layout="@layout/fragment_training" />
+    <fragment
+        android:id="@+id/fragment_homepage"
+        android:name="it.unimib.icasiduso.sportrack.ui.HomepageFragment"
+        android:label="HomepageFragment"
+        tools:layout="@layout/fragment_homepage" />
+
+    <include app:graph="@navigation/home_nav_graph" />
+
+</navigation>

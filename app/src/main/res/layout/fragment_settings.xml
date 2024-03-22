@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.SettingsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textViewLeftLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SPORT"
+        android:textSize="45dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/darkcollegefont"
+        android:layout_alignTop="@id/imageViewUser"
+        android:layout_alignBottom="@id/imageViewUser"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/textViewRightLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TRACK"
+        android:textSize="45dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/darkcollegefont"
+        android:layout_alignTop="@id/imageViewUser"
+        android:layout_alignBottom="@id/imageViewUser"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"/>
+
+    <ImageView
+        android:id="@+id/imageViewUser"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/setting1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageViewUser"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textViewFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome:" />
+
+        <EditText
+            android:id="@+id/editTextFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/textViewLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cognome:" />
+
+        <EditText
+            android:id="@+id/editTextLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/textViewEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email:" />
+
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:id="@+id/textViewPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password:" />
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Salva modifiche" />
+
+        <Button
+            android:id="@+id/privacyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/buttonSave"
+            android:text="Privacy"
+            android:textColor="@android:color/black" />
+
+
+        <Button
+            android:id="@+id/contactButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/privacyButton"
+            android:text="Contatti"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contactButton"
+            android:text="LOGOUT"
+            android:textColor="@color/black" />
+    </LinearLayout>
+</RelativeLayout>

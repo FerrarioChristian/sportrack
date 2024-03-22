@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "201128600376",
+    "project_id": "sportrack-5fc02",
+    "storage_bucket": "sportrack-5fc02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201128600376:android:5abd3cedd030f9af5ad7cd",
+        "android_client_info": {
+          "package_name": "it.unimib.icasiduso.sportrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201128600376-8na6u8f8v72n4jpkm8l91ps1lmbn5chj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.unimib.icasiduso.sportrack",
+            "certificate_hash": "0feb4c171f43b0c9d7f8d9f2b85e05f14dd0164f"
+          }
+        },
+        {
+          "client_id": "201128600376-03ctmp706gid34r6beapqatedpv8715k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFQTilDqjQKzm4VyORpsVL3H28O06MQX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201128600376-03ctmp706gid34r6beapqatedpv8715k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

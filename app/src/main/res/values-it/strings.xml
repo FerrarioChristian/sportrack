@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SporTrack</string>
+    <string name="logo">Logo</string>
+    <string name="login_label">Login</string>
+    <string name="login_label_email">Email</string>
+    <string name="login_label_password">Password</string>
+    <string name="register_label_confirm_password">Conferma password</string>
+    <string name="register_label">Registrati</string>
+    <string name="next">Avanti</string>
+    <string name="previous">Indietro</string>
+    <string name="homepage">Homepage</string>
+    <string name="schedule">Scheda</string>
+    <string name="training">Allenamento</string>
+    <string name="settings">Impostazioni</string>
+    <string name="authentication_failed">Autenticazione fallita.</string>
+    <string name="invalid_email">Email invalida..</string>
+    <string name="invalid_password">La password deve essere lunga almeno 8 caratteri.</string>
+
+</resources>
