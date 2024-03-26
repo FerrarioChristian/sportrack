@@ -39,7 +39,10 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:22.3.0")
     val nav_version = "2.7.5"
 
+
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("commons-validator:commons-validator:1.7")
+
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

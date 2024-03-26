@@ -2,6 +2,7 @@ package it.unimib.icasiduso.sportrack.ui;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.credentials.GetCredentialRequest;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -14,8 +15,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -25,13 +30,13 @@ import com.google.firebase.auth.FirebaseUser;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.main.MainActivity;
 import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
 
 public class LoginFragment extends Fragment {
 
     private static final String TAG = LoginFragment.class.getSimpleName();
     private FirebaseAuth mAuth;
+    private SignInClient oneTapClient;
     private TextInputLayout emailTextInput;
     private TextInputLayout passwordTextInput;
 
@@ -55,6 +60,7 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         emailTextInput = view.findViewById(R.id.login_name_textfield_layout);
+
         TextInputEditText emailEditText = (TextInputEditText) emailTextInput.getEditText();
         passwordTextInput = view.findViewById(R.id.login_label_password_layout);
         TextInputEditText passwordEditText = (TextInputEditText) passwordTextInput.getEditText();
@@ -73,8 +79,24 @@ public class LoginFragment extends Fragment {
 
             if(isEmailOk(email) && isPasswordOk(password))
                 firebaseLogin(email, password);
-
         });
+
+        final SignInButton googleButton = view.findViewById(R.id.login_with_google);
+        googleButton.setOnClickListener( v -> {
+            googleLogin();
+        });
+    }
+
+    private void googleLogin(){
+        SignInRequest signInRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(GoogleIdTokenRequestOptions.builder()
+                        .setSupported(true)
+                        // Your server's client ID, not your Android client ID.
+                        .setServerClientId(getString(R.string.default_web_client_id))
+                        // Only show accounts previously used to sign in.
+                        .setFilterByAuthorizedAccounts(true)
+                        .build())
+                .build();
     }
     private void firebaseLogin(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
@@ -99,7 +121,6 @@ public class LoginFragment extends Fragment {
                     }
                 });
     }
-
     private boolean isPasswordOk(String password){
 
         if (password == null || password.length() < 8) {

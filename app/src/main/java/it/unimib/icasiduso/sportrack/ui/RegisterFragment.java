@@ -34,7 +34,7 @@ public class RegisterFragment extends Fragment {
     private FirebaseAuth mAuth;
     private TextInputLayout emailTextInput;
     private TextInputLayout passwordTextInput;
-
+    private TextInputLayout confirmPasswordTextInput;
 
 
     public RegisterFragment(){}
@@ -66,6 +66,8 @@ public class RegisterFragment extends Fragment {
         TextInputEditText emailEditText = (TextInputEditText) emailTextInput.getEditText();
         passwordTextInput = view.findViewById(R.id.register_label_password_layout);
         TextInputEditText passwordEditText = (TextInputEditText) passwordTextInput.getEditText();
+        confirmPasswordTextInput = view.findViewById(R.id.register_label_confirm_password_layout);
+        TextInputEditText confirmPasswordEditText = (TextInputEditText) confirmPasswordTextInput.getEditText();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
@@ -82,8 +84,9 @@ public class RegisterFragment extends Fragment {
         registerButton.setOnClickListener( v -> {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
+            String confirmPassword = confirmPasswordEditText.getText().toString();
 
-            if(isEmailOk(email) && isPasswordOk(password))
+            if(isEmailOk(email) && isPasswordOk(password, confirmPassword))
                 firebaseRegister(email, password);
 
         });
@@ -113,10 +116,15 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    private boolean isPasswordOk(String password){
+    private boolean isPasswordOk(String password, String confirmPassword){
 
         if (password == null || password.length() < 8) {
             Toast.makeText(getActivity(), R.string.invalid_password,
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!password.equals(confirmPassword)){
+            Toast.makeText(getActivity(), R.string.invalid_confirm_password,
                     Toast.LENGTH_SHORT).show();
             return false;
         }

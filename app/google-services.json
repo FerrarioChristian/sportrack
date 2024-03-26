@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "201128600376",
+    "firebase_url": "https://sportrack-5fc02-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "sportrack-5fc02",
     "storage_bucket": "sportrack-5fc02.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "201128600376-7fu7s7b35h3pr0u3k55bmdp32mhpr0jk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.unimib.icasiduso.sportrack",
+            "certificate_hash": "247787e99011f1d34a3684bbbba9e71d196be0ad"
+          }
+        },
         {
           "client_id": "201128600376-8na6u8f8v72n4jpkm8l91ps1lmbn5chj.apps.googleusercontent.com",
           "client_type": 1,
