@@ -11,11 +11,22 @@
     <string name="previous">Previous</string>
     <string name="homepage">Homepage</string>
     <string name="schedule">Schedule</string>
-    <string name="training">Training</string>
+    <string name="exercises">Exercises</string>
     <string name="settings">Settings</string>
     <string name="authentication_failed">Authentication failed.</string>
     <string name="invalid_email">Invalid email.</string>
     <string name="invalid_password">Password must be at least 8 characters long.</string>
     <string name="invalid_confirm_password">Passwords don\'t match.</string>
+    <string name="abdominals">abdominals</string>
+    <string name="biceps">biceps</string>
+    <string name="chest">chest</string>
+    <string name="lats">lats</string>
+    <string name="middle_back">middle_back</string>
+    <string name="lower_back">lower_back</string>
+    <string name="triceps">triceps</string>
+    <string name="quadriceps">quadriceps</string>
+    <string name="hamstrings">hamstrings</string>
+    <string name="glutes">glutes</string>
+    <string name="difficulty">"Difficulty: "</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -16,16 +16,38 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/fragment_training"
-        android:name="it.unimib.icasiduso.sportrack.ui.TrainingFragment"
-        android:label="fragment_training"
-        tools:layout="@layout/fragment_training" />
+        android:id="@+id/fragment_exercises"
+        android:name="it.unimib.icasiduso.sportrack.ui.ExercisesFragment"
+        android:label="fragment_exercises"
+        tools:layout="@layout/fragment_exercises">
+        <action
+            android:id="@+id/action_fragment_exercises_to_fragment_list_exercises"
+            app:destination="@id/fragment_list_exercises" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_homepage"
         android:name="it.unimib.icasiduso.sportrack.ui.HomepageFragment"
         android:label="HomepageFragment"
         tools:layout="@layout/fragment_homepage" />
-
-    <include app:graph="@navigation/home_nav_graph" />
+    <fragment
+        android:id="@+id/fragment_list_exercises"
+        android:name="it.unimib.icasiduso.sportrack.ui.ListExercisesFragment"
+        android:label="ListExercisesFragment"
+        android:layout="@layout/fragment_list_exercises">
+        <argument
+            android:name="exercises"
+            app:argType="it.unimib.icasiduso.sportrack.model.Exercises" />
+        <action
+            android:id="@+id/action_fragment_list_exercises_to_fragment_exercise_details"
+            app:destination="@id/fragment_exercise_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_exercise_details"
+        android:name="it.unimib.icasiduso.sportrack.ui.ExerciseDetails"
+        android:label="ExerciseDetails">
+        <argument
+            android:name="exercise"
+            app:argType="it.unimib.icasiduso.sportrack.model.Exercise" />
+    </fragment>
 
 </navigation>

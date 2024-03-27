@@ -28,8 +28,7 @@ public class JsonParserUtil {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         Exercise[] exercisesArray = new Gson().fromJson(bufferedReader, Exercise[].class);
-        List<Exercise> exercises = Arrays.asList(exercisesArray);
 
-        return new Exercises(exercises);
+        return new Exercises(Arrays.asList(exercisesArray));
     }
 }

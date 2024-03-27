@@ -36,7 +36,7 @@ public class LoginFragment extends Fragment {
 
     private static final String TAG = LoginFragment.class.getSimpleName();
     private FirebaseAuth mAuth;
-    private SignInClient oneTapClient;
+    // private SignInClient oneTapClient;
     private TextInputLayout emailTextInput;
     private TextInputLayout passwordTextInput;
 
@@ -87,17 +87,8 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    private void googleLogin(){
-        SignInRequest signInRequest = BeginSignInRequest.builder()
-                .setGoogleIdTokenRequestOptions(GoogleIdTokenRequestOptions.builder()
-                        .setSupported(true)
-                        // Your server's client ID, not your Android client ID.
-                        .setServerClientId(getString(R.string.default_web_client_id))
-                        // Only show accounts previously used to sign in.
-                        .setFilterByAuthorizedAccounts(true)
-                        .build())
-                .build();
-    }
+    private void googleLogin(){}
+
     private void firebaseLogin(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {

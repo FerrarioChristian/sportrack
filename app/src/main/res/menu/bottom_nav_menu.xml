@@ -11,10 +11,10 @@
         android:icon="@drawable/ic_baseline_topic_24"
         android:title="@string/schedule"/>
     <item
-        android:id="@+id/fragment_training"
+        android:id="@+id/fragment_exercises"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_favorite_24"
-        android:title="@string/training"/>
+        android:title="@string/exercises"/>
     <item
         android:id="@+id/fragment_settings"
         android:enabled="true"

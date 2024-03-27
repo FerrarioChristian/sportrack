@@ -11,11 +11,22 @@
     <string name="previous">Indietro</string>
     <string name="homepage">Homepage</string>
     <string name="schedule">Scheda</string>
-    <string name="training">Allenamento</string>
+    <string name="exercises">Esercizi</string>
     <string name="settings">Impostazioni</string>
     <string name="authentication_failed">Autenticazione fallita.</string>
     <string name="invalid_email">Email invalida..</string>
     <string name="invalid_password">La password deve essere lunga almeno 8 caratteri.</string>
     <string name="invalid_confirm_password">Le due password non coincidono.</string>
+    <string name="abdominals">adoominali</string>
+    <string name="biceps">bicipiti</string>
+    <string name="chest">petto</string>
+    <string name="lats">spalle</string>
+    <string name="middle_back">centro schiena</string>
+    <string name="lower_back">dorsali</string>
+    <string name="triceps">tricipiti</string>
+    <string name="quadriceps">quadricipiti</string>
+    <string name="hamstrings">femorali</string>
+    <string name="glutes">glutei</string>
+    <string name="difficulty">Difficoltà:</string>
 
 </resources>

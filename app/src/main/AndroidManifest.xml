@@ -33,7 +33,7 @@
             android:name=".ui.ScheduleFragment"
             android:exported="false" />
         <activity
-            android:name=".ui.TrainingFragment"
+            android:name=".ui.ExercisesFragment"
             android:exported="false" />
         <activity android:name=".ui.RegisterFragment" />
     </application>

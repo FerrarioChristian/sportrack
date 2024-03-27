@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ExercisesFragment">
+
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="2"
+            android:padding="16dp"
+            android:rowCount="4">
+
+            <Button
+                android:id="@+id/abdominals_button"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:text="@string/abdominals"
+                />
+
+
+            <Button
+                android:id="@+id/biceps_button"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:text="@string/biceps" />
+
+            <Button
+                android:id="@+id/chest_button"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:text="@string/chest" />
+
+
+            <Button
+                android:id="@+id/lats_button"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:text="@string/lats" />
+
+            <Button
+                android:id="@+id/middle_back"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:text="@string/middle_back" />
+
+            <Button
+                android:id="@+id/lower_back_button"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:text="@string/lower_back" />
+
+            <Button
+                android:id="@+id/triceps_button"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:text="@string/triceps" />
+
+            <Button
+                android:id="@+id/quadriceps_button"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:text="@string/quadriceps" />
+
+            <Button
+                android:id="@+id/hamstrings_button"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:text="@string/hamstrings" />
+
+            <Button
+                android:id="@+id/glutes_button"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_columnWeight="1"
+                android:layout_margin="3dp"
+                android:padding="10dp"
+                android:text="@string/glutes" />
+
+        </GridLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

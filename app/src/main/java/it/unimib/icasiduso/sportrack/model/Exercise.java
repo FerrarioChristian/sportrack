@@ -1,6 +1,11 @@
 package it.unimib.icasiduso.sportrack.model;
 
-public class Exercise {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Exercise implements Parcelable {
     private String name;
     private String type;
     private String muscle;
@@ -67,5 +72,15 @@ public class Exercise {
                 ", difficulty='" + difficulty + '\'' +
                 ", instructions='" + instructions + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+
     }
 }

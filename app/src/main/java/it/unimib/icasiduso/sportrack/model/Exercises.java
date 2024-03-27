@@ -1,14 +1,44 @@
 package it.unimib.icasiduso.sportrack.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
-public class Exercises {
+public class Exercises implements Parcelable {
 
     private final List<Exercise> exercises;
+
+    public Exercises(){
+        this.exercises = null;
+    }
 
     public Exercises(List<Exercise> exercises){
         this.exercises = exercises;
     }
+
+
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
+    protected Exercises(Parcel in, List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public final Creator<Exercises> CREATOR = new Creator<Exercises>() {
+        @Override
+        public Exercises createFromParcel(Parcel in) {
+            return new Exercises(in, exercises);
+        }
+
+        @Override
+        public Exercises[] newArray(int size) {
+            return new Exercises[size];
+        }
+    };
 
     @Override
     public String toString() {
@@ -19,5 +49,15 @@ public class Exercises {
         }
         stringBuilder.append("}");
         return stringBuilder.toString();
+    }
+
+    //TODO
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
     }
 }
