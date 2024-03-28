@@ -11,17 +11,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
 import it.unimib.icasiduso.sportrack.model.Exercise;
 
 public class ExerciseDetails extends Fragment {
-
+    private static final String TAG = ExerciseDetails.class.getSimpleName();
     public ExerciseDetails(){}
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,6 +32,7 @@ public class ExerciseDetails extends Fragment {
 
         Exercise exercise = ExerciseDetailsArgs.fromBundle(getArguments()).getExercise();
 
+        //TODO implement binding (?)
         TextView textViewExerciseName = view.findViewById(R.id.textViewExerciseName);
         TextView textViewExerciseType = view.findViewById(R.id.textViewExerciseType);
         TextView textViewExerciseMuscle = view.findViewById(R.id.textViewExerciseMuscle);

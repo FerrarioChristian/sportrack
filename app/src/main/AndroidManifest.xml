@@ -26,16 +26,6 @@
         <activity
             android:name=".main.MainActivityWithBottomNav"
             android:exported="false" />
-        <activity
-            android:name=".ui.SettingsFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ui.ScheduleFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ui.ExercisesFragment"
-            android:exported="false" />
-        <activity android:name=".ui.RegisterFragment" />
     </application>
 
 </manifest>

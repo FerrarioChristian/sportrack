@@ -15,7 +15,7 @@
     <string name="settings">Impostazioni</string>
     <string name="authentication_failed">Autenticazione fallita.</string>
     <string name="invalid_email">Email invalida..</string>
-    <string name="invalid_password">La password deve essere lunga almeno 8 caratteri.</string>
+    <string name="invalid_password">La password deve essere lunga almeno %1$d caratteri.</string>
     <string name="invalid_confirm_password">Le due password non coincidono.</string>
     <string name="abdominals">adoominali</string>
     <string name="biceps">bicipiti</string>

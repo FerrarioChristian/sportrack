@@ -1,9 +1,6 @@
 package it.unimib.icasiduso.sportrack.adapters;
 
-import static android.provider.Settings.System.getString;
-
 import android.app.Application;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +17,16 @@ import it.unimib.icasiduso.sportrack.model.Exercise;
 import it.unimib.icasiduso.sportrack.model.Exercises;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ExerciseViewHolder> {
-
     List<Exercise> exercises; //TODO
     private final Application application;
-
     private final OnItemClickListener onItemClickListener;
 
 
-
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onExerciseClick(Exercise exercise);
     }
 
-    public ExerciseRecyclerViewAdapter(Exercises exercises, Application application, OnItemClickListener onItemClickListener){
+    public ExerciseRecyclerViewAdapter(Exercises exercises, Application application, OnItemClickListener onItemClickListener) {
         this.exercises = exercises.getExercises();
         this.application = application;
         this.onItemClickListener = onItemClickListener;
@@ -52,24 +46,23 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
     @Override
     public int getItemCount() {
-        if(exercises == null)
+        if (exercises == null)
             return 0;
         return exercises.size();
     }
 
-    public class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
+    public class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textViewExerciseName;
         private final TextView textViewExerciseDifficulty;
 
-        public ExerciseViewHolder(@NonNull View itemView){
+        public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewExerciseName = itemView.findViewById(R.id.textViewExerciseName);
             textViewExerciseDifficulty = itemView.findViewById(R.id.textViewExerciseDifficulty);
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Exercise exercise){
+        public void bind(Exercise exercise) {
             textViewExerciseName.setText(exercise.getName());
             textViewExerciseDifficulty.setText(application.getApplicationContext().getResources().getString(R.string.difficulty) + exercise.getDifficulty());
         }

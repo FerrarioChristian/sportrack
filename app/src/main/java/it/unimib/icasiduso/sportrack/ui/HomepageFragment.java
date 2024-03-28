@@ -27,8 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
 
 public class HomepageFragment extends Fragment {
+    private static final String TAG = HomepageFragment.class.getSimpleName();
 
     private List<DataPoint> weightDataList;
     private int i;

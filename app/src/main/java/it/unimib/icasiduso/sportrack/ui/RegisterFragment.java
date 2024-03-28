@@ -1,5 +1,7 @@
 package it.unimib.icasiduso.sportrack.ui;
 
+import static it.unimib.icasiduso.sportrack.utils.Constants.MIN_PASSWORD_LENGTH;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -118,8 +120,9 @@ public class RegisterFragment extends Fragment {
 
     private boolean isPasswordOk(String password, String confirmPassword){
 
-        if (password == null || password.length() < 8) {
-            Toast.makeText(getActivity(), R.string.invalid_password,
+        if (password == null || password.length() < MIN_PASSWORD_LENGTH) {
+            String pass_error = getString(R.string.invalid_password, MIN_PASSWORD_LENGTH);
+            Toast.makeText(getActivity(), pass_error,
                     Toast.LENGTH_SHORT).show();
             return false;
         }

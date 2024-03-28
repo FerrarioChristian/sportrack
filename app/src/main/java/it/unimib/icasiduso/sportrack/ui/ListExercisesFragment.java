@@ -12,8 +12,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.model.Exercise;
