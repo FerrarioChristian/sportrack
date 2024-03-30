@@ -1,59 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/fragment_homepage">
+    app:startDestination="@id/homepage">
 
-    <fragment
-        android:id="@+id/fragment_schedule"
-        android:name="it.unimib.icasiduso.sportrack.ui.ScheduleFragment"
-        android:label="fragment_schedule"
-        tools:layout="@layout/fragment_schedule" />
-    <fragment
-        android:id="@+id/fragment_settings"
-        android:name="it.unimib.icasiduso.sportrack.ui.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/fragment_exercises"
-        android:name="it.unimib.icasiduso.sportrack.ui.ExercisesFragment"
-        android:label="fragment_exercises"
-        tools:layout="@layout/fragment_exercises">
-        <action
-            android:id="@+id/action_fragment_exercises_to_fragment_list_exercises"
-            app:destination="@id/fragment_list_exercises" />
-    </fragment>
-    <fragment
-        android:id="@+id/fragment_homepage"
-        android:name="it.unimib.icasiduso.sportrack.ui.HomepageFragment"
-        android:label="HomepageFragment"
-        tools:layout="@layout/fragment_homepage" />
-    <fragment
-        android:id="@+id/fragment_list_exercises"
-        android:name="it.unimib.icasiduso.sportrack.ui.ListExercisesFragment"
-        android:label="ListExercisesFragment"
-        android:layout="@layout/fragment_list_exercises">
-        <argument
-            android:name="muscle"
-            app:argType="java.lang.String" />
-        <action
-            android:id="@+id/action_fragment_list_exercises_to_fragment_exercise_details"
-            app:destination="@id/fragment_exercise_details" />
-        <action
-            android:id="@+id/action_fragment_list_exercises_to_fragment_exercises"
-            app:destination="@id/fragment_exercises" />
-    </fragment>
-    <fragment
-        android:id="@+id/fragment_exercise_details"
-        android:name="it.unimib.icasiduso.sportrack.ui.ExerciseDetails"
-        android:label="ExerciseDetails">
-        <argument
-            android:name="exercise"
-            app:argType="it.unimib.icasiduso.sportrack.model.Exercise" />
-        <action
-            android:id="@+id/action_fragment_exercise_details_to_fragment_exercises"
-            app:destination="@id/fragment_exercises" />
-    </fragment>
+    <include app:graph="@navigation/homepage"/>
+    <include app:graph="@navigation/exercises"/>
+    <include app:graph="@navigation/schedule"/>
+    <include app:graph="@navigation/settings"/>
+
 
 </navigation>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/exercises"
+    app:startDestination="@id/exercisesFragment">
+
+    <fragment
+        android:id="@+id/exercisesFragment"
+        android:name="it.unimib.icasiduso.sportrack.ui.ExercisesFragment"
+        android:label="fragment_exercises"
+        tools:layout="@layout/fragment_exercises">
+        <action
+            android:id="@+id/action_exercisesFragment_to_listExercisesFragment"
+            app:destination="@id/listExercisesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listExercisesFragment"
+        android:name="it.unimib.icasiduso.sportrack.ui.ListExercisesFragment"
+        android:label="ListExercisesFragment">
+        <argument
+            android:name="muscle"
+            app:argType="java.lang.String" />
+        <action
+            android:id="@+id/action_listExercisesFragment_to_exerciseDetails"
+            app:destination="@id/exerciseDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/exerciseDetails"
+        android:name="it.unimib.icasiduso.sportrack.ui.ExerciseDetails"
+        android:label="ExerciseDetails">
+        <argument
+            android:name="exercise"
+            app:argType="it.unimib.icasiduso.sportrack.model.Exercise" />
+    </fragment>
+</navigation>

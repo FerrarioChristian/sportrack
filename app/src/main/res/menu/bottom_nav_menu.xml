@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/fragment_homepage"
+        android:id="@+id/homepage"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_vpn_key_24"
         android:title="@string/homepage" />
     <item
-        android:id="@+id/fragment_schedule"
+        android:id="@+id/schedule"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_topic_24"
         android:title="@string/schedule"/>
     <item
-        android:id="@+id/fragment_exercises"
+        android:id="@+id/exercises"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="@string/exercises"/>
     <item
-        android:id="@+id/fragment_settings"
+        android:id="@+id/settings"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/settings"/>

@@ -54,14 +54,14 @@ public class ExercisesFragment extends Fragment {
 
         Button abdominals_button = view.findViewById(R.id.abdominals_button);
         abdominals_button.setOnClickListener(v -> {
-            ExercisesFragmentDirections.ActionFragmentExercisesToFragmentListExercises action = ExercisesFragmentDirections.actionFragmentExercisesToFragmentListExercises("abdominals");
+            ExercisesFragmentDirections.ActionExercisesFragmentToListExercisesFragment action = ExercisesFragmentDirections.actionExercisesFragmentToListExercisesFragment("abdominals");
             Navigation.findNavController(view).navigate(action);
 
         });
 
         Button biceps_button = view.findViewById(R.id.biceps_button);
         biceps_button.setOnClickListener(v -> {
-            ExercisesFragmentDirections.ActionFragmentExercisesToFragmentListExercises action = ExercisesFragmentDirections.actionFragmentExercisesToFragmentListExercises("biceps");
+            ExercisesFragmentDirections.ActionExercisesFragmentToListExercisesFragment action = ExercisesFragmentDirections.actionExercisesFragmentToListExercisesFragment("biceps");
             Navigation.findNavController(view).navigate(action);
         });
 

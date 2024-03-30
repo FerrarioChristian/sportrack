@@ -70,7 +70,7 @@ public class ListExercisesFragment extends Fragment implements ResponseCallback 
         exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, requireActivity().getApplication(), new ExerciseRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onExerciseClick(Exercise exercise) {
-                ListExercisesFragmentDirections.ActionFragmentListExercisesToFragmentExerciseDetails action = ListExercisesFragmentDirections.actionFragmentListExercisesToFragmentExerciseDetails(exercise);
+                ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(exercise);
                 Navigation.findNavController(view).navigate(action);
             }
         });
