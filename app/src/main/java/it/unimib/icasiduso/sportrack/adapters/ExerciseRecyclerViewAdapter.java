@@ -26,8 +26,8 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         void onExerciseClick(Exercise exercise);
     }
 
-    public ExerciseRecyclerViewAdapter(Exercises exercises, Application application, OnItemClickListener onItemClickListener) {
-        this.exercises = exercises.getExercises();
+    public ExerciseRecyclerViewAdapter(List<Exercise> exercises, Application application, OnItemClickListener onItemClickListener) {
+        this.exercises = exercises;
         this.application = application;
         this.onItemClickListener = onItemClickListener;
     }

@@ -35,11 +35,14 @@
         android:label="ListExercisesFragment"
         android:layout="@layout/fragment_list_exercises">
         <argument
-            android:name="exercises"
-            app:argType="it.unimib.icasiduso.sportrack.model.Exercises" />
+            android:name="muscle"
+            app:argType="java.lang.String" />
         <action
             android:id="@+id/action_fragment_list_exercises_to_fragment_exercise_details"
             app:destination="@id/fragment_exercise_details" />
+        <action
+            android:id="@+id/action_fragment_list_exercises_to_fragment_exercises"
+            app:destination="@id/fragment_exercises" />
     </fragment>
     <fragment
         android:id="@+id/fragment_exercise_details"
@@ -48,6 +51,9 @@
         <argument
             android:name="exercise"
             app:argType="it.unimib.icasiduso.sportrack.model.Exercise" />
+        <action
+            android:id="@+id/action_fragment_exercise_details_to_fragment_exercises"
+            app:destination="@id/fragment_exercises" />
     </fragment>
 
 </navigation>

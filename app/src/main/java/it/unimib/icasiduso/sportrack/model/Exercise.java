@@ -10,6 +10,27 @@ public class Exercise implements Parcelable {
     private String type;
     private String muscle;
 
+    protected Exercise(Parcel in) {
+        name = in.readString();
+        type = in.readString();
+        muscle = in.readString();
+        equipment = in.readString();
+        difficulty = in.readString();
+        instructions = in.readString();
+    }
+
+    public static final Creator<Exercise> CREATOR = new Creator<Exercise>() {
+        @Override
+        public Exercise createFromParcel(Parcel in) {
+            return new Exercise(in);
+        }
+
+        @Override
+        public Exercise[] newArray(int size) {
+            return new Exercise[size];
+        }
+    };
+
     public void setName(String name) {
         this.name = name;
     }
@@ -81,6 +102,11 @@ public class Exercise implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-
+        dest.writeString(name);
+        dest.writeString(type);
+        dest.writeString(muscle);
+        dest.writeString(equipment);
+        dest.writeString(difficulty);
+        dest.writeString(instructions);
     }
 }

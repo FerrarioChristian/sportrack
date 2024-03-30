@@ -1,9 +1,11 @@
 package it.unimib.icasiduso.sportrack.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,25 +14,42 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.model.Exercise;
-import it.unimib.icasiduso.sportrack.model.Exercises;
+import it.unimib.icasiduso.sportrack.repository.ExercisesMockRepository;
+import it.unimib.icasiduso.sportrack.repository.ExercisesRepository;
+import it.unimib.icasiduso.sportrack.repository.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.repository.ResponseCallback;
 
-public class ListExercisesFragment extends Fragment {
-    private Exercises exercises;
+public class ListExercisesFragment extends Fragment implements ResponseCallback {
+
+    private static final String TAG = ListExercisesFragment.class.getSimpleName();
+    private List<Exercise> exercises;
+    private IExercisesRepository exercisesRepository;
+    private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
+    private ProgressBar progressBar;
+
+
 
     public ListExercisesFragment() {
-    }
-
-    public ListExercisesFragment(Exercises exercises) {
-        this.exercises = exercises;
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(requireActivity().getResources().getBoolean(R.bool.debug_mode)) {
+            exercisesRepository = new ExercisesMockRepository(requireActivity().getApplication(), this);
+        } else {
+            exercisesRepository = new ExercisesRepository(requireActivity().getApplication(), this);
+        }
+        exercises = new ArrayList<>();
     }
 
     @Override
@@ -43,19 +62,43 @@ public class ListExercisesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        exercises = ListExercisesFragmentArgs.fromBundle(getArguments()).getExercises();
+        progressBar = view.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
 
         RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_exercise_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, requireActivity().getApplication(), new ExerciseRecyclerViewAdapter.OnItemClickListener() {
+        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, requireActivity().getApplication(), new ExerciseRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onExerciseClick(Exercise exercise) {
                 ListExercisesFragmentDirections.ActionFragmentListExercisesToFragmentExerciseDetails action = ListExercisesFragmentDirections.actionFragmentListExercisesToFragmentExerciseDetails(exercise);
                 Navigation.findNavController(view).navigate(action);
             }
         });
-
         recyclerViewExerciseList.setLayoutManager(layoutManager);
         recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
+
+        String muscle = ListExercisesFragmentArgs.fromBundle(getArguments()).getMuscle();
+        exercisesRepository.fetchExercises(muscle);
+    }
+
+    @Override
+    public void onSuccess(Exercise[] exercises) {
+        if(exercises != null){
+            this.exercises.clear();
+            this.exercises.addAll(Arrays.asList(exercises));
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    exerciseRecyclerViewAdapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onFailure(String errorMessage) {
+        progressBar.setVisibility(View.GONE);
+        Log.d(TAG, errorMessage);
     }
 }

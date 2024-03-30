@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -16,6 +18,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue("string", "api_key", gradleLocalProperties(rootDir).getProperty("api_key"))
+
+        resValue("bool", "debug_mode", gradleLocalProperties(rootDir).getProperty("debug_mode"))
     }
 
     buildTypes {
@@ -40,6 +46,8 @@ dependencies {
     val nav_version = "2.7.5"
 
 
+    implementation("com.squareup.retrofit2:retrofit:2.10.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.10.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("commons-validator:commons-validator:1.7")
 

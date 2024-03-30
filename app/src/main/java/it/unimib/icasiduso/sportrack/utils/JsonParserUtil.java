@@ -23,12 +23,15 @@ public class JsonParserUtil {
         this.context = application.getApplicationContext();
     }
 
-    public Exercises parseFromFileWithGSON(String file) throws IOException {
+    public Exercise[] parseFromFileWithGSON(String file) throws IOException {
         InputStream inputStream = context.getAssets().open(file);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
-        Exercise[] exercisesArray = new Gson().fromJson(bufferedReader, Exercise[].class);
+        return new Gson().fromJson(bufferedReader, Exercise[].class);
+    }
 
+    public Exercises parseFromJsonWithGSON(String json_string) {;
+        Exercise[] exercisesArray = new Gson().fromJson(json_string, Exercise[].class);
         return new Exercises(Arrays.asList(exercisesArray));
     }
 }
