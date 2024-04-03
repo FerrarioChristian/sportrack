@@ -37,6 +37,10 @@ public class MainActivityWithBottomNav extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNav, navController);
     }
 
+    public FirebaseUser getCurrentUser() {
+        return currentUser;
+    }
+
     private void checkSession(){
         if (currentUser == null) {
             Intent intent = new Intent(this, MainActivityWithBottomNav.class);

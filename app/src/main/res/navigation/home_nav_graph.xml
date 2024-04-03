@@ -6,7 +6,7 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="it.unimib.icasiduso.sportrack.ui.LoginFragment"
+        android:name="it.unimib.icasiduso.sportrack.ui.auth.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login"
         >
@@ -25,7 +25,7 @@
     </activity>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="it.unimib.icasiduso.sportrack.ui.RegisterFragment"
+        android:name="it.unimib.icasiduso.sportrack.ui.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action

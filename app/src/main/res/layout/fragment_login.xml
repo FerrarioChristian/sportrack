@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        tools:context=".ui.LoginFragment">
+        tools:context=".ui.auth.LoginFragment">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:context=".ui.LoginFragment">
+                tools:context=".ui.auth.LoginFragment">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/login_name_textfield_layout"

@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.ui;
+package it.unimib.icasiduso.sportrack.ui.exercise;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -63,7 +63,10 @@ public class ListExercisesFragment extends Fragment implements ResponseCallback 
         super.onViewCreated(view, savedInstanceState);
 
         progressBar = view.findViewById(R.id.progress_bar);
-        progressBar.setVisibility(View.VISIBLE);
+        if(exercises.isEmpty()){
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
 
         RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_exercise_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);

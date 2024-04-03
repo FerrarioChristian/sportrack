@@ -1,29 +1,20 @@
-package it.unimib.icasiduso.sportrack.ui;
+package it.unimib.icasiduso.sportrack.ui.exercise;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import java.io.IOException;
 
 import it.unimib.icasiduso.sportrack.R;
 
 import androidx.navigation.Navigation;
 
 import it.unimib.icasiduso.sportrack.databinding.FragmentExercisesBinding;
-import it.unimib.icasiduso.sportrack.model.Exercise;
-import it.unimib.icasiduso.sportrack.model.Exercises;
-import it.unimib.icasiduso.sportrack.repository.ExercisesRepository;
-import it.unimib.icasiduso.sportrack.repository.IExercisesRepository;
-import it.unimib.icasiduso.sportrack.repository.ResponseCallback;
-import it.unimib.icasiduso.sportrack.utils.JsonParserUtil;
 
 public class ExercisesFragment extends Fragment {
 

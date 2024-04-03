@@ -38,6 +38,7 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         signOutButton = view.findViewById(R.id.logoutButton);
         signOutButton.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();

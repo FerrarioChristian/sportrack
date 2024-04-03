@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/exercisesFragment"
-        android:name="it.unimib.icasiduso.sportrack.ui.ExercisesFragment"
+        android:name="it.unimib.icasiduso.sportrack.ui.exercise.ExercisesFragment"
         android:label="fragment_exercises"
         tools:layout="@layout/fragment_exercises">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/listExercisesFragment"
-        android:name="it.unimib.icasiduso.sportrack.ui.ListExercisesFragment"
+        android:name="it.unimib.icasiduso.sportrack.ui.exercise.ListExercisesFragment"
         android:label="ListExercisesFragment">
         <argument
             android:name="muscle"
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/exerciseDetails"
-        android:name="it.unimib.icasiduso.sportrack.ui.ExerciseDetails"
+        android:name="it.unimib.icasiduso.sportrack.ui.exercise.ExerciseDetailsFragment"
         android:label="ExerciseDetails">
         <argument
             android:name="exercise"

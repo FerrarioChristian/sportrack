@@ -1,8 +1,7 @@
-package it.unimib.icasiduso.sportrack.ui;
+package it.unimib.icasiduso.sportrack.ui.auth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.credentials.GetCredentialRequest;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -15,12 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;

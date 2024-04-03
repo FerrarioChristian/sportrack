@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.ui;
+package it.unimib.icasiduso.sportrack.ui.auth;
 
 import static it.unimib.icasiduso.sportrack.utils.Constants.MIN_PASSWORD_LENGTH;
 
@@ -27,7 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.main.MainActivity;
 import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
 
 public class RegisterFragment extends Fragment {
