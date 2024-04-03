@@ -14,9 +14,19 @@ import android.util.Log;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.repository.ScheduleRepository;
 
 public class MainActivityWithBottomNav extends AppCompatActivity {
     private static final String TAG = MainActivityWithBottomNav.class.getSimpleName();
+    ScheduleRepository scheduleRepository;
+
+    public MainActivityWithBottomNav(){
+        this.scheduleRepository = new ScheduleRepository();
+    }
+
+    public ScheduleRepository getScheduleRepository() {
+        return scheduleRepository;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

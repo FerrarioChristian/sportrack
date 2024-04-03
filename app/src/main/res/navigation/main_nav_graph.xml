@@ -9,7 +9,14 @@
         android:id="@+id/fragment_schedule"
         android:name="it.unimib.icasiduso.sportrack.ui.ScheduleFragment"
         android:label="fragment_schedule"
-        tools:layout="@layout/fragment_schedule" />
+        tools:layout="@layout/fragment_schedule">
+        <argument
+            android:name="exercise"
+            app:argType="it.unimib.icasiduso.sportrack.model.exercise.Exercise" />
+        <action
+            android:id="@+id/action_fragment_schedule_to_fragment_exercise_details"
+            app:destination="@id/fragment_exercise_details" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_settings"
         android:name="it.unimib.icasiduso.sportrack.ui.SettingsFragment"
@@ -23,6 +30,7 @@
         <action
             android:id="@+id/action_fragment_exercises_to_fragment_list_exercises"
             app:destination="@id/fragment_list_exercises" />
+
     </fragment>
     <fragment
         android:id="@+id/fragment_homepage"
@@ -36,7 +44,7 @@
         android:layout="@layout/fragment_list_exercises">
         <argument
             android:name="exercises"
-            app:argType="it.unimib.icasiduso.sportrack.model.Exercises" />
+            app:argType="it.unimib.icasiduso.sportrack.model.exercise.ExerciseCollection" />
         <action
             android:id="@+id/action_fragment_list_exercises_to_fragment_exercise_details"
             app:destination="@id/fragment_exercise_details" />
@@ -47,7 +55,10 @@
         android:label="ExerciseDetails">
         <argument
             android:name="exercise"
-            app:argType="it.unimib.icasiduso.sportrack.model.Exercise" />
+            app:argType="it.unimib.icasiduso.sportrack.model.exercise.Exercise" />
+        <action
+            android:id="@+id/action_fragment_exercise_details_to_fragment_schedule"
+            app:destination="@id/fragment_schedule" />
     </fragment>
 
 </navigation>

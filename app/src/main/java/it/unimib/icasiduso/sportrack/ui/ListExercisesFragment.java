@@ -13,17 +13,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
-import it.unimib.icasiduso.sportrack.model.Exercise;
-import it.unimib.icasiduso.sportrack.model.Exercises;
+import it.unimib.icasiduso.sportrack.adapter.ExerciseRecyclerViewAdapter;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCollection;
 
 public class ListExercisesFragment extends Fragment {
-    private Exercises exercises;
+    private ExerciseCollection exercises;
 
     public ListExercisesFragment() {
     }
 
-    public ListExercisesFragment(Exercises exercises) {
+    public ListExercisesFragment(ExerciseCollection exercises) {
         this.exercises = exercises;
     }
 

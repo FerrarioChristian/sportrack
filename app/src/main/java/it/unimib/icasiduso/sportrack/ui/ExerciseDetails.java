@@ -4,23 +4,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
-import it.unimib.icasiduso.sportrack.model.Exercise;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public class ExerciseDetails extends Fragment {
     private static final String TAG = ExerciseDetails.class.getSimpleName();
-    public ExerciseDetails(){}
+
+    public ExerciseDetails() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,7 +38,8 @@ public class ExerciseDetails extends Fragment {
 
         Exercise exercise = ExerciseDetailsArgs.fromBundle(getArguments()).getExercise();
 
-        //TODO implement binding (?)
+        // TODO implement binding (?)
+        Button addExerciseToScheduleButton = view.findViewById(R.id.add_exercise_to_schedule);
         TextView textViewExerciseName = view.findViewById(R.id.textViewExerciseName);
         TextView textViewExerciseType = view.findViewById(R.id.textViewExerciseType);
         TextView textViewExerciseMuscle = view.findViewById(R.id.textViewExerciseMuscle);
@@ -41,11 +48,20 @@ public class ExerciseDetails extends Fragment {
         TextView textViewExerciseDescription = view.findViewById(R.id.textViewExerciseDescription);
 
         textViewExerciseName.setText(exercise.getName());
-        textViewExerciseType.setText(exercise.getType());
-        textViewExerciseMuscle.setText(exercise.getMuscle());
-        textViewExerciseEquipment.setText(exercise.getEquipment());
-        textViewExerciseDifficulty.setText(exercise.getDifficulty());
+        textViewExerciseType.setText("TIPO: " + exercise.getType());
+        textViewExerciseMuscle.setText("GRUPPO: " + exercise.getMuscle());
+        textViewExerciseEquipment.setText("ATTREZZATURA: " + exercise.getEquipment());
+        textViewExerciseDifficulty.setText("LIVELLO: " + exercise.getDifficulty());
         textViewExerciseDescription.setText(exercise.getInstructions());
 
+        addExerciseToScheduleButton.setOnClickListener(v -> {
+            // Ottieni il NavController
+            NavController navController = Navigation.findNavController(view);
+
+            // Crea un'istanza del nuovo fragment a cui desideri navigare
+            ExerciseDetailsDirections.ActionFragmentExerciseDetailsToFragmentSchedule action = ExerciseDetailsDirections.actionFragmentExerciseDetailsToFragmentSchedule(exercise);
+            // Esegui la navigazione passando l'azione e l'oggetto Exercise come argomento
+            navController.navigate(action);
+        });
     }
 }

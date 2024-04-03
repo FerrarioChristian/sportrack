@@ -7,13 +7,71 @@
     tools:context=".ui.ScheduleFragment">
 
     <TextView
+        android:id="@+id/title_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SCHEDULE"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:fontFamily="@font/darkcollegefont"
+        android:text="@string/schedule"
+        android:textAlignment="center"
+        android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/editTextTitolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Titolo della scheda di allenamento"
+        android:inputType="text"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_schedule"/>
+
+    <EditText
+        android:id="@+id/editTextDescrizione"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTitolo"
+        android:hint="Descrizione della scheda di allenamento"
+        android:inputType="textMultiLine"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTitolo" />
+
+    <EditText
+        android:id="@+id/editTextData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextDescrizione"
+        android:hint="Data della scheda di allenamento"
+        android:inputType="datetime"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescrizione" />
+
+    <Button
+        android:id="@+id/btnAggiungiEsercizi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextData"
+        android:text="Aggiungi Esercizi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextData" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_exercise_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAggiungiEsercizi">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

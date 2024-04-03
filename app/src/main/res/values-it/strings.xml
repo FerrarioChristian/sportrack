@@ -28,5 +28,6 @@
     <string name="hamstrings">femorali</string>
     <string name="glutes">glutei</string>
     <string name="difficulty">Difficoltà:</string>
+    <string name="add">aggiungi</string>
 
 </resources>

@@ -1,42 +1,46 @@
-package it.unimib.icasiduso.sportrack.model;
+package it.unimib.icasiduso.sportrack.model.exercise;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Exercises implements Parcelable {
+public class ExerciseCollection implements Parcelable {
 
     private final List<Exercise> exercises;
 
-    public Exercises(){
-        this.exercises = null;
+    public ExerciseCollection(){
+        this.exercises = new ArrayList<>();
     }
 
-    public Exercises(List<Exercise> exercises){
+    public ExerciseCollection(List<Exercise> exercises){
         this.exercises = exercises;
     }
 
+    public void addExercise(Exercise exercise) {
+        exercises.add(exercise);
+    }
 
     public List<Exercise> getExercises() {
         return exercises;
     }
 
-    protected Exercises(Parcel in, List<Exercise> exercises) {
+    protected ExerciseCollection(Parcel in, List<Exercise> exercises) {
         this.exercises = exercises;
     }
 
-    public final Creator<Exercises> CREATOR = new Creator<Exercises>() {
+    public final Creator<ExerciseCollection> CREATOR = new Creator<ExerciseCollection>() {
         @Override
-        public Exercises createFromParcel(Parcel in) {
-            return new Exercises(in, exercises);
+        public ExerciseCollection createFromParcel(Parcel in) {
+            return new ExerciseCollection(in, exercises);
         }
 
         @Override
-        public Exercises[] newArray(int size) {
-            return new Exercises[size];
+        public ExerciseCollection[] newArray(int size) {
+            return new ExerciseCollection[size];
         }
     };
 

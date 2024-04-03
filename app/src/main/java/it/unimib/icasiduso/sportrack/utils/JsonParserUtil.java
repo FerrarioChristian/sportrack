@@ -10,10 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.List;
 
-import it.unimib.icasiduso.sportrack.model.Exercise;
-import it.unimib.icasiduso.sportrack.model.Exercises;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCollection;
 
 public class JsonParserUtil {
 
@@ -23,12 +22,12 @@ public class JsonParserUtil {
         this.context = application.getApplicationContext();
     }
 
-    public Exercises parseFromFileWithGSON(String file) throws IOException {
+    public ExerciseCollection parseFromFileWithGSON(String file) throws IOException {
         InputStream inputStream = context.getAssets().open(file);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         Exercise[] exercisesArray = new Gson().fromJson(bufferedReader, Exercise[].class);
 
-        return new Exercises(Arrays.asList(exercisesArray));
+        return new ExerciseCollection(Arrays.asList(exercisesArray));
     }
 }

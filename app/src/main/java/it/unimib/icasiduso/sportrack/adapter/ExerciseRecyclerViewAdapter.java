@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.adapters;
+package it.unimib.icasiduso.sportrack.adapter;
 
 import android.app.Application;
 import android.view.LayoutInflater;
@@ -13,8 +13,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.model.Exercise;
-import it.unimib.icasiduso.sportrack.model.Exercises;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCollection;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ExerciseViewHolder> {
     List<Exercise> exercises; //TODO
@@ -26,7 +26,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         void onExerciseClick(Exercise exercise);
     }
 
-    public ExerciseRecyclerViewAdapter(Exercises exercises, Application application, OnItemClickListener onItemClickListener) {
+    public ExerciseRecyclerViewAdapter(ExerciseCollection exercises, Application application, OnItemClickListener onItemClickListener) {
         this.exercises = exercises.getExercises();
         this.application = application;
         this.onItemClickListener = onItemClickListener;

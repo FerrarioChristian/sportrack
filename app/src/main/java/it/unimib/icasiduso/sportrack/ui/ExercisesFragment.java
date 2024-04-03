@@ -6,24 +6,19 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import java.io.IOException;
-import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
 
 import androidx.navigation.Navigation;
 
 import it.unimib.icasiduso.sportrack.databinding.FragmentExercisesBinding;
-import it.unimib.icasiduso.sportrack.model.Exercise;
-import it.unimib.icasiduso.sportrack.model.Exercises;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCollection;
 import it.unimib.icasiduso.sportrack.utils.JsonParserUtil;
 
 public class ExercisesFragment extends Fragment {
@@ -31,7 +26,7 @@ public class ExercisesFragment extends Fragment {
     private static final String TAG = ExercisesFragment.class.getSimpleName();
 
     private JsonParserUtil jsonParser;
-    private Exercises exercises;
+    private ExerciseCollection exercises;
 
     private FragmentExercisesBinding fragmentExercisesBinding;
 
@@ -85,5 +80,7 @@ public class ExercisesFragment extends Fragment {
 
 
     }
+
+
 
 }

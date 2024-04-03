@@ -1,14 +1,30 @@
-package it.unimib.icasiduso.sportrack.model;
+package it.unimib.icasiduso.sportrack.model.exercise;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+@SuppressLint("ParcelCreator")
 public class Exercise implements Parcelable {
-    private String name;
-    private String type;
-    private String muscle;
+    protected String name;
+    protected String type;
+
+    public Exercise(){}
+    public Exercise(String name, String type, String muscle, String equipment, String difficulty, String instructions) {
+        this.name = name;
+        this.type = type;
+        this.muscle = muscle;
+        this.equipment = equipment;
+        this.difficulty = difficulty;
+        this.instructions = instructions;
+    }
+
+    protected String muscle;
+    protected String equipment;
+    protected String difficulty;
+    protected String instructions;
 
     public void setName(String name) {
         this.name = name;
@@ -58,10 +74,6 @@ public class Exercise implements Parcelable {
         return instructions;
     }
 
-    private String equipment;
-    private String difficulty;
-    private String instructions;
-
     @Override
     public String toString() {
         return "Exercise{" +
@@ -81,6 +93,11 @@ public class Exercise implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-
+        dest.writeString(name);
+        dest.writeString(type);
+        dest.writeString(muscle);
+        dest.writeString(equipment);
+        dest.writeString(difficulty);
+        dest.writeString(instructions);
     }
 }
