@@ -20,7 +20,7 @@ public class ExercisesFragment extends Fragment {
 
     private static final String TAG = ExercisesFragment.class.getSimpleName();
 
-    private FragmentExercisesBinding fragmentExercisesBinding;
+    private FragmentExercisesBinding binding;
 
     public ExercisesFragment() {
     }
@@ -35,27 +35,40 @@ public class ExercisesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentExercisesBinding = FragmentExercisesBinding.inflate(inflater, container, false);
-        return fragmentExercisesBinding.getRoot();
+        binding = FragmentExercisesBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.setOnClickListeners();
 
+    }
 
-        Button abdominals_button = view.findViewById(R.id.abdominals_button);
-        abdominals_button.setOnClickListener(v -> {
-            ExercisesFragmentDirections.ActionExercisesFragmentToListExercisesFragment action = ExercisesFragmentDirections.actionExercisesFragmentToListExercisesFragment("abdominals");
-            Navigation.findNavController(view).navigate(action);
-
+    public static void setMuscleOnClickListener(Button button, String muscle) {
+        button.setOnClickListener(v -> {
+            ExercisesFragmentDirections.ActionExercisesFragmentToListExercisesFragment action = ExercisesFragmentDirections.actionExercisesFragmentToListExercisesFragment(muscle);
+            Navigation.findNavController(v).navigate(action);
         });
+    }
 
-        Button biceps_button = view.findViewById(R.id.biceps_button);
-        biceps_button.setOnClickListener(v -> {
-            ExercisesFragmentDirections.ActionExercisesFragmentToListExercisesFragment action = ExercisesFragmentDirections.actionExercisesFragmentToListExercisesFragment("biceps");
-            Navigation.findNavController(view).navigate(action);
-        });
+    public void setOnClickListeners() {
+        setMuscleOnClickListener(binding.abdominalsButton, "abdominals");
+        setMuscleOnClickListener(binding.bicepsButton, "biceps");
+        setMuscleOnClickListener(binding.chestButton, "chest");
+        setMuscleOnClickListener(binding.glutesButton, "glutes");
+        setMuscleOnClickListener(binding.hamstringsButton, "hamstrings");
+        setMuscleOnClickListener(binding.latsButton, "lats");
+        setMuscleOnClickListener(binding.quadricepsButton, "quadriceps");
+        setMuscleOnClickListener(binding.tricepsButton, "triceps");
+        setMuscleOnClickListener(binding.middleBack, "middle_back");
+        setMuscleOnClickListener(binding.lowerBackButton, "lower_back");
 
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

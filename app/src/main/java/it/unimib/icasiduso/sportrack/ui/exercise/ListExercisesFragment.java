@@ -1,5 +1,6 @@
 package it.unimib.icasiduso.sportrack.ui.exercise;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -89,13 +90,16 @@ public class ListExercisesFragment extends Fragment implements ResponseCallback 
         if(exercises != null){
             this.exercises.clear();
             this.exercises.addAll(Arrays.asList(exercises));
-            requireActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    exerciseRecyclerViewAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
-                }
-            });
+            Activity activity = getActivity();
+            if(activity != null){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        exerciseRecyclerViewAdapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+            }
         }
     }
 
