@@ -1,17 +1,13 @@
 package it.unimib.icasiduso.sportrack.ui.exercise;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import it.unimib.icasiduso.sportrack.R;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import it.unimib.icasiduso.sportrack.databinding.FragmentExercisesBinding;
@@ -45,24 +41,24 @@ public class ExercisesFragment extends Fragment {
 
     }
 
-    public static void setMuscleOnClickListener(Button button, String muscle) {
-        button.setOnClickListener(v -> {
+    public static void setMuscleOnClickListener(View view, String muscle) {
+        view.setOnClickListener(v -> {
             ExercisesFragmentDirections.ActionExercisesFragmentToListExercisesFragment action = ExercisesFragmentDirections.actionExercisesFragmentToListExercisesFragment(muscle);
             Navigation.findNavController(v).navigate(action);
         });
     }
 
     public void setOnClickListeners() {
-        setMuscleOnClickListener(binding.abdominalsButton, "abdominals");
-        setMuscleOnClickListener(binding.bicepsButton, "biceps");
-        setMuscleOnClickListener(binding.chestButton, "chest");
-        setMuscleOnClickListener(binding.glutesButton, "glutes");
-        setMuscleOnClickListener(binding.hamstringsButton, "hamstrings");
-        setMuscleOnClickListener(binding.latsButton, "lats");
-        setMuscleOnClickListener(binding.quadricepsButton, "quadriceps");
-        setMuscleOnClickListener(binding.tricepsButton, "triceps");
-        setMuscleOnClickListener(binding.middleBack, "middle_back");
-        setMuscleOnClickListener(binding.lowerBackButton, "lower_back");
+        setMuscleOnClickListener(binding.abdominalsCard.cardview, "abdominals");
+        setMuscleOnClickListener(binding.bicepsCard.cardview, "biceps");
+        setMuscleOnClickListener(binding.chestCard.cardview, "chest");
+        setMuscleOnClickListener(binding.glutesCard.cardview, "glutes");
+        setMuscleOnClickListener(binding.hamstringsCard.cardview, "hamstrings");
+        setMuscleOnClickListener(binding.latsCard.cardview, "lats");
+        setMuscleOnClickListener(binding.quadricepsCard.cardview, "quadriceps");
+        setMuscleOnClickListener(binding.tricepsCard.cardview, "triceps");
+        setMuscleOnClickListener(binding.middleBackCard.cardview, "middle_back");
+        setMuscleOnClickListener(binding.lowerBackCard.cardview, "lower_back");
 
     }
 

@@ -1,118 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.exercise.ExercisesFragment">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.exercise.ExercisesFragment">
 
-        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/gridLayout"
+        <TextView
+            android:id="@+id/headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exercises"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            android:textColor="@color/material_on_background_emphasis_high_type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/darkcollegefont"/>
+
+        <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnCount="2"
-            android:padding="16dp"
-            android:rowCount="4">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headline">
 
-            <Button
-                android:id="@+id/abdominals_button"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
-                android:text="@string/abdominals"
-                />
-
-
-            <Button
-                android:id="@+id/biceps_button"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
-                android:text="@string/biceps" />
-
-            <Button
-                android:id="@+id/chest_button"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="2"
                 android:padding="10dp"
-                android:text="@string/chest" />
+                android:useDefaultMargins="true">
+
+                <include
+                    android:id="@+id/abdominals_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    app:muscle="@{@string/abdominals}" />
+
+                <include
+                    android:id="@+id/biceps_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    app:muscle="@{@string/biceps}" />
+
+                <include
+                    android:id="@+id/chest_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:muscle="@{@string/chest}" />
 
 
-            <Button
-                android:id="@+id/lats_button"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
-                android:padding="10dp"
-                android:text="@string/lats" />
+                <include
+                    android:id="@+id/lats_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:muscle="@{@string/lats}" />
 
-            <Button
-                android:id="@+id/middle_back"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
-                android:padding="10dp"
-                android:text="@string/middle_back" />
+                <include
+                    android:id="@+id/middle_back_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:muscle="@{@string/middle_back}" />
 
-            <Button
-                android:id="@+id/lower_back_button"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
-                android:padding="10dp"
-                android:text="@string/lower_back" />
+                <include
+                    android:id="@+id/lower_back_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:muscle="@{@string/lower_back}" />
 
-            <Button
-                android:id="@+id/triceps_button"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
-                android:padding="10dp"
-                android:text="@string/triceps" />
+                <include
+                    android:id="@+id/triceps_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:muscle="@{@string/triceps}" />
 
-            <Button
-                android:id="@+id/quadriceps_button"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
-                android:padding="10dp"
-                android:text="@string/quadriceps" />
+                <include
+                    android:id="@+id/quadriceps_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:muscle="@{@string/quadriceps}" />
 
-            <Button
-                android:id="@+id/hamstrings_button"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
-                android:padding="10dp"
-                android:text="@string/hamstrings" />
+                <include
+                    android:id="@+id/hamstrings_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:muscle="@{@string/hamstrings}" />
 
-            <Button
-                android:id="@+id/glutes_button"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="3dp"
-                android:padding="10dp"
-                android:text="@string/glutes" />
+                <include
+                    android:id="@+id/glutes_card"
+                    layout="@layout/muscle_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:muscle="@{@string/glutes}" />
 
-        </GridLayout>
-
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </GridLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
