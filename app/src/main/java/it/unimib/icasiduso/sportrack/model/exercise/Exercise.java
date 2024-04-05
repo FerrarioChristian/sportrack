@@ -1,14 +1,28 @@
-package it.unimib.icasiduso.sportrack.model;
+package it.unimib.icasiduso.sportrack.model.exercise;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import java.util.List;
+import java.util.Objects;
+
+@Entity
 public class Exercise implements Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    private long exerciseId;
     private String name;
     private String type;
     private String muscle;
+    private String equipment;
+    private String difficulty;
+    private String instructions;
+
+    public Exercise(){}
 
     protected Exercise(Parcel in) {
         name = in.readString();
@@ -30,6 +44,14 @@ public class Exercise implements Parcelable {
             return new Exercise[size];
         }
     };
+
+    public long getExerciseId() {
+        return exerciseId;
+    }
+
+    public void setExerciseId(long exerciseId) {
+        this.exerciseId = exerciseId;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -79,9 +101,19 @@ public class Exercise implements Parcelable {
         return instructions;
     }
 
-    private String equipment;
-    private String difficulty;
-    private String instructions;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Exercise exercise = (Exercise) o;
+        return Objects.equals(name, exercise.name) && Objects.equals(type, exercise.type) && Objects.equals(muscle, exercise.muscle) && Objects.equals(equipment, exercise.equipment) && Objects.equals(difficulty, exercise.difficulty) && Objects.equals(instructions, exercise.instructions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type, muscle, equipment, difficulty, instructions);
+    }
 
     @Override
     public String toString() {
@@ -96,11 +128,6 @@ public class Exercise implements Parcelable {
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(type);
@@ -108,5 +135,10 @@ public class Exercise implements Parcelable {
         dest.writeString(equipment);
         dest.writeString(difficulty);
         dest.writeString(instructions);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 }

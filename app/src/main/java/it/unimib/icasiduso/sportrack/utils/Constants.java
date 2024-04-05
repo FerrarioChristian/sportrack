@@ -5,8 +5,10 @@ public class Constants {
 
     public static final String API_BASE_URL = "https://api.api-ninjas.com/v1/";
     public static final String EXERCISES_ENDPOINT = "exercises";
-
     public static final String EXERCISES_MUSCLE_PARAMETER = "muscle";
+
+    public static final String  EXERCISE_DATABASE_NAME = "exercise_db";
+    public static final int DATABASE_VERSION = 1;
 
 
 

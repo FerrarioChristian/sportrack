@@ -21,11 +21,11 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
-import it.unimib.icasiduso.sportrack.model.Exercise;
-import it.unimib.icasiduso.sportrack.repository.ExercisesMockRepository;
-import it.unimib.icasiduso.sportrack.repository.ExercisesRepository;
-import it.unimib.icasiduso.sportrack.repository.IExercisesRepository;
-import it.unimib.icasiduso.sportrack.repository.ResponseCallback;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+import it.unimib.icasiduso.sportrack.data.repository.ExercisesMockRepository;
+import it.unimib.icasiduso.sportrack.data.repository.ExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.ResponseCallback;
 
 public class ListExercisesFragment extends Fragment implements ResponseCallback {
 
@@ -86,10 +86,10 @@ public class ListExercisesFragment extends Fragment implements ResponseCallback 
     }
 
     @Override
-    public void onSuccess(Exercise[] exercises) {
+    public void onSuccess(List<Exercise> exercises) {
         if(exercises != null){
             this.exercises.clear();
-            this.exercises.addAll(Arrays.asList(exercises));
+            this.exercises.addAll(exercises);
             Activity activity = getActivity();
             if(activity != null){
                 activity.runOnUiThread(new Runnable() {

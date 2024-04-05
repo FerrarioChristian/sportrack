@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.repository;
+package it.unimib.icasiduso.sportrack.data.repository;
 
 import android.app.Application;
 import android.util.Log;
@@ -6,7 +6,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.Arrays;
 
-import it.unimib.icasiduso.sportrack.model.Exercise;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.JsonParserUtil;
 
 public class ExercisesMockRepository implements IExercisesRepository{
@@ -23,9 +23,9 @@ public class ExercisesMockRepository implements IExercisesRepository{
     public void fetchExercises(String muscle) {
         JsonParserUtil jsonParserUtil = new JsonParserUtil(application);
         try {
-            Exercise[] exercises = jsonParserUtil.parseFromFileWithGSON(muscle + ".json");
-            Log.d(TAG, Arrays.asList(exercises).toString());
-            responseCallback.onSuccess(exercises);
+            Exercise[] exercisesArray = jsonParserUtil.parseFromFileWithGSON(muscle + ".json");
+            Log.d(TAG, Arrays.asList(exercisesArray).toString());
+            responseCallback.onSuccess(Arrays.asList(exercisesArray));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -10,10 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.List;
 
-import it.unimib.icasiduso.sportrack.model.Exercise;
-import it.unimib.icasiduso.sportrack.model.Exercises;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public class JsonParserUtil {
 
@@ -28,10 +26,5 @@ public class JsonParserUtil {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         return new Gson().fromJson(bufferedReader, Exercise[].class);
-    }
-
-    public Exercises parseFromJsonWithGSON(String json_string) {;
-        Exercise[] exercisesArray = new Gson().fromJson(json_string, Exercise[].class);
-        return new Exercises(Arrays.asList(exercisesArray));
     }
 }

@@ -31,6 +31,6 @@
         android:label="ExerciseDetails">
         <argument
             android:name="exercise"
-            app:argType="it.unimib.icasiduso.sportrack.model.Exercise" />
+            app:argType="it.unimib.icasiduso.sportrack.model.exercise.Exercise" />
     </fragment>
 </navigation>

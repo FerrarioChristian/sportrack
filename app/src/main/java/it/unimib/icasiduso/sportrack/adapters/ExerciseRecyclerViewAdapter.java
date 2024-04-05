@@ -13,8 +13,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.model.Exercise;
-import it.unimib.icasiduso.sportrack.model.Exercises;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ExerciseViewHolder> {
     List<Exercise> exercises; //TODO

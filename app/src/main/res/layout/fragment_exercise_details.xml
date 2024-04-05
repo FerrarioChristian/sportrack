@@ -8,21 +8,29 @@
 
     <TextView
         android:id="@+id/textViewExerciseName"
+        android:fontFamily="@font/darkcollegefont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="fill_horizontal"
+        android:textAlignment="center"
         android:padding="8dp"
         android:textAllCaps="true"
-        android:textSize="17sp"
+        android:textSize="22sp"
+        android:textColor="@color/orange"
         android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/orange"></View>
 
     <TextView
         android:id="@+id/textViewExerciseType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="fill_horizontal"
-        android:padding="8dp"
-        android:textAllCaps="true"
+        android:padding="1dp"
+        android:layout_marginTop="20dp"
         android:textSize="17sp"
         android:textStyle="bold" />
 
@@ -31,8 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="fill_horizontal"
-        android:padding="8dp"
-        android:textAllCaps="true"
+        android:padding="1dp"
         android:textSize="17sp"
         android:textStyle="bold" />
 
@@ -42,8 +49,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="fill_horizontal"
-        android:padding="8dp"
-        android:textSize="16sp" />
+        android:padding="1dp"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
 
 
     <TextView
@@ -51,12 +60,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="fill_horizontal"
-        android:padding="8dp"
-        android:textSize="16sp" />
+        android:padding="1dp"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
 
     <TextView
         android:id="@+id/textViewExerciseDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/orange"></View>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textViewSeries"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:hint="numero di serie"
+        android:inputType="number">
+
+    </com.google.android.material.textfield.TextInputEditText>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textViewReps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:hint="numero di ripetizioni"
+        android:inputType="number">
+
+    </com.google.android.material.textfield.TextInputEditText>
+
+
+    <Button
+        android:id="@+id/add_exercise_to_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+
+        android:textColor="@color/black"
+        android:text="@string/add"
+        android:textAllCaps="true"
+        android:backgroundTint="@color/orange"/>
 
 </LinearLayout>
