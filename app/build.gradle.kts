@@ -5,7 +5,6 @@ plugins {
     id("com.google.gms.google-services")
     id("androidx.navigation.safeargs")
 }
-
 android {
     namespace = "it.unimib.icasiduso.sportrack"
     compileSdk = 34
@@ -13,23 +12,23 @@ android {
     defaultConfig {
         applicationId = "it.unimib.icasiduso.sportrack"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resValue("string", "api_key", gradleLocalProperties(rootDir).getProperty("api_key"))
+        resValue("string", "api_key", gradleLocalProperties(rootDir, providers).getProperty("api_key"))
 
-        resValue("bool", "debug_mode", gradleLocalProperties(rootDir).getProperty("debug_mode"))
+        resValue("bool", "debug_mode", gradleLocalProperties(rootDir, providers).getProperty("debug_mode"))
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
             )
         }
     }
@@ -41,10 +40,11 @@ android {
         viewBinding = true
         dataBinding = true
     }
+
 }
 
 dependencies {
-    val nav_version = "2.7.5"
+    val nav_version = "2.7.6"
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")
 
@@ -59,23 +59,23 @@ dependencies {
     implementation("commons-validator:commons-validator:1.7")
 
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
+
+    implementation("com.jjoe64:graphview:4.2.2")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
-
-    implementation ("com.jjoe64:graphview:4.2.2")
-    implementation("androidx.security:security-crypto:1.1.0-alpha06")
-    testImplementation("junit:junit:4.13.2")
-
-    implementation("androidx.credentials:credentials:1.2.1")
-    implementation("androidx.credentials:credentials-play-services-auth:1.2.1")
+    implementation("androidx.credentials:credentials:1.2.2")
+    implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 }

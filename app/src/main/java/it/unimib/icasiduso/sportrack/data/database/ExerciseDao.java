@@ -31,7 +31,7 @@ public interface ExerciseDao {
 
     @Transaction
     @Query("SELECT * FROM Exercise")
-    List<ScheduledExerciseWithExercise> getScheduledExerciseWithExercise();
+    List<WorkoutExerciseWithExercise> getWorkoutExerciseWithExercise();
 
 
     @Delete

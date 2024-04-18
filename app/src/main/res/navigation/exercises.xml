@@ -21,6 +21,7 @@
         <argument
             android:name="muscle"
             app:argType="java.lang.String" />
+
         <action
             android:id="@+id/action_listExercisesFragment_to_exerciseDetails"
             app:destination="@id/exerciseDetails" />
