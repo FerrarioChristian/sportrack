@@ -2,16 +2,13 @@ package it.unimib.icasiduso.sportrack.model.exercise;
 
 import static java.lang.Integer.parseInt;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class ScheduledExercise{
+public class WorkoutExercise{
     @PrimaryKey (autoGenerate = true)
-    private long scheduledExcerciseId;
+    private long WorkoutExerciseId;
     private  int series;
     private int repetitions;
     private long externalExerciseId;
@@ -25,19 +22,19 @@ public class ScheduledExercise{
         this.externalScheduleId = scheduleId;
     }
 
-    public ScheduledExercise(String series, String reps, long externalExerciseId, long externalScheduleId) {
+    public WorkoutExercise(String series, String reps, long externalExerciseId, long externalScheduleId) {
         this.series = parseInt(series);
         this.repetitions = parseInt(reps);
         this.externalExerciseId = externalExerciseId;
         this.externalScheduleId = externalScheduleId;
     }
 
-    public long getScheduledExcerciseId() {
-        return scheduledExcerciseId;
+    public long getWorkoutExerciseId() {
+        return WorkoutExerciseId;
     }
 
-    public void setScheduledExcerciseId(long scheduledExcerciseId) {
-        this.scheduledExcerciseId = scheduledExcerciseId;
+    public void setWorkoutExerciseId(long scheduledExcerciseId) {
+        this.WorkoutExerciseId = scheduledExcerciseId;
     }
 
     public long getExternalExerciseId() {
@@ -48,7 +45,7 @@ public class ScheduledExercise{
         this.externalExerciseId = externalExerciseId;
     }
 
-    public ScheduledExercise() {}
+    public WorkoutExercise() {}
 
     /*public Exercise getExercise(){
         return Exercise

@@ -13,13 +13,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
-import it.unimib.icasiduso.sportrack.model.exercise.ScheduledExercise;
+import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
-@Database(entities = {Exercise.class, ScheduledExercise.class }, version = DATABASE_VERSION)
+@Database(entities = {Exercise.class, WorkoutExercise.class }, version = DATABASE_VERSION)
 public abstract class ExerciseRoomDatabase extends RoomDatabase {
 
     public abstract ExerciseDao exerciseDao();
-    public abstract ScheduledExerciseDao scheduledExerciseDao();
+    public abstract WorkoutExerciseDao workoutExerciseDao();
 
     private static volatile ExerciseRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();

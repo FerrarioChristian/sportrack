@@ -9,14 +9,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.room.OnConflictStrategy;
 
 import it.unimib.icasiduso.sportrack.data.database.ExerciseDao;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
-import it.unimib.icasiduso.sportrack.data.database.ScheduledExerciseDao;
+import it.unimib.icasiduso.sportrack.data.database.WorkoutExerciseDao;
 import it.unimib.icasiduso.sportrack.databinding.FragmentExerciseDetailsBinding;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
-import it.unimib.icasiduso.sportrack.model.exercise.ScheduledExercise;
+import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 
 public class ExerciseDetailsFragment extends Fragment {
@@ -24,7 +23,7 @@ public class ExerciseDetailsFragment extends Fragment {
     private FragmentExerciseDetailsBinding binding;
     private Application application;
     private ExerciseDao exerciseDao;
-    private ScheduledExerciseDao scheduledExerciseDao;
+    private WorkoutExerciseDao workoutExerciseDao;
 
 
     public ExerciseDetailsFragment() {
@@ -50,7 +49,7 @@ public class ExerciseDetailsFragment extends Fragment {
         this.application = getActivity().getApplication();
         ExerciseRoomDatabase exerciseRoomDatabase = ServiceLocator.getInstance().getExerciseDatabase(application);
         this.exerciseDao = exerciseRoomDatabase.exerciseDao();
-        this.scheduledExerciseDao = exerciseRoomDatabase.scheduledExerciseDao();
+        this.workoutExerciseDao = exerciseRoomDatabase.workoutExerciseDao();
 
         super.onViewCreated(view, savedInstanceState);
 
@@ -68,9 +67,9 @@ public class ExerciseDetailsFragment extends Fragment {
                 long exerciseId = exerciseDao.getExerciseIdByName(exercise.getName());
                 String series = binding.textViewSeries.getText().toString();
                 String reps = binding.textViewReps.getText().toString();
-                ScheduledExercise scheduledExercise = new ScheduledExercise(series, reps, exerciseId, 1);
+                WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exerciseId, 1);
 
-                long id = scheduledExerciseDao.insertScheduledExercise(scheduledExercise);
+                long id = workoutExerciseDao.insertWorkoutExercise(workoutExercise);
             });
         });
     }

@@ -8,10 +8,10 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseDao;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
-import it.unimib.icasiduso.sportrack.data.database.ScheduledExerciseDao;
+import it.unimib.icasiduso.sportrack.data.database.WorkoutExerciseDao;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
-import it.unimib.icasiduso.sportrack.model.exercise.ScheduledExercise;
+import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.NetworkUtil;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import retrofit2.Call;
@@ -23,7 +23,7 @@ public class ExercisesRepository implements IExercisesRepository {
     private final Application application;
     private final ExercisesApiService exercisesApiService;
     private final ExerciseDao exerciseDao;
-    private ScheduledExerciseDao scheduledExerciseDao;
+    private WorkoutExerciseDao workoutExerciseDao;
 
     private final ResponseCallback responseCallback;
 
@@ -32,7 +32,7 @@ public class ExercisesRepository implements IExercisesRepository {
         this.exercisesApiService = ServiceLocator.getInstance().getExercisesApiService();
         ExerciseRoomDatabase exerciseRoomDatabase = ServiceLocator.getInstance().getExerciseDatabase(application);
         this.exerciseDao = exerciseRoomDatabase.exerciseDao();
-        this.scheduledExerciseDao = exerciseRoomDatabase.scheduledExerciseDao();
+        this.workoutExerciseDao = exerciseRoomDatabase.workoutExerciseDao();
         this.responseCallback = responseCallback;
     }
 
@@ -43,9 +43,6 @@ public class ExercisesRepository implements IExercisesRepository {
         } else {
             fetchExercisesFromDatabase(muscle);
         }
-
-
-
     }
 
     private void fetchExercisesFromApi(String muscle){
@@ -58,7 +55,6 @@ public class ExercisesRepository implements IExercisesRepository {
                 if(response.body() != null && response.isSuccessful()){
                     List<Exercise> exercises = response.body();
                     saveExercisesInDatabase(exercises);
-
                 } else {
                     responseCallback.onFailure("Error retrieving exercises");
                 }

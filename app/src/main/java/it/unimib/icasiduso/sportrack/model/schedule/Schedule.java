@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
-import it.unimib.icasiduso.sportrack.model.exercise.ScheduledExercise;
+import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 
 @Entity

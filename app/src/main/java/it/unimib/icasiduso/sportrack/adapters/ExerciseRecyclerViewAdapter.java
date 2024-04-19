@@ -16,7 +16,7 @@ import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ExerciseViewHolder> {
-    List<Exercise> exercises; //TODO
+    List<Exercise> exercises;
     private final Application application;
     private final OnItemClickListener onItemClickListener;
 

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
@@ -71,12 +70,9 @@ public class ListExercisesFragment extends Fragment implements ResponseCallback 
 
         RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_exercise_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, requireActivity().getApplication(), new ExerciseRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onExerciseClick(Exercise exercise) {
-                ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(exercise);
-                Navigation.findNavController(view).navigate(action);
-            }
+        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, requireActivity().getApplication(), exercise -> {
+            ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(exercise);
+            Navigation.findNavController(view).navigate(action);
         });
         recyclerViewExerciseList.setLayoutManager(layoutManager);
         recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
@@ -92,12 +88,9 @@ public class ListExercisesFragment extends Fragment implements ResponseCallback 
             this.exercises.addAll(exercises);
             Activity activity = getActivity();
             if(activity != null){
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        exerciseRecyclerViewAdapter.notifyDataSetChanged();
-                        progressBar.setVisibility(View.GONE);
-                    }
+                activity.runOnUiThread(() -> {
+                    exerciseRecyclerViewAdapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
                 });
             }
         }
