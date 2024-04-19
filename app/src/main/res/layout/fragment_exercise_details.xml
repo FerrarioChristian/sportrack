@@ -102,7 +102,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:padding="@dimen/material_emphasis_medium"
         android:text="@string/add"
         android:textAllCaps="true"/>
 
