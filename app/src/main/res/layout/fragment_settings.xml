@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:text="SPORT"
         android:textSize="45dp"
-        android:textColor="@color/black"
         android:fontFamily="@font/darkcollegefont"
         android:layout_alignTop="@id/imageViewUser"
         android:layout_alignBottom="@id/imageViewUser"
@@ -26,7 +25,6 @@
         android:layout_height="wrap_content"
         android:text="TRACK"
         android:textSize="45dp"
-        android:textColor="@color/black"
         android:fontFamily="@font/darkcollegefont"
         android:layout_alignTop="@id/imageViewUser"
         android:layout_alignBottom="@id/imageViewUser"
@@ -118,15 +116,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/privacyButton"
-            android:text="Contatti"
-            android:textColor="@color/black" />
+            android:text="Contatti"/>
 
         <Button
             android:id="@+id/logoutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/contactButton"
-            android:text="LOGOUT"
-            android:textColor="@color/black" />
+            android:text="LOGOUT"/>
     </LinearLayout>
 </RelativeLayout>
