@@ -21,12 +21,12 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
-import it.unimib.icasiduso.sportrack.data.repository.ExercisesMockRepository;
-import it.unimib.icasiduso.sportrack.data.repository.ExercisesRepository;
-import it.unimib.icasiduso.sportrack.data.repository.IExercisesRepository;
-import it.unimib.icasiduso.sportrack.data.repository.ResponseCallback;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesMockRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.ExerciseRepositoryCallbackable;
 
-public class ListExercisesFragment extends Fragment implements ResponseCallback {
+public class ListExercisesFragment extends Fragment implements ExerciseRepositoryCallbackable {
 
     private static final String TAG = ListExercisesFragment.class.getSimpleName();
     private List<Exercise> exercises;

@@ -47,10 +47,6 @@ public class WorkoutExercise{
 
     public WorkoutExercise() {}
 
-    /*public Exercise getExercise(){
-        return Exercise
-    }*/
-
     public int getSeries() {
         return series;
     }

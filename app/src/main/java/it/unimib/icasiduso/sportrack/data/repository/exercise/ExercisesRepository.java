@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.data.repository;
+package it.unimib.icasiduso.sportrack.data.repository.exercise;
 
 import android.app.Application;
 import android.util.Log;
@@ -11,7 +11,6 @@ import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
 import it.unimib.icasiduso.sportrack.data.database.WorkoutExerciseDao;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
-import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.NetworkUtil;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import retrofit2.Call;
@@ -25,15 +24,15 @@ public class ExercisesRepository implements IExercisesRepository {
     private final ExerciseDao exerciseDao;
     private WorkoutExerciseDao workoutExerciseDao;
 
-    private final ResponseCallback responseCallback;
+    private final ExerciseRepositoryCallbackable exerciseRepositoryCallbackable;
 
-    public ExercisesRepository(Application application, ResponseCallback responseCallback){
+    public ExercisesRepository(Application application, ExerciseRepositoryCallbackable responseCallback){
         this.application = application;
         this.exercisesApiService = ServiceLocator.getInstance().getExercisesApiService();
         ExerciseRoomDatabase exerciseRoomDatabase = ServiceLocator.getInstance().getExerciseDatabase(application);
         this.exerciseDao = exerciseRoomDatabase.exerciseDao();
         this.workoutExerciseDao = exerciseRoomDatabase.workoutExerciseDao();
-        this.responseCallback = responseCallback;
+        this.exerciseRepositoryCallbackable = responseCallback;
     }
 
     @Override
@@ -56,7 +55,7 @@ public class ExercisesRepository implements IExercisesRepository {
                     List<Exercise> exercises = response.body();
                     saveExercisesInDatabase(exercises);
                 } else {
-                    responseCallback.onFailure("Error retrieving exercises");
+                    exerciseRepositoryCallbackable.onFailure("Error retrieving exercises");
                 }
             }
 
@@ -69,7 +68,7 @@ public class ExercisesRepository implements IExercisesRepository {
 
     public void fetchExercisesFromDatabase(String muscle){
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            responseCallback.onSuccess(exerciseDao.getExercisesByMuscle(muscle));
+            exerciseRepositoryCallbackable.onSuccess(exerciseDao.getExercisesByMuscle(muscle));
         });
     }
 
@@ -87,7 +86,7 @@ public class ExercisesRepository implements IExercisesRepository {
             for (int i = 0; i < exercises.size(); i++) {
                 exercises.get(i).setExerciseId(insertedExerciseList.get(i));
             }
-            responseCallback.onSuccess(exercises);
+            exerciseRepositoryCallbackable.onSuccess(exercises);
         });
     }
 

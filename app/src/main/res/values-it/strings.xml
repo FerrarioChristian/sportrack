@@ -29,4 +29,5 @@
     <string name="glutes">glutei</string>
     <string name="difficulty">Difficoltà:</string>
     <string name="add">Aggiungi</string>
+    <string name="saved_workout_exercise">L\'esercizio è stato aggiunto</string>
 </resources>

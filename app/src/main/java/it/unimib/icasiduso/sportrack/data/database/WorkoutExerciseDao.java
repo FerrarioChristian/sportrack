@@ -1,16 +1,21 @@
 package it.unimib.icasiduso.sportrack.data.database;
 
-
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.Upsert;
 
+import java.util.List;
+
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 @Dao
 public interface WorkoutExerciseDao {
-
     @Insert
-    long insertWorkoutExercise(WorkoutExercise workoutExercise);
+    void insertAll(WorkoutExercise... workoutExercise);
+
+    @Upsert
+    List<Long> insertWorkoutExercise(List<WorkoutExercise> workoutExercise);
 
 
 

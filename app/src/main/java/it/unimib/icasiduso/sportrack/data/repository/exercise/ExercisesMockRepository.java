@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.data.repository;
+package it.unimib.icasiduso.sportrack.data.repository.exercise;
 
 import android.app.Application;
 import android.util.Log;
@@ -13,9 +13,9 @@ public class ExercisesMockRepository implements IExercisesRepository{
     private static final String TAG = ExercisesMockRepository.class.getSimpleName();
 
     private final Application application;
-    private final ResponseCallback responseCallback;
+    private final ExerciseRepositoryCallbackable responseCallback;
 
-    public ExercisesMockRepository(Application application, ResponseCallback responseCallback){
+    public ExercisesMockRepository(Application application, ExerciseRepositoryCallbackable responseCallback){
         this.application = application;
         this.responseCallback = responseCallback;
     }
