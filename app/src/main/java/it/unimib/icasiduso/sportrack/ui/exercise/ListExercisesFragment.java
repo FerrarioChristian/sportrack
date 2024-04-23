@@ -34,12 +34,6 @@ public class ListExercisesFragment extends Fragment implements ExerciseRepositor
     private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
     private ProgressBar progressBar;
 
-
-
-    public ListExercisesFragment() {
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +53,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRepositor
         return inflater.inflate(R.layout.fragment_list_exercises, container, false);
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

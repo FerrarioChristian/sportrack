@@ -33,5 +33,5 @@
         <argument
             android:name="exercise"
             app:argType="it.unimib.icasiduso.sportrack.model.exercise.Exercise" />
-    </fragment>
+    </fragment><action android:id="@+id/action_global_exercisesFragment" app:destination="@id/exercisesFragment"/>
 </navigation>

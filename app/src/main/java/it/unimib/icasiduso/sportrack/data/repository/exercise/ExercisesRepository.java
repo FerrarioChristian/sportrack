@@ -22,8 +22,6 @@ public class ExercisesRepository implements IExercisesRepository {
     private final Application application;
     private final ExercisesApiService exercisesApiService;
     private final ExerciseDao exerciseDao;
-    private WorkoutExerciseDao workoutExerciseDao;
-
     private final ExerciseRepositoryCallbackable exerciseRepositoryCallbackable;
 
     public ExercisesRepository(Application application, ExerciseRepositoryCallbackable responseCallback){
@@ -31,7 +29,6 @@ public class ExercisesRepository implements IExercisesRepository {
         this.exercisesApiService = ServiceLocator.getInstance().getExercisesApiService();
         ExerciseRoomDatabase exerciseRoomDatabase = ServiceLocator.getInstance().getExerciseDatabase(application);
         this.exerciseDao = exerciseRoomDatabase.exerciseDao();
-        this.workoutExerciseDao = exerciseRoomDatabase.workoutExerciseDao();
         this.exerciseRepositoryCallbackable = responseCallback;
     }
 
