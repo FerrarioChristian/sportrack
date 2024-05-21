@@ -34,6 +34,16 @@ public class MainActivityWithBottomNav extends AppCompatActivity {
                 findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+
+
+        //TODO
+        bottomNav.setOnItemReselectedListener(item -> {
+            int id = item.getItemId();
+            if(id == R.id.exercises){
+                    navController.navigate(R.id.action_global_exercisesFragment);
+            }
+        });
+
         NavigationUI.setupWithNavController(bottomNav, navController);
     }
 

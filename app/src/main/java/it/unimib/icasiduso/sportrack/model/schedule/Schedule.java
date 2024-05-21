@@ -17,7 +17,32 @@ public class Schedule{
     private long scheduleId;
     private String name;
     private String description;
-    private Date date;
-    public Schedule() {}
+    public Schedule(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
+    public long getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(long scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
