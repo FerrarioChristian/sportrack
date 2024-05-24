@@ -3,6 +3,7 @@ package it.unimib.icasiduso.sportrack.ui.exercise;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,16 @@ public class ExerciseDetailsFragment extends Fragment implements WorkoutExercise
         super.onViewCreated(view, savedInstanceState);
 
         Exercise exercise = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getExercise();
+        Long scheduleId = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        Log.d(TAG, scheduleId.toString());
+        if(scheduleId != 0L){
+            View container = view.findViewById(R.id.scheduleInputContainer);
+            container.setVisibility(View.VISIBLE);
+        } else {
+            View container = view.findViewById(R.id.scheduleInputContainer);
+            container.setVisibility(View.GONE);
+        }
+
 
         binding.textViewExerciseName.setText(exercise.getName());
         binding.textViewExerciseType.setText(exercise.getType());
@@ -74,7 +85,7 @@ public class ExerciseDetailsFragment extends Fragment implements WorkoutExercise
         binding.addExerciseToSchedule.setOnClickListener(v -> {
             String series = binding.textViewSeries.getText().toString();
             String reps = binding.textViewReps.getText().toString();
-            WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exercise.getExerciseId(), 1);
+            WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exercise.getExerciseId(), scheduleId);
             workoutExerciseRepository.saveWorkoutExercise(workoutExercise);
         });
     }
@@ -92,7 +103,7 @@ public class ExerciseDetailsFragment extends Fragment implements WorkoutExercise
             activity.runOnUiThread(() -> {
                 Toast.makeText(getActivity(), R.string.saved_workout_exercise,
                         Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(view).popBackStack();
+                Navigation.findNavController(view).popBackStack(R.id.scheduleFragment,false);
 
             });
         }

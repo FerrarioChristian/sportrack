@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.ui.exercise;
+package it.unimib.icasiduso.sportrack.ui.schedule;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,38 +19,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesMockRepository;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExerciseRepositoryCallbackable;
+import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
+import it.unimib.icasiduso.sportrack.ui.exercise.ListExercisesFragmentArgs;
+import it.unimib.icasiduso.sportrack.ui.exercise.ListExercisesFragmentDirections;
 
-public class ListExercisesFragment extends Fragment implements ExerciseRepositoryCallbackable {
+public class ListWorkoutExercisesFragment extends Fragment {
+/*
+    private static final String TAG = ListWorkoutExercisesFragment.class.getSimpleName();
 
-    private static final String TAG = ListExercisesFragment.class.getSimpleName();
-    private List<Exercise> exercises;
-    private IExercisesRepository exercisesRepository;
-    private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
+    private List<WorkoutExercise> workoutExercises;
+    private WorkoutExercisesRepository workoutExercisesRepository;
+    private WorkoutExerciseRecyclerViewAdapter workoutExerciseRecyclerViewAdapter;
     private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(requireActivity().getResources().getBoolean(R.bool.debug_mode)) {
-            exercisesRepository = new ExercisesMockRepository(requireActivity().getApplication(), this);
-        } else {
-            exercisesRepository = new ExercisesRepository(requireActivity().getApplication(), this);
-        }
-        exercises = new ArrayList<>();
+        workoutExercisesRepository = new WorkoutExercisesRepository(requireActivity().getApplication(), this);
+        workoutExercises = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_exercises, container, false);
+        return inflater.inflate(R.layout.fragment_list_workout_exercises, container, false);
     }
 
     @Override
@@ -58,7 +52,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRepositor
         super.onViewCreated(view, savedInstanceState);
 
         progressBar = view.findViewById(R.id.progress_bar);
-        if(exercises.isEmpty()){
+        if(workoutExercises.isEmpty()){
             progressBar.setVisibility(View.VISIBLE);
         }
 
@@ -67,26 +61,26 @@ public class ListExercisesFragment extends Fragment implements ExerciseRepositor
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
 
         Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
-        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, requireActivity().getApplication(), exercise -> {
+        WorkoutExerciseRecyclerViewAdapter = new WorkoutExerciseRecyclerViewAdapter(workoutExercises, requireActivity().getApplication(), exercise -> {
             ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId, exercise);
             Navigation.findNavController(view).navigate(action);
         });
         recyclerViewExerciseList.setLayoutManager(layoutManager);
-        recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
+        recyclerViewExerciseList.setAdapter(WorkoutExerciseRecyclerViewAdapter);
 
         String muscle = ListExercisesFragmentArgs.fromBundle(getArguments()).getMuscle();
-        exercisesRepository.fetchExercises(muscle);
+        WorkoutExercisesRepository.fetchExercises(muscle);
     }
 
     @Override
     public void onSuccess(List<Exercise> exercises) {
         if(exercises != null){
-            this.exercises.clear();
-            this.exercises.addAll(exercises);
+            this.workoutExercises.clear();
+            this.workoutExercises.addAll(exercises);
             Activity activity = getActivity();
             if(activity != null){
                 activity.runOnUiThread(() -> {
-                    exerciseRecyclerViewAdapter.notifyDataSetChanged();
+                    workoutExerciseRecyclerViewAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);
                 });
             }
@@ -98,4 +92,5 @@ public class ListExercisesFragment extends Fragment implements ExerciseRepositor
         progressBar.setVisibility(View.GONE);
         Log.d(TAG, errorMessage);
     }
+*/
 }

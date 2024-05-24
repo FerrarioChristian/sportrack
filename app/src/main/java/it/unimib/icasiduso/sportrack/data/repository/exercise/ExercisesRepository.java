@@ -64,6 +64,7 @@ public class ExercisesRepository implements IExercisesRepository {
     }
 
     public void fetchExercisesFromDatabase(String muscle){
+
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             exerciseRepositoryCallbackable.onSuccess(exerciseDao.getExercisesByMuscle(muscle));
         });
