@@ -35,6 +35,7 @@
                 app:layout_constraintTop_toTopOf="@+id/recyclerview_schedule_list"
                 app:trackCornerRadius="5dp" />
 
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

@@ -2,11 +2,9 @@ package it.unimib.icasiduso.sportrack.ui.schedule;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -19,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRepositoryCall
     private ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
     private ProgressBar progressBar;
     private FloatingActionButton newScheduleButton;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRepositoryCall
             this.scheduleList.addAll(scheduleList);
             Activity activity = getActivity();
             if (activity != null) {
+
                 activity.runOnUiThread(() -> {
                     scheduleRecyclerViewAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);

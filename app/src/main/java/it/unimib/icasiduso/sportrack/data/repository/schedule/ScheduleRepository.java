@@ -23,8 +23,7 @@ public class ScheduleRepository {
         this.scheduleDao = exerciseRoomDatabase.scheduleDao();
         this.scheduleRepositoryCallbackable = scheduleRepositoryCallbackable;
     }
-
-
+  
     public void fetchSchedules() {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             scheduleRepositoryCallbackable.onSuccess(scheduleDao.getAll());

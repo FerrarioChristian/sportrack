@@ -18,7 +18,7 @@ public interface ScheduleDao {
 
     @Upsert
     List<Long> insertScheduleList(List<Schedule> scheduleList);
-
+  
     @Insert
     void insertAll(Schedule... schedules);
 

@@ -17,6 +17,7 @@ public class Schedule{
     private long scheduleId;
     private String name;
     private String difficulty;
+  
     public Schedule(String name, String difficulty) {
         this.name = name;
         this.difficulty = difficulty;
