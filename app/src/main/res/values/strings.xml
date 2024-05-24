@@ -33,5 +33,7 @@
     <string name="schedule_name">Schedule name</string>
 
     <string name="new_schedule">New schedule</string>
+    <string name="series">"Series: "</string>
+    <string name="repetitions">"Reps: "</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

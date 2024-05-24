@@ -23,5 +23,5 @@ public interface ScheduleDao {
     void insertAll(Schedule... schedules);
 
     @Delete
-    void delete(Schedule schedule);
+    void deleteSchedule(Schedule schedule);
 }

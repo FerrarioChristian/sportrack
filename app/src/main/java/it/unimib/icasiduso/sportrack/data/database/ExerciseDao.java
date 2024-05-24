@@ -22,6 +22,10 @@ public interface ExerciseDao {
     @Query("SELECT exerciseId FROM exercise WHERE name = :name")
     long getExerciseIdByName(String name);
 
+    @Query("SELECT * FROM exercise WHERE exerciseId = :id")
+    Exercise getExerciseById(long id);
+
+
     @Insert
     void insertAll(Exercise... exercise);
 

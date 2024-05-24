@@ -27,10 +27,12 @@
     <string name="quadriceps">quadricipiti</string>
     <string name="hamstrings">femorali</string>
     <string name="glutes">glutei</string>
-    <string name="difficulty">Difficoltà:</string>
+    <string name="difficulty">Difficoltà: </string>
     <string name="add">Aggiungi</string>
     <string name="saved_workout_exercise">L\'esercizio è stato aggiunto</string>
     <string name="new_schedule">Nuova scheda</string>
     <string name="schedule_name">Nome scheda</string>
+    <string name="series">Serie: </string>
+    <string name="repetitions">Ripetizioni: </string>
 
 </resources>

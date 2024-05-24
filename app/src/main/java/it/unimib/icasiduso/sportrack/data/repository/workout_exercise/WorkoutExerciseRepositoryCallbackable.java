@@ -7,7 +7,7 @@ import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 public interface WorkoutExerciseRepositoryCallbackable {
     void onSuccess();
-    void onSuccess(List<WorkoutExercise> exercises);
+    void onSuccess(List<WorkoutExercise> workoutExercises);
     void onFailure(String errorMessage);
 
 }
