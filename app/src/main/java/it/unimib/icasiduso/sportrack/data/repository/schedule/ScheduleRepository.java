@@ -38,4 +38,10 @@ public class ScheduleRepository {
             scheduleRepositoryCallbackable.onSuccess(scheduleDao.getAll());
         });
     }
+    public void deleteSchedule(Schedule schedule) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
+            scheduleDao.deleteSchedule(schedule);
+            scheduleRepositoryCallbackable.onSuccess(scheduleDao.getAll());
+        });
+    }
 }

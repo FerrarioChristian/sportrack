@@ -11,13 +11,28 @@
         android:label="fragment_schedule"
         tools:layout="@layout/fragment_schedule">
         <action
-            android:id="@+id/action_scheduleFragment_to_exercises"
+            android:id="@+id/action_scheduleFragment_to_listWorkoutExercisesFragment"
+            app:destination="@id/listWorkoutExercisesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/listWorkoutExercisesFragment"
+        android:name="it.unimib.icasiduso.sportrack.ui.schedule.ListWorkoutExercisesFragment"
+        android:label="ListWorkoutExercisesFragment">
+        <argument
+            android:name="scheduleId"
+            app:argType="java.lang.Long" />
+        <action
+            android:id="@+id/action_listWorkoutExercisesFragment_to_exercises"
             app:destination="@id/exercises">
             <argument
                 android:name="scheduleId"
-                app:argType="java.lang.Long"/>
+                app:argType="java.lang.Long" />
         </action>
     </fragment>
 
-    <include app:graph="@navigation/exercises" /><action android:id="@+id/action_global_scheduleFragment" app:destination="@id/scheduleFragment"/>
+    <include app:graph="@navigation/exercises" />
+    <action
+        android:id="@+id/action_global_scheduleFragment"
+        app:destination="@id/scheduleFragment" />
 </navigation>

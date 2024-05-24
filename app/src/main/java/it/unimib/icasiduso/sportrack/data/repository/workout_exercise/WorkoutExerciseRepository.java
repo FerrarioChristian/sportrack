@@ -35,4 +35,24 @@ public class WorkoutExerciseRepository {
             workoutExerciseRepositoryCallbackable.onSuccess();
         });
     }
+
+    public void fetchWorkoutExercisesByScheduleId(Long scheduleId){
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
+            workoutExerciseRepositoryCallbackable.onSuccess(workoutExerciseDao.getWorkoutExerciseByScheduleId(scheduleId));
+        });
+    }
+
+    public void deleteWorkoutExercise(WorkoutExercise workoutExercise){
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
+            workoutExerciseDao.deleteWorkoutExercise(workoutExercise);
+            workoutExerciseRepositoryCallbackable.onSuccess();
+        });
+    }
+
+    public void deleteWorkoutExercisesByScheduleId(Long scheduleId){
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
+            workoutExerciseDao.deleteWorkoutExercisesByScheduleId(scheduleId);
+            workoutExerciseRepositoryCallbackable.onSuccess();
+        });
+    }
 }
