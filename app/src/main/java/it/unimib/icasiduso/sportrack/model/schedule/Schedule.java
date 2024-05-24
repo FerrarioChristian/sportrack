@@ -16,10 +16,11 @@ public class Schedule{
     @PrimaryKey (autoGenerate = true)
     private long scheduleId;
     private String name;
-    private String description;
-    public Schedule(String name, String description) {
+    private String difficulty;
+  
+    public Schedule(String name, String difficulty) {
         this.name = name;
-        this.description = description;
+        this.difficulty = difficulty;
     }
 
     public long getScheduleId() {
@@ -38,11 +39,11 @@ public class Schedule{
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDifficulty() {
+        return difficulty;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 }

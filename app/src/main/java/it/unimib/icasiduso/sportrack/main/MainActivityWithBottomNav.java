@@ -41,6 +41,8 @@ public class MainActivityWithBottomNav extends AppCompatActivity {
             int id = item.getItemId();
             if(id == R.id.exercises){
                     navController.navigate(R.id.action_global_exercisesFragment);
+            } else if (id == R.id.schedule) {
+                navController.navigate(R.id.action_global_scheduleFragment);
             }
         });
 

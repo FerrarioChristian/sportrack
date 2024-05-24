@@ -2,18 +2,22 @@ package it.unimib.icasiduso.sportrack.ui.schedule;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -26,6 +30,8 @@ import it.unimib.icasiduso.sportrack.data.repository.schedule.ScheduleRepository
 import it.unimib.icasiduso.sportrack.data.repository.schedule.ScheduleRepositoryCallbackable;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 public class ScheduleFragment extends Fragment implements ScheduleRepositoryCallbackable {
 
     private static final String TAG = ScheduleFragment.class.getSimpleName();
@@ -33,8 +39,8 @@ public class ScheduleFragment extends Fragment implements ScheduleRepositoryCall
     private ScheduleRepository scheduleRepository;
     private ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
     private ProgressBar progressBar;
-    private TextInputLayout scheduleName;
-    private TextInputLayout scheduleDescription;
+    private FloatingActionButton newScheduleButton;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,35 +63,45 @@ public class ScheduleFragment extends Fragment implements ScheduleRepositoryCall
             progressBar.setVisibility(View.VISIBLE);
         }
 
+        newScheduleButton = view.findViewById(R.id.newScheduleFAB);
+        newScheduleButton.setOnClickListener(v -> {
+            View customView = LayoutInflater.from(getContext()).inflate(R.layout.new_schedule_dialog, null);
+
+            new MaterialAlertDialogBuilder(getContext()).setTitle(getString(R.string.new_schedule)).setView(customView).setNegativeButton("Close", (dialog, which) -> {})
+            .setPositiveButton(R.string.add, (dialog, which) -> {
+                TextInputLayout scheduleName = customView.findViewById(R.id.scheduleName);
+                MaterialButtonToggleGroup scheduleDifficulty = customView.findViewById(R.id.difficultyButton);
+
+                MaterialButton selectedButton = customView.findViewById(scheduleDifficulty.getCheckedButtonId());
+                String difficulty = selectedButton.getText().toString();
+
+                scheduleRepository.insertSchedule(new Schedule(scheduleName.getEditText().getText().toString(), difficulty));
+            })
+        .show();
+
+        });
+
 
         RecyclerView recyclerViewScheduleList = view.findViewById(R.id.recyclerview_schedule_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(scheduleList, requireActivity().getApplication(), exercise -> {
+        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(scheduleList, requireActivity().getApplication(), schedule -> {
+            ScheduleFragmentDirections.ActionScheduleFragmentToExercises action = ScheduleFragmentDirections.actionScheduleFragmentToExercises(schedule.getScheduleId());
+            Navigation.findNavController(view).navigate(action);
         });
         recyclerViewScheduleList.setLayoutManager(layoutManager);
         recyclerViewScheduleList.setAdapter(scheduleRecyclerViewAdapter);
-
-        scheduleName = view.findViewById(R.id.scheduleName);
-        scheduleDescription = view.findViewById(R.id.scheduleDescription);
-
-
-
-        final Button saveSchedule = view.findViewById(R.id.saveSchedule);
-        saveSchedule.setOnClickListener(v -> {
-            Log.d(TAG, scheduleName.getEditText().getText().toString());
-            Log.d(TAG, scheduleDescription.getEditText().getText().toString());
-        });
 
         scheduleRepository.fetchSchedules();
     }
 
     @Override
     public void onSuccess(List<Schedule> scheduleList) {
-        if(scheduleList != null){
+        if (scheduleList != null) {
             this.scheduleList.clear();
             this.scheduleList.addAll(scheduleList);
             Activity activity = getActivity();
-            if(activity != null){
+            if (activity != null) {
+
                 activity.runOnUiThread(() -> {
                     scheduleRecyclerViewAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);

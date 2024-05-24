@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,17 +54,19 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
     public class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textViewExerciseName;
         private final TextView textViewExerciseDifficulty;
+        private final Context context;
 
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewExerciseName = itemView.findViewById(R.id.textViewExerciseName);
             textViewExerciseDifficulty = itemView.findViewById(R.id.textViewExerciseDifficulty);
             itemView.setOnClickListener(this);
+            context = itemView.getContext();
         }
 
         public void bind(Exercise exercise) {
             textViewExerciseName.setText(exercise.getName());
-            textViewExerciseDifficulty.setText(application.getApplicationContext().getResources().getString(R.string.difficulty) + exercise.getDifficulty());
+            textViewExerciseDifficulty.setText(context.getString(R.string.difficulty) + exercise.getDifficulty());
         }
 
         @Override

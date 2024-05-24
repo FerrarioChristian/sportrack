@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="?attr/materialCardViewFilledStyle"
-    android:layout_marginHorizontal="8dp"
+
+    android:useDefaultMargins="true"
+    android:layout_marginHorizontal="12dp"
     android:layout_marginVertical="4dp"
     >
 
@@ -19,7 +21,8 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_margin="5dp"
-            android:src="@drawable/rounded_fitness_center_24"></androidx.appcompat.widget.AppCompatImageView>
+            android:src="@drawable/rounded_fitness_center_24"
+            android:tint="@color/material_on_primary_emphasis_medium"/>
 
         <LinearLayout
             android:layout_width="match_parent"

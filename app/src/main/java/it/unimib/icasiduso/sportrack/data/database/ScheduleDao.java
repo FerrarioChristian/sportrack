@@ -2,6 +2,7 @@ package it.unimib.icasiduso.sportrack.data.database;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
+import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Upsert;
 
@@ -17,6 +18,9 @@ public interface ScheduleDao {
 
     @Upsert
     List<Long> insertScheduleList(List<Schedule> scheduleList);
+  
+    @Insert
+    void insertAll(Schedule... schedules);
 
     @Delete
     void delete(Schedule schedule);

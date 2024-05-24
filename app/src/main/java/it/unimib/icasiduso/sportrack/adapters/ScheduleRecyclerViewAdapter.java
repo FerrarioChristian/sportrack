@@ -61,7 +61,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
         public void bind(Schedule schedule) {
             textViewExerciseName.setText(schedule.getName());
-            textViewExerciseDifficulty.setText(application.getApplicationContext().getResources().getString(R.string.difficulty) + schedule.getDescription());
+            textViewExerciseDifficulty.setText(application.getApplicationContext().getResources().getString(R.string.difficulty) + schedule.getDifficulty());
         }
 
         @Override
