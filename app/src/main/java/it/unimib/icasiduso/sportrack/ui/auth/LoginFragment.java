@@ -1,8 +1,12 @@
 package it.unimib.icasiduso.sportrack.ui.auth;
 
+import static it.unimib.icasiduso.sportrack.utils.Constants.INVALID_CREDENTIALS_ERROR;
+import static it.unimib.icasiduso.sportrack.utils.Constants.INVALID_USER_ERROR;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.content.Intent;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -26,13 +31,17 @@ import com.google.firebase.auth.FirebaseUser;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
+import it.unimib.icasiduso.sportrack.model.Result;
+import it.unimib.icasiduso.sportrack.model.User;
+import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 
 public class LoginFragment extends Fragment {
 
     private static final String TAG = LoginFragment.class.getSimpleName();
-    private FirebaseAuth mAuth;
-    // private SignInClient oneTapClient;
+
+    private UserViewModel userViewModel;
     private TextInputLayout emailTextInput;
     private TextInputLayout passwordTextInput;
 
@@ -48,7 +57,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(), new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+
+
     }
 
     @Override
@@ -70,11 +82,29 @@ public class LoginFragment extends Fragment {
 
         final Button loginButton = view.findViewById(R.id.login_button);
         loginButton.setOnClickListener( v ->  {
-            String email = emailEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
 
-            if(isEmailOk(email) && isPasswordOk(password))
-                firebaseLogin(email, password);
+            if(isEmailOk(email) && isPasswordOk(password)){
+                if (!userViewModel.isAuthenticationError()) {
+                    userViewModel.getUserMutableLiveData(email, password, true).observe(
+                            getViewLifecycleOwner(), result -> {
+                                if (result.isSuccess()) {
+                                    //User user = ((Result.UserResponseSuccess) result).getData();
+                                    userViewModel.setAuthenticationError(false);
+                                    Log.d(TAG, "Login successful");
+                                    Intent intent = new Intent(requireContext(), MainActivityWithBottomNav.class);
+                                    startActivity(intent);
+                                    requireActivity().finish();
+                                } else {
+                                    Log.d(TAG, "Login failed");
+                                    userViewModel.setAuthenticationError(true);
+                                    Toast.makeText(getActivity(), R.string.authentication_failed,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
         });
 
         final SignInButton googleButton = view.findViewById(R.id.login_with_google);
@@ -85,29 +115,13 @@ public class LoginFragment extends Fragment {
 
     private void googleLogin(){}
 
-    private void firebaseLogin(String email, String password){
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
-                            startActivity(intent);
-                            getActivity().finish();
 
-                        } else {
-
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getActivity(), R.string.authentication_failed,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+    @Override
+    public void onResume() {
+        super.onResume();
+        userViewModel.setAuthenticationError(false);
     }
+
     private boolean isPasswordOk(String password){
 
         if (password == null || password.length() < 8) {
