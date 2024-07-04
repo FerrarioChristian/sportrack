@@ -76,10 +76,10 @@ public class ExerciseDetailsFragment extends Fragment implements WorkoutExercise
 
 
         binding.textViewExerciseName.setText(exercise.getName());
-        binding.textViewExerciseType.setText(exercise.getType());
-        binding.textViewExerciseMuscle.setText(exercise.getMuscle());
-        binding.textViewExerciseEquipment.setText(exercise.getEquipment());
-        binding.textViewExerciseDifficulty.setText(exercise.getDifficulty());
+        binding.textViewExerciseType.setText("tipo: " + exercise.getType());
+        binding.textViewExerciseMuscle.setText("musccolo: " + exercise.getMuscle());
+        binding.textViewExerciseEquipment.setText("attrezzo: " + exercise.getEquipment());
+        binding.textViewExerciseDifficulty.setText("livello: " + exercise.getDifficulty());
         binding.textViewExerciseDescription.setText(exercise.getInstructions());
 
         binding.addExerciseToSchedule.setOnClickListener(v -> {

@@ -5,6 +5,7 @@ import static it.unimib.icasiduso.sportrack.utils.Constants.MIN_PASSWORD_LENGTH;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -27,12 +29,16 @@ import com.google.firebase.auth.FirebaseUser;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
+import it.unimib.icasiduso.sportrack.model.Result;
+import it.unimib.icasiduso.sportrack.model.User;
+import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 
 public class RegisterFragment extends Fragment {
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
-    private FirebaseAuth mAuth;
+    private UserViewModel userViewModel;
     private TextInputLayout emailTextInput;
     private TextInputLayout passwordTextInput;
     private TextInputLayout confirmPasswordTextInput;
@@ -43,9 +49,9 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        mAuth = FirebaseAuth.getInstance();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        userViewModel = new ViewModelProvider(requireActivity(), new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        userViewModel.setAuthenticationError(false);
     }
 
     @Override
@@ -70,12 +76,6 @@ public class RegisterFragment extends Fragment {
         confirmPasswordTextInput = view.findViewById(R.id.register_label_confirm_password_layout);
         TextInputEditText confirmPasswordEditText = (TextInputEditText) confirmPasswordTextInput.getEditText();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(view.getContext(), MainActivityWithBottomNav.class);
-            startActivity(intent);
-        }
-
         Button loginButton = view.findViewById(R.id.go_to_login_button);
         loginButton.setOnClickListener( v -> {
             Navigation.findNavController(requireView()).navigate(R.id.loginFragment);
@@ -87,33 +87,25 @@ public class RegisterFragment extends Fragment {
             String password = passwordEditText.getText().toString();
             String confirmPassword = confirmPasswordEditText.getText().toString();
 
-            if(isEmailOk(email) && isPasswordOk(password, confirmPassword))
-                firebaseRegister(email, password);
+            if(isEmailOk(email) && isPasswordOk(password, confirmPassword)){
+                if (!userViewModel.isAuthenticationError()) {
+                    userViewModel.getUserMutableLiveData(email, password, false).observe(
+                            getViewLifecycleOwner(), result -> {
+                                if (result.isSuccess()) {
+                                    userViewModel.setAuthenticationError(false);
+                                    Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
+                                    startActivity(intent);
+                                } else {
+                                    userViewModel.setAuthenticationError(true);
+                                    Toast.makeText(getActivity(), "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
 
         });
 
-    }
-
-    private void firebaseRegister(String email, String password){
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
-                            startActivity(intent);
-                        } else {
-
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
     }
 
 

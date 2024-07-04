@@ -4,7 +4,13 @@ package it.unimib.icasiduso.sportrack.utils;
 import android.app.Application;
 
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
+import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
+import it.unimib.icasiduso.sportrack.data.repository.user.UserRepository;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
+import it.unimib.icasiduso.sportrack.data.source.user.AuthDataSource;
+import it.unimib.icasiduso.sportrack.data.source.user.BaseAuthDataSource;
+import it.unimib.icasiduso.sportrack.data.source.user.BaseUserDataSource;
+import it.unimib.icasiduso.sportrack.data.source.user.UserDataSource;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,5 +36,14 @@ public class ServiceLocator {
 
     public ExerciseRoomDatabase getExerciseDatabase(Application application){
         return ExerciseRoomDatabase.getDatabase(application);
+    }
+
+    public IUserRepository getUserRepository(Application application) {
+
+        BaseAuthDataSource authDataSource = new AuthDataSource();
+        BaseUserDataSource userDataSource = new UserDataSource();
+
+        return new UserRepository(authDataSource, userDataSource);
+
     }
 }
