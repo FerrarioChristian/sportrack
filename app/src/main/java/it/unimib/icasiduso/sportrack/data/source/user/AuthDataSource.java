@@ -45,7 +45,7 @@ public class AuthDataSource extends BaseAuthDataSource {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null) {
                     firebaseAuth.removeAuthStateListener(this);
-                    userRepositoryCallbackable.onSuccessLogout();
+                    userCallback.onSuccessLogout();
                 }
             }
         };
@@ -59,14 +59,14 @@ public class AuthDataSource extends BaseAuthDataSource {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 if (firebaseUser != null) {
-                    userRepositoryCallbackable.onAuthSuccess(
+                    userCallback.onAuthSuccess(
                             new User(firebaseUser.getDisplayName(), email, firebaseUser.getUid())
                     );
                 } else {
-                    userRepositoryCallbackable.onAuthFailure(getErrorMessage(task.getException()));
+                    userCallback.onAuthFailure(getErrorMessage(task.getException()));
                 }
             } else {
-                userRepositoryCallbackable.onAuthFailure(getErrorMessage(task.getException()));
+                userCallback.onAuthFailure(getErrorMessage(task.getException()));
             }
         });
 
@@ -78,14 +78,14 @@ public class AuthDataSource extends BaseAuthDataSource {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 if (firebaseUser != null) {
-                    userRepositoryCallbackable.onAuthSuccess(
+                    userCallback.onAuthSuccess(
                             new User(firebaseUser.getDisplayName(), email, firebaseUser.getUid())
                     );
                 } else {
-                    userRepositoryCallbackable.onAuthFailure(getErrorMessage(task.getException()));
+                    userCallback.onAuthFailure(getErrorMessage(task.getException()));
                 }
             } else {
-                userRepositoryCallbackable.onAuthFailure(getErrorMessage(task.getException()));
+                userCallback.onAuthFailure(getErrorMessage(task.getException()));
             }
         });
     }

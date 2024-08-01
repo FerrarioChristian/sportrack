@@ -1,13 +1,12 @@
 package it.unimib.icasiduso.sportrack.data.source.user;
 
-import it.unimib.icasiduso.sportrack.data.repository.user.UserRepositoryCallbackable;
 import it.unimib.icasiduso.sportrack.model.User;
 
 public abstract class BaseAuthDataSource {
-    protected UserRepositoryCallbackable userRepositoryCallbackable;
+    protected UserCallback userCallback;
 
-    public void setUserRepositoryCallbackable(UserRepositoryCallbackable userRepositoryCallbackable) {
-        this.userRepositoryCallbackable = userRepositoryCallbackable;
+    public void setUserRepositoryCallbackable(UserCallback userCallback) {
+        this.userCallback = userCallback;
     }
 
     public abstract User getLoggedUser();
