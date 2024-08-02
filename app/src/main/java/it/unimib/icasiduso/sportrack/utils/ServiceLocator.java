@@ -3,14 +3,21 @@ package it.unimib.icasiduso.sportrack.utils;
 
 import android.app.Application;
 
+import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.UserRepository;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
+import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseLocalDataSource;
+import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseRemoteDataSource;
+import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseLocalDataSource;
+import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.AuthDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.BaseAuthDataSource;
-import it.unimib.icasiduso.sportrack.data.source.user.BaseUserDataSource;
-import it.unimib.icasiduso.sportrack.data.source.user.UserDataSource;
+import it.unimib.icasiduso.sportrack.data.source.user.BaseUserRemoteDataSource;
+import it.unimib.icasiduso.sportrack.data.source.user.UserRemoteDataSource;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -41,9 +48,20 @@ public class ServiceLocator {
     public IUserRepository getUserRepository(Application application) {
 
         BaseAuthDataSource authDataSource = new AuthDataSource();
-        BaseUserDataSource userDataSource = new UserDataSource();
+        BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
 
-        return new UserRepository(authDataSource, userDataSource);
+        return new UserRepository(authDataSource, userRemoteDataSource);
 
     }
+
+    public IExercisesRepository getExercisesRepository(Application application) {
+        BaseExerciseRemoteDataSource exerciseRemoteDataSource;
+        BaseExerciseLocalDataSource exerciseLocalDataSource;
+
+        exerciseRemoteDataSource = new ExerciseRemoteDataSource(application.getString(R.string.api_key));
+        exerciseLocalDataSource = new ExerciseLocalDataSource(getExerciseDatabase(application));
+
+        return new ExercisesRepository(exerciseRemoteDataSource, exerciseLocalDataSource);
+    }
+
 }
