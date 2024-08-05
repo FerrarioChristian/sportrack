@@ -15,5 +15,6 @@ public abstract class BaseExerciseRemoteDataSource {
     }
 
     public abstract void fetchExercisesByMuscle(String muscle);
+    public abstract void saveExercises(List<Exercise> exercises);
 
 }

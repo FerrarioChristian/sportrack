@@ -15,13 +15,15 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.main.MainActivity;
-import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
+import it.unimib.icasiduso.sportrack.ui.auth.UserViewModel;
 
 public class SettingsFragment extends Fragment {
 
-    Button signOutButton;
+    private Button signOutButton;
+    private UserViewModel userViewModel;
 
     @Override
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -40,11 +42,12 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         signOutButton = view.findViewById(R.id.logoutButton);
-        signOutButton.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(view.getContext(), MainActivity.class);
-            startActivity(intent);
-            getActivity().finish();
+        userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccess()) {
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
         });
     }
 }

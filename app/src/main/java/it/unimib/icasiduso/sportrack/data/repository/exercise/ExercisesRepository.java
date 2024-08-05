@@ -3,12 +3,17 @@ package it.unimib.icasiduso.sportrack.data.repository.exercise;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseDao;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
+import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseLocalDataSource;
+import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseRemoteDataSource;
+import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
 import it.unimib.icasiduso.sportrack.utils.NetworkUtil;
@@ -19,82 +24,47 @@ import retrofit2.Response;
 
 public class ExercisesRepository implements IExercisesRepository {
     private static final String TAG = ExercisesRepository.class.getSimpleName();
-    private final Application application;
-    private final ExercisesApiService exercisesApiService;
-    private final ExerciseDao exerciseDao;
-    private final ExerciseRepositoryCallbackable exerciseRepositoryCallbackable;
 
-    public ExercisesRepository(Application application, ExerciseRepositoryCallbackable responseCallback) {
-        this.application = application;
-        this.exercisesApiService = ServiceLocator.getInstance().getExercisesApiService();
-        ExerciseRoomDatabase exerciseRoomDatabase = ServiceLocator.getInstance().getExerciseDatabase(application);
-        this.exerciseDao = exerciseRoomDatabase.exerciseDao();
-        this.exerciseRepositoryCallbackable = responseCallback;
+    private final BaseExerciseLocalDataSource exerciseLocalDataSource;
+    private final BaseExerciseRemoteDataSource exerciseRemoteDataSource;
+
+    private final MutableLiveData<List<Exercise>> exercises;
+
+    public ExercisesRepository(BaseExerciseRemoteDataSource exerciseRemoteDataSource, BaseExerciseLocalDataSource exerciseLocalDataSource) {
+        this.exerciseRemoteDataSource = exerciseRemoteDataSource;
+        this.exerciseLocalDataSource = exerciseLocalDataSource;
+
+        exercises = new MutableLiveData<>();
     }
 
-    @Override
-    public void fetchExercises(String muscle) {
-        if (NetworkUtil.isNetworkAvailable(application)) {
-            fetchExercisesFromApi(muscle);
-        } else {
-            fetchExercisesFromDatabase(muscle);
-        }
+    private MutableLiveData<List<Exercise>> fetchExercisesFromApi(String muscle) {
+        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle);
+        return exercises;
     }
 
-    private void fetchExercisesFromApi(String muscle) {
-        Call<List<Exercise>> exercisesResponseCall = exercisesApiService.getExercises(muscle, application.getString(R.string.api_key));
-
-        exercisesResponseCall.enqueue(new Callback<List<Exercise>>() {
-            @Override
-            public void onResponse(Call<List<Exercise>> call, Response<List<Exercise>> response) {
-                Log.d(TAG, response.toString());
-                if (response.body() != null && response.isSuccessful()) {
-                    List<Exercise> exercises = response.body();
-                    saveExercisesInDatabase(exercises);
-                } else {
-                    exerciseRepositoryCallbackable.onFailure("Error retrieving exercises");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Exercise>> call, Throwable throwable) {
-
-            }
-        });
-    }
-
-    public void fetchExercisesFromDatabase(String muscle) {
-
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            exerciseRepositoryCallbackable.onSuccess(exerciseDao.getExercisesByMuscle(muscle));
-        });
+    public MutableLiveData<List<Exercise>> fetchExercisesFromDatabase(String muscle) {
+        exerciseLocalDataSource.getExercises(muscle);
+        return exercises;
     }
 
     private void saveExercisesInDatabase(List<Exercise> exercises) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<Exercise> dbExercises = exerciseDao.getAll();
-
-            for (Exercise dbExercise : dbExercises) {
-                if (exercises.contains(dbExercise)) {
-                    exercises.set(exercises.indexOf(dbExercise), dbExercise);
-                }
-            }
-
-            List<Long> insertedExerciseList = exerciseDao.insertExerciseList(exercises);
-            for (int i = 0; i < exercises.size(); i++) {
-                exercises.get(i).setExerciseId(insertedExerciseList.get(i));
-            }
-            exerciseRepositoryCallbackable.onSuccess(exercises);
-        });
+        exerciseLocalDataSource.saveExercises(exercises);
     }
 
-    public void getExerciseById(long id) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            ArrayList<Exercise> exercise = new ArrayList<>();
-            exercise.add(exerciseDao.getExerciseById(id));
-            exerciseRepositoryCallbackable.onSuccess(exercise);
+    @Override
+    public MutableLiveData<List<Exercise>> getExercisesByMuscle(String muscle) {
+        exerciseLocalDataSource.getExercises(muscle);
+        return exercises;
+    }
 
-        });
+    @Override
+    public void getExerciseById(long id) {
+        exerciseLocalDataSource.getExercise(id);
+    }
+
+    @Override
+    public void saveExercises(List<Exercise> exercises) {
+        exerciseLocalDataSource.saveExercises(exercises);
     }
 
 }

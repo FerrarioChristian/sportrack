@@ -47,6 +47,8 @@ public class LoginFragment extends Fragment {
 
     public LoginFragment(){}
 
+    public static LoginFragment newInstance() { return new LoginFragment(); }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

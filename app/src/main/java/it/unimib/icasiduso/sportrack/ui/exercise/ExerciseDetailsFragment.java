@@ -64,8 +64,8 @@ public class ExerciseDetailsFragment extends Fragment implements WorkoutExercise
         super.onViewCreated(view, savedInstanceState);
 
         Exercise exercise = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getExercise();
-        Long scheduleId = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getScheduleId();
-        Log.d(TAG, scheduleId.toString());
+        long scheduleId = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        Log.d(TAG, Long.toString(scheduleId));
         if(scheduleId != 0L){
             View container = view.findViewById(R.id.scheduleInputContainer);
             container.setVisibility(View.VISIBLE);

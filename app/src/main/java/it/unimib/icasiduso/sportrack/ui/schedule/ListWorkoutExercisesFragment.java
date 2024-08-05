@@ -25,13 +25,9 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.WorkoutExerciseRecyclerViewAdapter;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExerciseRepositoryCallbackable;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepository;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepositoryCallbackable;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
-import it.unimib.icasiduso.sportrack.ui.exercise.ListExercisesFragmentArgs;
-import it.unimib.icasiduso.sportrack.ui.exercise.ListExercisesFragmentDirections;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExerciseRepositoryCallbackable, WorkoutExerciseRecyclerViewAdapter.OnItemClickListener {
@@ -43,7 +39,6 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     private WorkoutExerciseRecyclerViewAdapter workoutExerciseRecyclerViewAdapter;
     private ProgressBar progressBar;
     private FloatingActionButton addExerciseButton;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,7 +137,6 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
             workoutExercisesRepository.deleteWorkoutExercise(workoutExercises.get(position));
             workoutExercises.remove(position);
             workoutExerciseRecyclerViewAdapter.notifyItemRemoved(position);
-
         }
 
         @Override

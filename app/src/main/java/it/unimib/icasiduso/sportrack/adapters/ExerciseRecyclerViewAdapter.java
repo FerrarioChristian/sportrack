@@ -66,7 +66,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
         public void bind(Exercise exercise) {
             textViewExerciseName.setText(exercise.getName());
-            textViewExerciseDifficulty.setText(context.getString(R.string.difficulty) + exercise.getDifficulty());
+            textViewExerciseDifficulty.setText(context.getString(R.string.difficulty, exercise.getDifficulty()));
         }
 
         @Override

@@ -41,5 +41,12 @@ public class UserViewModel extends ViewModel {
         userMutableLiveData = userRepository.getUser(email, password, isUserRegistered);
     }
 
-
+    public MutableLiveData<Result> logout(){
+       if (userMutableLiveData == null) {
+           userMutableLiveData = userRepository.logout();
+       } else {
+           userRepository.logout();
+       }
+       return userMutableLiveData;
+    }
 }

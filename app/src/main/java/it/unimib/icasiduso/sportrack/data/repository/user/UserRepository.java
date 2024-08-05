@@ -3,24 +3,25 @@ package it.unimib.icasiduso.sportrack.data.repository.user;
 import androidx.lifecycle.MutableLiveData;
 
 import it.unimib.icasiduso.sportrack.data.source.user.BaseAuthDataSource;
-import it.unimib.icasiduso.sportrack.data.source.user.BaseUserDataSource;
+import it.unimib.icasiduso.sportrack.data.source.user.BaseUserRemoteDataSource;
+import it.unimib.icasiduso.sportrack.data.source.user.UserCallback;
 import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.User;
 
-public class UserRepository implements IUserRepository, UserRepositoryCallbackable {
+public class UserRepository implements IUserRepository, UserCallback {
     private static final String TAG = UserRepository.class.getSimpleName();
 
     private final BaseAuthDataSource authDataSource;
-    private final BaseUserDataSource userDataSource;
+    private final BaseUserRemoteDataSource userRemoteDataSource;
 
     private final MutableLiveData<Result> userMutableLiveData;
 
-    public UserRepository(BaseAuthDataSource authDataSource, BaseUserDataSource userDataSource) {
+    public UserRepository(BaseAuthDataSource authDataSource, BaseUserRemoteDataSource userRemoteDataSource) {
         this.authDataSource = authDataSource;
         this.userMutableLiveData = new MutableLiveData<>();
         this.authDataSource.setUserRepositoryCallbackable(this);
-        this.userDataSource = userDataSource;
-        this.userDataSource.setUserRepositoryCallbackable(this);
+        this.userRemoteDataSource = userRemoteDataSource;
+        this.userRemoteDataSource.setUserCallback(this);
     }
 
 
@@ -41,7 +42,8 @@ public class UserRepository implements IUserRepository, UserRepositoryCallbackab
 
     @Override
     public MutableLiveData<Result> logout() {
-        return null;
+        authDataSource.logout();
+        return userMutableLiveData;
     }
 
     @Override
@@ -63,7 +65,7 @@ public class UserRepository implements IUserRepository, UserRepositoryCallbackab
     @Override
     public void onAuthSuccess(User user) {
         if (user != null) {
-            userDataSource.saveUser(user);
+            userRemoteDataSource.saveUser(user);
         }
     }
 

@@ -12,7 +12,7 @@ import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 
-public class WorkoutExerciseRepository {
+public class WorkoutExerciseRepository implements IWorkoutExercisesRepository{
     private static final String TAG = ExercisesRepository.class.getSimpleName();
     private final Application application;
     private final ExercisesApiService exercisesApiService;
