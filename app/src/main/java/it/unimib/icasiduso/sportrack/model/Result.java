@@ -1,5 +1,9 @@
 package it.unimib.icasiduso.sportrack.model;
 
+import java.util.List;
+
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+
 public abstract class Result {
     private Result() {}
 
@@ -19,6 +23,7 @@ public abstract class Result {
             return user;
         }
     }
+
 
     public static final class Error extends Result {
         private final String message;

@@ -1,8 +1,5 @@
 package it.unimib.icasiduso.sportrack.ui.auth;
 
-import static it.unimib.icasiduso.sportrack.utils.Constants.INVALID_CREDENTIALS_ERROR;
-import static it.unimib.icasiduso.sportrack.utils.Constants.INVALID_USER_ERROR;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,23 +16,17 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
-import it.unimib.icasiduso.sportrack.model.Result;
-import it.unimib.icasiduso.sportrack.model.User;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
+import it.unimib.icasiduso.sportrack.viewmodel.user.UserViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.user.UserViewModelFactory;
 
 public class LoginFragment extends Fragment {
 

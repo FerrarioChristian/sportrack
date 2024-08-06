@@ -23,16 +23,16 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
-import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
+import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory;
 
 public class ListExercisesFragment extends Fragment {
 
     private static final String TAG = ListExercisesFragment.class.getSimpleName();
-
     private ExerciseViewModel exerciseViewModel;
-
     private List<Exercise> exercises;
     private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
     private ProgressBar progressBar;
@@ -41,18 +41,26 @@ public class ListExercisesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IExercisesRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository(requireActivity().getApplication());
+        IExercisesRepository exercisesRepository =
+                ServiceLocator.getInstance().getExercisesRepository(
+                        requireActivity().getApplication()
+                );
+
         if (exercisesRepository != null) {
-            exerciseViewModel = new ViewModelProvider(requireActivity(), new ExerciseViewModelFactory(exercisesRepository)).get(ExerciseViewModel.class);
+            exerciseViewModel = new ViewModelProvider(
+                requireActivity(), new ExerciseViewModelFactory(exercisesRepository)
+            ).get(ExerciseViewModel.class);
         } else {
-            Snackbar.make(requireActivity().findViewById(android.R.id.content), getString(R.string.unexpected_error), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(requireActivity().findViewById(
+                    android.R.id.content),
+                    getString(R.string.unexpected_error),
+                    Snackbar.LENGTH_LONG).show();
         }
         exercises = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_list_exercises, container, false);
     }
 
@@ -77,27 +85,5 @@ public class ListExercisesFragment extends Fragment {
         recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
 
         String muscle = ListExercisesFragmentArgs.fromBundle(getArguments()).getMuscle();
-        //exercisesRepository.fetchExercises(muscle);
-        //TODO: getExercisesByMuscle (sistemare, ora è solo placeholder)
-        exerciseViewModel.getExercisesByMuscle(muscle).observe(getViewLifecycleOwner(), this::onSuccess);
-    }
-
-    public void onSuccess(List<Exercise> exercises) {
-        if (exercises != null) {
-            this.exercises.clear();
-            this.exercises.addAll(exercises);
-            Activity activity = getActivity();
-            if (activity != null) {
-                activity.runOnUiThread(() -> {
-                    exerciseRecyclerViewAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
-                });
-            }
-        }
-    }
-
-    public void onFailure(String errorMessage) {
-        progressBar.setVisibility(View.GONE);
-        Log.d(TAG, errorMessage);
     }
 }

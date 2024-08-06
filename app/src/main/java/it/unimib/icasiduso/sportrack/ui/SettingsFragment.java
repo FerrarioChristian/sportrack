@@ -11,11 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.main.MainActivity;
-import it.unimib.icasiduso.sportrack.ui.auth.UserViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.user.UserViewModel;
 
 public class SettingsFragment extends Fragment {
 

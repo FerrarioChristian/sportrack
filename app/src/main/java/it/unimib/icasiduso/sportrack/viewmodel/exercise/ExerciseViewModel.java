@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.ui.exercise;
+package it.unimib.icasiduso.sportrack.viewmodel.exercise;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
-import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public class ExerciseViewModel extends ViewModel {
@@ -23,7 +22,10 @@ public class ExerciseViewModel extends ViewModel {
     }
 
     public MutableLiveData<List<Exercise>> getExercisesByMuscle(String muscle) {
-        //TODO: Implement remote and local logic
+        if(muscle.isEmpty()) {
+            //TODO creare string
+            throw new IllegalArgumentException("invalid muscle parameter");
+        }
         return exercisesRepository.getExercisesByMuscle(muscle);
     }
 

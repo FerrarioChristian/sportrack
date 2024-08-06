@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.ui.exercise;
+package it.unimib.icasiduso.sportrack.viewmodel.exercise;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

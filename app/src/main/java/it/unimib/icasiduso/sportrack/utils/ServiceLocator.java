@@ -10,6 +10,7 @@ import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesReposito
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.UserRepository;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
+import it.unimib.icasiduso.sportrack.data.service.NetworkService;
 import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseLocalDataSource;
 import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseLocalDataSource;
@@ -62,6 +63,10 @@ public class ServiceLocator {
         exerciseLocalDataSource = new ExerciseLocalDataSource(getExerciseDatabase(application));
 
         return new ExercisesRepository(exerciseRemoteDataSource, exerciseLocalDataSource);
+    }
+
+    public NetworkService getNetworkService(Application application) {
+        return new NetworkService(application.getApplicationContext());
     }
 
 }
