@@ -26,28 +26,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ExercisesRepository implements IExercisesRepository, ExerciseCallback {
-    private NetworkService networkService;
     private static final String TAG = ExercisesRepository.class.getSimpleName();
     private final BaseExerciseLocalDataSource exerciseLocalDataSource;
     private final BaseExerciseRemoteDataSource exerciseRemoteDataSource;
 
-    private MutableLiveData<Result> exercises;
-
-    public ExercisesRepository(BaseExerciseRemoteDataSource exerciseRemoteDataSource, BaseExerciseLocalDataSource exerciseLocalDataSource) {
+    public ExercisesRepository(
+            BaseExerciseRemoteDataSource exerciseRemoteDataSource,
+            BaseExerciseLocalDataSource exerciseLocalDataSource
+    ) {
         this.exerciseRemoteDataSource = exerciseRemoteDataSource;
         this.exerciseLocalDataSource = exerciseLocalDataSource;
-        this.networkService = ServiceLocator.getInstance().getNetworkService();
-        exercises = new MutableLiveData<>();
-    }
-
-    private MutableLiveData<List<Exercise>> fetchExercisesFromApi(String muscle) {
-        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle);
-        return exercises;
-    }
-
-    public MutableLiveData<List<Exercise>> fetchExercisesFromDatabase(String muscle) {
-        exerciseLocalDataSource.getExercises(muscle);
-        return exercises;
+        this.exerciseLocalDataSource.setExerciseCallback(this);
+        this.exerciseRemoteDataSource.setExerciseCallback(this);
     }
 
     private void saveExercisesInDatabase(List<Exercise> exercises) {
@@ -55,13 +45,9 @@ public class ExercisesRepository implements IExercisesRepository, ExerciseCallba
     }
 
     @Override
-    public MutableLiveData<Result> getExercisesByMuscle(String muscle) {
-        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle);
-
+    public void getExercisesByMuscle(String muscle) {
         exerciseLocalDataSource.getExercises(muscle);
-
-        return exercises;
-
+        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle);
     }
 
     @Override
@@ -78,7 +64,6 @@ public class ExercisesRepository implements IExercisesRepository, ExerciseCallba
     public MutableLiveData<List<Exercise>> getExercisesByScheduleId(long scheduleId) {
         return null;
     }
-
 
     @Override
     public void onSuccessFromRemote(List<Exercise> exercises) {

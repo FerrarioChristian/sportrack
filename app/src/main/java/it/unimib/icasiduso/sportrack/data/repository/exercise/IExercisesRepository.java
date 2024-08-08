@@ -8,8 +8,8 @@ import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public interface IExercisesRepository {
-    MutableLiveData<Result> getExercisesByMuscle(String muscle);
-    MutableLiveData<Exercise> getExerciseById(long id);
+    void getExercisesByMuscle(String muscle);
+    void getExerciseById(long id);
     void saveExercises(List<Exercise> exercises);
-    MutableLiveData<List<Exercise>> getExercisesByScheduleId(long scheduleId);
+    void getExercisesByScheduleId(long scheduleId);
 }

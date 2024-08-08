@@ -8,7 +8,7 @@ public abstract class Result {
     private Result() {}
 
     public boolean isSuccess() {
-        if (this instanceof UserResponseSuccess) {
+        if (this instanceof UserResponseSuccess || this instanceof ExercisesResponseSuccess) {
             return true;
         } else {
             return false;
@@ -21,6 +21,18 @@ public abstract class Result {
         }
         public User getData() {
             return user;
+        }
+    }
+
+    public static final class ExercisesResponseSuccess extends Result {
+        private final List<Exercise> exercises;
+
+        public ExercisesResponseSuccess(List<Exercise> exercises) {
+            this.exercises = exercises;
+        }
+
+        public List<Exercise> getData() {
+            return this.exercises;
         }
     }
 

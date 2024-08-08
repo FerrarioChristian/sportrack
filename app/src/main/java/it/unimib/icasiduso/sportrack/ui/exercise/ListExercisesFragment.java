@@ -1,8 +1,6 @@
 package it.unimib.icasiduso.sportrack.ui.exercise;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +22,7 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
@@ -48,11 +47,11 @@ public class ListExercisesFragment extends Fragment {
 
         if (exercisesRepository != null) {
             exerciseViewModel = new ViewModelProvider(
-                requireActivity(), new ExerciseViewModelFactory(exercisesRepository)
+                    requireActivity(), new ExerciseViewModelFactory(exercisesRepository)
             ).get(ExerciseViewModel.class);
         } else {
             Snackbar.make(requireActivity().findViewById(
-                    android.R.id.content),
+                            android.R.id.content),
                     getString(R.string.unexpected_error),
                     Snackbar.LENGTH_LONG).show();
         }
@@ -85,5 +84,21 @@ public class ListExercisesFragment extends Fragment {
         recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
 
         String muscle = ListExercisesFragmentArgs.fromBundle(getArguments()).getMuscle();
+        try {
+            exerciseViewModel.getExercisesByMuscle(muscle).observe(
+                    getViewLifecycleOwner(),
+                    result -> {
+                        if(result.isSuccess()) {
+                            this.exercises = ((Result.ExercisesResponseSuccess) result).getData();
+                            this.exerciseRecyclerViewAdapter.notifyDataSetChanged();
+                        } else {
+                            //TODO Snackbar error (api error)
+                        }
+                    }
+            );
+        } catch (IllegalArgumentException e) {
+            //TODO Snackbar error (muscle invalid)
+            //This should never happen
+        }
     }
 }
