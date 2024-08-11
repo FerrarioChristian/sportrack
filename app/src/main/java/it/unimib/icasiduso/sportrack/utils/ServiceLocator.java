@@ -11,8 +11,6 @@ import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.UserRepository;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
 import it.unimib.icasiduso.sportrack.data.service.NetworkService;
-import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseLocalDataSource;
-import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseLocalDataSource;
 import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.AuthDataSource;
@@ -46,7 +44,7 @@ public class ServiceLocator {
         return ExerciseRoomDatabase.getDatabase(application);
     }
 
-    public IUserRepository getUserRepository(Application application) {
+    public IUserRepository getUserRepository() {
 
         BaseAuthDataSource authDataSource = new AuthDataSource();
         BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();

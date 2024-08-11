@@ -1,43 +1,24 @@
 package it.unimib.icasiduso.sportrack.data.repository.exercise;
 
-import android.app.Application;
-import android.util.Log;
-
-import androidx.lifecycle.MutableLiveData;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.data.database.ExerciseDao;
-import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
-import it.unimib.icasiduso.sportrack.data.service.NetworkService;
-import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseLocalDataSource;
-import it.unimib.icasiduso.sportrack.data.source.exercise.BaseExerciseRemoteDataSource;
-import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseCallback;
-import it.unimib.icasiduso.sportrack.model.Result;
+import it.unimib.icasiduso.sportrack.data.source.exercise.IExerciseDataSource;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
-import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
 import it.unimib.icasiduso.sportrack.utils.NetworkUtil;
-import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class ExercisesRepository implements IExercisesRepository, ExerciseCallback {
+public class ExercisesRepository implements IExercisesRepository {
+
     private static final String TAG = ExercisesRepository.class.getSimpleName();
-    private final BaseExerciseLocalDataSource exerciseLocalDataSource;
-    private final BaseExerciseRemoteDataSource exerciseRemoteDataSource;
+
+    private final IExerciseDataSource.Local exerciseLocalDataSource;
+    private final IExerciseDataSource.Remote exerciseRemoteDataSource;
 
     public ExercisesRepository(
-            BaseExerciseRemoteDataSource exerciseRemoteDataSource,
-            BaseExerciseLocalDataSource exerciseLocalDataSource
+            IExerciseDataSource.Remote exerciseRemoteDataSource,
+            IExerciseDataSource.Local exerciseLocalDataSource
     ) {
         this.exerciseRemoteDataSource = exerciseRemoteDataSource;
         this.exerciseLocalDataSource = exerciseLocalDataSource;
-        this.exerciseLocalDataSource.setExerciseCallback(this);
-        this.exerciseRemoteDataSource.setExerciseCallback(this);
     }
 
     private void saveExercisesInDatabase(List<Exercise> exercises) {
@@ -45,7 +26,8 @@ public class ExercisesRepository implements IExercisesRepository, ExerciseCallba
     }
 
     @Override
-    public void getExercisesByMuscle(String muscle) {
+    public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {
+        if (callback == null) return;
         exerciseLocalDataSource.getExercises(muscle);
         exerciseRemoteDataSource.fetchExercisesByMuscle(muscle);
     }
@@ -61,27 +43,8 @@ public class ExercisesRepository implements IExercisesRepository, ExerciseCallba
     }
 
     @Override
-    public MutableLiveData<List<Exercise>> getExercisesByScheduleId(long scheduleId) {
-        return null;
+    public void getExercisesByScheduleId(long scheduleId) {
     }
 
-    @Override
-    public void onSuccessFromRemote(List<Exercise> exercises) {
 
-    }
-
-    @Override
-    public void onFailureFromRemote(Exception exception) {
-
-    }
-
-    @Override
-    public void onSuccessFromLocal(List<Exercise> exercises) {
-
-    }
-
-    @Override
-    public void onFailureFromLocal(Exception exception) {
-
-    }
 }

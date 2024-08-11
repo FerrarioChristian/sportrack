@@ -28,13 +28,15 @@ import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
 import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory;
 
-public class ListExercisesFragment extends Fragment {
+public class ListExercisesFragment extends Fragment implements ExerciseRecyclerViewAdapter.OnItemClickListener {
 
     private static final String TAG = ListExercisesFragment.class.getSimpleName();
     private ExerciseViewModel exerciseViewModel;
     private List<Exercise> exercises;
     private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
     private ProgressBar progressBar;
+
+    private View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class ListExercisesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.view = view;
 
         progressBar = view.findViewById(R.id.progress_bar);
         if (exercises.isEmpty()) {
@@ -74,31 +77,33 @@ public class ListExercisesFragment extends Fragment {
 
         RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_exercise_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-
-        Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
-        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, requireActivity().getApplication(), exercise -> {
-            ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId, exercise);
-            Navigation.findNavController(view).navigate(action);
-        });
+        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, this);
         recyclerViewExerciseList.setLayoutManager(layoutManager);
         recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
 
+        observeViewModel();
+    }
+
+    private void observeViewModel() {
         String muscle = ListExercisesFragmentArgs.fromBundle(getArguments()).getMuscle();
-        try {
-            exerciseViewModel.getExercisesByMuscle(muscle).observe(
-                    getViewLifecycleOwner(),
-                    result -> {
-                        if(result.isSuccess()) {
-                            this.exercises = ((Result.ExercisesResponseSuccess) result).getData();
-                            this.exerciseRecyclerViewAdapter.notifyDataSetChanged();
-                        } else {
-                            //TODO Snackbar error (api error)
-                        }
+        exerciseViewModel.getExercisesByMuscle(muscle).observe(
+                getViewLifecycleOwner(),
+                result -> {
+                    if (result.isSuccess()) {
+                        this.exercises = ((Result.ExercisesResponseSuccess) result).getData();
+                        this.exerciseRecyclerViewAdapter.notifyDataSetChanged();
+                    } else {
+                        //TODO Snackbar error (api error)
                     }
-            );
-        } catch (IllegalArgumentException e) {
-            //TODO Snackbar error (muscle invalid)
-            //This should never happen
-        }
+                }
+        );
+
+    }
+
+    @Override
+    public void onExerciseClick(Exercise exercise) {
+        Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId, exercise);
+        Navigation.findNavController(view).navigate(action);
     }
 }

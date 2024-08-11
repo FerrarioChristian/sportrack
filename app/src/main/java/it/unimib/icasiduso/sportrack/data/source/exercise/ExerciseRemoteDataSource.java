@@ -11,7 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ExerciseRemoteDataSource extends BaseExerciseRemoteDataSource{
+public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
     private static final String TAG = ExerciseRemoteDataSource.class.getSimpleName();
     private final ExercisesApiService exercisesApiService;
     private final String apiKey;

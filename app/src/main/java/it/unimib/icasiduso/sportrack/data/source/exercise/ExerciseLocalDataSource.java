@@ -7,7 +7,7 @@ import it.unimib.icasiduso.sportrack.data.database.ExerciseDao;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
-public class ExerciseLocalDataSource extends BaseExerciseLocalDataSource{
+public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
     private final ExerciseDao exerciseDao;
 
     public ExerciseLocalDataSource(ExerciseRoomDatabase exerciseRoomDatabase) {

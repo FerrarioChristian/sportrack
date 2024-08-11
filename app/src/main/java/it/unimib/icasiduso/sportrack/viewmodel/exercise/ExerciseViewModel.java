@@ -10,25 +10,29 @@ import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseCallback;
 import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
-public class ExerciseViewModel extends ViewModel implements ExerciseCallback {
+public class ExerciseViewModel extends ViewModel implements IExercisesRepository.GetExercisesCallback {
     private static final String TAG = ExerciseViewModel.class.getSimpleName();
 
+    private MutableLiveData<Boolean> isLoadingLiveData;
     private MutableLiveData<Exercise> exerciseLiveData;
     private MutableLiveData<Result> exercisesLiveData;
 
     private final IExercisesRepository exercisesRepository;
-    //private final IWorkoutExercisesRepository workoutRepository;
 
     public ExerciseViewModel(IExercisesRepository exercisesRepository) {
         this.exercisesRepository = exercisesRepository;
     }
 
-    public MutableLiveData<Result> getExercisesByMuscle(String muscle) throws IllegalArgumentException {
-        if(muscle.isEmpty()) {
-            //TODO creare string
-            throw new IllegalArgumentException("invalid muscle parameter");
+    public void setIsLoading(boolean isLoading) {
+        if (isLoading) {
+            isLoadingLiveData.postValue(true);
+        } else {
+            isLoadingLiveData.postValue(false);
         }
-        exercisesRepository.getExercisesByMuscle(muscle);
+    }
+
+    public MutableLiveData<Result> getExercisesByMuscle(String muscle) {
+        exercisesRepository.getExercisesByMuscle(muscle, this);
         return exercisesLiveData;
     }
 
@@ -43,26 +47,26 @@ public class ExerciseViewModel extends ViewModel implements ExerciseCallback {
     }
 
     @Override
-    public void onSuccessFromRemote(List<Exercise> exercises) {
-        Result.ExercisesResponseSuccess result = new Result.ExercisesResponseSuccess(exercises);
-        this.exercisesLiveData.postValue(result);
+    public void onSuccess(List<Exercise> exercises) {
+        setIsLoading(false);
+        exercisesLiveData.postValue(new Result.ExercisesResponseSuccess(exercises));
     }
 
     @Override
-    public void onFailureFromRemote(Exception exception) {
-        Result.Error error = new Result.Error(exception.getMessage());
-        this.exercisesLiveData.postValue(error);
+    public void onFailure(Exception exception) {
+        setIsLoading(false);
+        //TODO
     }
 
-    @Override
-    public void onSuccessFromLocal(List<Exercise> exercises) {
-        Result.ExercisesResponseSuccess result = new Result.ExercisesResponseSuccess(exercises);
-        this.exercisesLiveData.postValue(result);
+    public MutableLiveData<Boolean> getIsLoadingLiveData() {
+        return isLoadingLiveData;
     }
 
-    @Override
-    public void onFailureFromLocal(Exception exception) {
-        Result.Error error = new Result.Error(exception.getMessage());
-        this.exercisesLiveData.postValue(error);
+    public MutableLiveData<Result> getExercisesLiveData() {
+        return exercisesLiveData;
+    }
+
+    public MutableLiveData<Exercise> getExerciseLiveData() {
+        return exerciseLiveData;
     }
 }
