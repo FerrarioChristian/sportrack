@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
+import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
@@ -22,27 +24,27 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
     }
 
 
-    public void fetchExercisesByMuscle(String muscle) {
+    public void fetchExercisesByMuscle(String muscle, IExercisesRepository.GetExercisesCallback callback) {
         Call<List<Exercise>> exercisesResponseCall = exercisesApiService.getExercises(muscle, apiKey);
         exercisesResponseCall.enqueue(new Callback<List<Exercise>>() {
             @Override
             public void onResponse(@NonNull Call<List<Exercise>> call, @NonNull Response<List<Exercise>> response) {
                 if (response.body() != null && response.isSuccessful()) {
-                    exerciseCallback.onSuccessFromRemote(response.body());
+                    callback.onSuccess(response.body());
                 } else {
-                    exerciseCallback.onFailureFromRemote(new Exception(response.message()));
+                    callback.onFailure(new Exception(response.message()));
                 }
             }
             @Override
             public void onFailure(@NonNull Call<List<Exercise>> call, @NonNull Throwable throwable) {
                 //TODO fix error message
-                exerciseCallback.onFailureFromRemote(new Exception(throwable.getMessage()));
+                callback.onFailure(new Exception(throwable.getMessage()));
             }
         });
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises) {
+    public void saveExercises(List<Exercise> exercises, IExercisesRepository.GetExercisesCallback callback) {
 
     }
 }

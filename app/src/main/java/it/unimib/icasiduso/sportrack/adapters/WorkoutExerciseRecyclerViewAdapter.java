@@ -19,7 +19,7 @@ import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepositor
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
-public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutExerciseRecyclerViewAdapter.WorkoutExerciseViewHolder>{
+public class WorkoutExerciseRecyclerViewAdapter /*extends RecyclerView.Adapter<WorkoutExerciseRecyclerViewAdapter.WorkoutExerciseViewHolder>{
     List<WorkoutExercise> workoutExercises;
     private final Application application;
     private final OnItemClickListener onItemClickListener;
@@ -109,4 +109,4 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
         }
     }
 
-}
+} */ {}

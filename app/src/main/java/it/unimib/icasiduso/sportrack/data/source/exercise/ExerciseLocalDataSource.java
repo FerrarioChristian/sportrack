@@ -5,6 +5,7 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.database.ExerciseDao;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
@@ -15,25 +16,25 @@ public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
     }
 
     @Override
-    public void getExercises(String muscle) {
+    public void getExercises(String muscle, IExercisesRepository.GetExercisesCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            exerciseCallback.onSuccessFromLocal(exerciseDao.getExercisesByMuscle(muscle));
+            callback.onSuccess(exerciseDao.getExercisesByMuscle(muscle));
         });
 
     }
 
     @Override
-    public void getExercise(long id) {
+    public void getExercise(long id, IExercisesRepository.GetExercisesCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             ArrayList<Exercise> exercise = new ArrayList<>();
             exercise.add(exerciseDao.getExerciseById(id));
-            exerciseCallback.onSuccessFromLocal(exercise);
+            callback.onSuccess(exercise);
 
         });
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises) {
+    public void saveExercises(List<Exercise> exercises, IExercisesRepository.GetExercisesCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Exercise> dbExercises = exerciseDao.getAll();
 
@@ -47,7 +48,7 @@ public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
             for (int i = 0; i < exercises.size(); i++) {
                 exercises.get(i).setExerciseId(insertedExerciseList.get(i));
             }
-            exerciseCallback.onSuccessFromLocal(exercises);
+            callback.onSuccess(exercises);
         });
     }
 }

@@ -15,8 +15,8 @@ public interface IExercisesRepository {
     }
 
     void getExercisesByMuscle(String muscle, GetExercisesCallback callback);
-    void getExerciseById(long id);
-    void getExercisesByScheduleId(long scheduleId);
-    void saveExercises(List<Exercise> exercises);
+    void getExerciseById(long id, GetExercisesCallback callback);
+    void getExercisesByScheduleId(long scheduleId, GetExercisesCallback callback);
+    void saveExercises(List<Exercise> exercises, GetExercisesCallback callback);
 
 }

@@ -13,6 +13,7 @@ import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
 import it.unimib.icasiduso.sportrack.data.service.NetworkService;
 import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseLocalDataSource;
 import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseRemoteDataSource;
+import it.unimib.icasiduso.sportrack.data.source.exercise.IExerciseDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.AuthDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.BaseAuthDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.BaseUserRemoteDataSource;
@@ -54,8 +55,8 @@ public class ServiceLocator {
     }
 
     public IExercisesRepository getExercisesRepository(Application application) {
-        BaseExerciseRemoteDataSource exerciseRemoteDataSource;
-        BaseExerciseLocalDataSource exerciseLocalDataSource;
+        IExerciseDataSource.Remote exerciseRemoteDataSource;
+        IExerciseDataSource.Local exerciseLocalDataSource;
 
         exerciseRemoteDataSource = new ExerciseRemoteDataSource(application.getString(R.string.api_key));
         exerciseLocalDataSource = new ExerciseLocalDataSource(getExerciseDatabase(application));

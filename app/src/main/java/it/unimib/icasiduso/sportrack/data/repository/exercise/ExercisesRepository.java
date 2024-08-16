@@ -4,7 +4,6 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.source.exercise.IExerciseDataSource;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
-import it.unimib.icasiduso.sportrack.utils.NetworkUtil;
 
 public class ExercisesRepository implements IExercisesRepository {
 
@@ -21,30 +20,27 @@ public class ExercisesRepository implements IExercisesRepository {
         this.exerciseLocalDataSource = exerciseLocalDataSource;
     }
 
-    private void saveExercisesInDatabase(List<Exercise> exercises) {
-        exerciseLocalDataSource.saveExercises(exercises);
-    }
-
     @Override
     public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {
         if (callback == null) return;
-        exerciseLocalDataSource.getExercises(muscle);
-        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle);
+        //TODO: Implementare
+        //exerciseLocalDataSource.getExercises(muscle);
+        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle, callback);
     }
 
     @Override
-    public void getExerciseById(long id) {
-        exerciseLocalDataSource.getExercise(id);
+    public void getExerciseById(long id, GetExercisesCallback callback) {
+        exerciseLocalDataSource.getExercise(id, callback);
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises) {
-        exerciseLocalDataSource.saveExercises(exercises);
+    public void getExercisesByScheduleId(long scheduleId, GetExercisesCallback callback) {
+
     }
 
     @Override
-    public void getExercisesByScheduleId(long scheduleId) {
+    public void saveExercises(List<Exercise> exercises, GetExercisesCallback callback) {
+        exerciseLocalDataSource.saveExercises(exercises, callback);
     }
-
 
 }

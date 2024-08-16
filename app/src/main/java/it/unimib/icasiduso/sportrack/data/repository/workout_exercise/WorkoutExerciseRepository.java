@@ -9,50 +9,40 @@ import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
 import it.unimib.icasiduso.sportrack.data.database.WorkoutExerciseDao;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
+import it.unimib.icasiduso.sportrack.data.source.workout_exercise.IWorkoutExerciseDataSource;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 
 public class WorkoutExerciseRepository implements IWorkoutExercisesRepository{
+
     private static final String TAG = ExercisesRepository.class.getSimpleName();
-    private final Application application;
-    private final ExercisesApiService exercisesApiService;
-    private final ExerciseDao exerciseDao;
-    private WorkoutExerciseDao workoutExerciseDao;
-    private final WorkoutExerciseRepositoryCallbackable workoutExerciseRepositoryCallbackable;
 
-    public WorkoutExerciseRepository(Application application, WorkoutExerciseRepositoryCallbackable responseCallback) {
-        this.application = application;
-        this.exercisesApiService = ServiceLocator.getInstance().getExercisesApiService();
-        ExerciseRoomDatabase exerciseRoomDatabase = ServiceLocator.getInstance().getExerciseDatabase(application);
-        this.exerciseDao = exerciseRoomDatabase.exerciseDao();
-        this.workoutExerciseDao = exerciseRoomDatabase.workoutExerciseDao();
-        this.workoutExerciseRepositoryCallbackable = responseCallback;
+    private final IWorkoutExerciseDataSource.Local workoutExerciseLocalDataSource;
+    private final IWorkoutExerciseDataSource.Remote workoutExerciseRemoteDataSource;
+
+
+    public WorkoutExerciseRepository(
+            IWorkoutExerciseDataSource.Remote workoutExerciseRemoteDataSource,
+            IWorkoutExerciseDataSource.Local workoutExerciseLocalDataSource
+    ) {
+        this.workoutExerciseRemoteDataSource = workoutExerciseRemoteDataSource;
+        this.workoutExerciseLocalDataSource = workoutExerciseLocalDataSource;
     }
 
-    public void saveWorkoutExercise(WorkoutExercise workoutExercise) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            workoutExerciseDao.insertAll(workoutExercise);
-            workoutExerciseRepositoryCallbackable.onSuccess();
-        });
+
+    @Override
+    public void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise) {
+
     }
 
-    public void fetchWorkoutExercisesByScheduleId(Long scheduleId){
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            workoutExerciseRepositoryCallbackable.onSuccess(workoutExerciseDao.getWorkoutExerciseByScheduleId(scheduleId));
-        });
+    @Override
+    public void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise) {
+
     }
 
-    public void deleteWorkoutExercise(WorkoutExercise workoutExercise){
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            workoutExerciseDao.deleteWorkoutExercise(workoutExercise);
-            workoutExerciseRepositoryCallbackable.onSuccess();
-        });
-    }
+    @Override
+    public void getWorkoutExerciseByScheduleId(Long scheduleId) {
 
-    public void deleteWorkoutExercisesByScheduleId(Long scheduleId){
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            workoutExerciseDao.deleteWorkoutExercisesByScheduleId(scheduleId);
-            workoutExerciseRepositoryCallbackable.onSuccess();
-        });
     }
 }
+
