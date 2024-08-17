@@ -13,9 +13,9 @@ import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 public class ExerciseViewModel extends ViewModel implements IExercisesRepository.GetExercisesCallback {
     private static final String TAG = ExerciseViewModel.class.getSimpleName();
 
-    private MutableLiveData<Boolean> isLoadingLiveData;
-    private MutableLiveData<Exercise> exerciseLiveData;
-    private MutableLiveData<Result> exercisesLiveData;
+    private final MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Exercise> exerciseLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Result> exercisesLiveData = new MutableLiveData<>();
 
     private final IExercisesRepository exercisesRepository;
 
@@ -32,6 +32,7 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
     }
 
     public MutableLiveData<Result> getExercisesByMuscle(String muscle) {
+        setIsLoading(true);
         exercisesRepository.getExercisesByMuscle(muscle, this);
         return exercisesLiveData;
     }

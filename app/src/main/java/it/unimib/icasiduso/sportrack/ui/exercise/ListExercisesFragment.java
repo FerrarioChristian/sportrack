@@ -1,6 +1,7 @@
 package it.unimib.icasiduso.sportrack.ui.exercise;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,9 @@ import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory
 public class ListExercisesFragment extends Fragment implements ExerciseRecyclerViewAdapter.OnItemClickListener {
 
     private static final String TAG = ListExercisesFragment.class.getSimpleName();
+
     private ExerciseViewModel exerciseViewModel;
-    private List<Exercise> exercises;
     private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
-    private ProgressBar progressBar;
 
     private View view;
 
@@ -47,17 +47,8 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
                         requireActivity().getApplication()
                 );
 
-        if (exercisesRepository != null) {
-            exerciseViewModel = new ViewModelProvider(
-                    requireActivity(), new ExerciseViewModelFactory(exercisesRepository)
-            ).get(ExerciseViewModel.class);
-        } else {
-            Snackbar.make(requireActivity().findViewById(
-                            android.R.id.content),
-                    getString(R.string.unexpected_error),
-                    Snackbar.LENGTH_LONG).show();
-        }
-        exercises = new ArrayList<>();
+        ExerciseViewModelFactory factory = new ExerciseViewModelFactory(exercisesRepository);
+        exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
     }
 
     @Override
@@ -70,15 +61,8 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
 
-        progressBar = view.findViewById(R.id.progress_bar);
-        if (exercises.isEmpty()) {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
         RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_exercise_list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, this);
-        recyclerViewExerciseList.setLayoutManager(layoutManager);
+        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(this);
         recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
 
         observeViewModel();
@@ -90,10 +74,22 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
                 getViewLifecycleOwner(),
                 result -> {
                     if (result.isSuccess()) {
-                        this.exercises = ((Result.ExercisesResponseSuccess) result).getData();
-                        this.exerciseRecyclerViewAdapter.notifyDataSetChanged();
+                        exerciseRecyclerViewAdapter.setExercises(((Result.ExercisesResponseSuccess) result).getData());
                     } else {
                         //TODO Snackbar error (api error)
+                    }
+                }
+        );
+
+
+        ProgressBar progressBar = view.findViewById(R.id.progress_bar);
+        exerciseViewModel.getIsLoadingLiveData().observe(
+                getViewLifecycleOwner(),
+                result -> {
+                    if (result) {
+                        progressBar.setVisibility(View.VISIBLE);
+                    } else {
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
         );
