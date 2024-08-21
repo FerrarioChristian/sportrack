@@ -13,10 +13,9 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
     }
 
     @Override
-    public void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback) {
+    public void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             workoutExerciseDao.insertAll(workoutExercise);
-            callback.onSuccess();
         });
     }
 
