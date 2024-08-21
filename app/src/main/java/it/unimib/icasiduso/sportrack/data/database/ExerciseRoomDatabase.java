@@ -12,6 +12,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
@@ -27,11 +28,11 @@ public abstract class ExerciseRoomDatabase extends RoomDatabase {
     public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    public static ExerciseRoomDatabase getDatabase(final Context context) {
+    public static ExerciseRoomDatabase getDatabase() {
         if (INSTANCE == null) {
             synchronized (ExerciseRoomDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                    INSTANCE = Room.databaseBuilder(App.getInstance(),
                             ExerciseRoomDatabase.class, EXERCISE_DATABASE_NAME).build();
                 }
             }

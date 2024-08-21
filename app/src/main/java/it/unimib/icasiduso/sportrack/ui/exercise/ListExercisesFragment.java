@@ -1,7 +1,6 @@
 package it.unimib.icasiduso.sportrack.ui.exercise;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
@@ -36,16 +30,12 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
     private ExerciseViewModel exerciseViewModel;
     private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
 
-    private View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IExercisesRepository exercisesRepository =
-                ServiceLocator.getInstance().getExercisesRepository(
-                        requireActivity().getApplication()
-                );
+        IExercisesRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
 
         ExerciseViewModelFactory factory = new ExerciseViewModelFactory(exercisesRepository);
         exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
@@ -59,7 +49,6 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.view = view;
 
         RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_exercise_list);
         exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(this);
@@ -75,6 +64,8 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
                 result -> {
                     if (result.isSuccess()) {
                         exerciseRecyclerViewAdapter.setExercises(((Result.ExercisesResponseSuccess) result).getData());
+                        //TODO implementare salvataggio nel database (nella repository)
+                        //exerciseViewModel.saveExercises(((Result.ExercisesResponseSuccess) result).getData());
                     } else {
                         //TODO Snackbar error (api error)
                     }
@@ -82,7 +73,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
         );
 
 
-        ProgressBar progressBar = view.findViewById(R.id.progress_bar);
+        ProgressBar progressBar = requireView().findViewById(R.id.progress_bar);
         exerciseViewModel.getIsLoadingLiveData().observe(
                 getViewLifecycleOwner(),
                 result -> {
@@ -100,6 +91,6 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
     public void onExerciseClick(Exercise exercise) {
         Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
         ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId, exercise);
-        Navigation.findNavController(view).navigate(action);
+        Navigation.findNavController(requireView()).navigate(action);
     }
 }
