@@ -1,6 +1,22 @@
 package it.unimib.icasiduso.sportrack.ui.schedule;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.adapters.WorkoutExerciseRecyclerViewAdapter;
+import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepository;
+import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepositoryCallbackable;
+import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class ListWorkoutExercisesFragment extends Fragment /*implements WorkoutExerciseRepositoryCallbackable, WorkoutExerciseRecyclerViewAdapter.OnItemClickListener*/ {
 /*

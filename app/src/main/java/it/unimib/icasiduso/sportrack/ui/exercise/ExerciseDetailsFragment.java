@@ -87,7 +87,4 @@ public class ExerciseDetailsFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-
-
 }
