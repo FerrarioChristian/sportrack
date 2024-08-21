@@ -30,8 +30,8 @@ import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExe
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExerciseRepositoryCallbackable, WorkoutExerciseRecyclerViewAdapter.OnItemClickListener {
-
+public class ListWorkoutExercisesFragment extends Fragment /*implements WorkoutExerciseRepositoryCallbackable, WorkoutExerciseRecyclerViewAdapter.OnItemClickListener*/ {
+/*
     private static final String TAG = ListWorkoutExercisesFragment.class.getSimpleName();
 
     private List<WorkoutExercise> workoutExercises;
@@ -117,8 +117,8 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
 
     @Override
     public void onExerciseClick(WorkoutExercise workoutExercise) {
-            /*ListWorkoutExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId,);
-            Navigation.findNavController(view).navigate(action);*/
+            //ListWorkoutExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId,);
+            //Navigation.findNavController(view).navigate(action);
     }
 
     @Override
@@ -151,7 +151,6 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
         }
     };
 
-
-
+*/
 
 }

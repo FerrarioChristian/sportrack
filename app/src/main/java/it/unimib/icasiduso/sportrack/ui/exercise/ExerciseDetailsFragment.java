@@ -26,8 +26,8 @@ import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 
-public class ExerciseDetailsFragment extends Fragment implements WorkoutExerciseRepositoryCallbackable {
-    private static final String TAG = ExerciseDetailsFragment.class.getSimpleName();
+public class ExerciseDetailsFragment extends Fragment /*implements WorkoutExerciseRepositoryCallbackable*/ {
+    /*private static final String TAG = ExerciseDetailsFragment.class.getSimpleName();
     private FragmentExerciseDetailsBinding binding;
     private Application application;
 
@@ -118,4 +118,5 @@ public class ExerciseDetailsFragment extends Fragment implements WorkoutExercise
     public void onFailure(String errorMessage) {
 
     }
+    */
 }

@@ -1,4 +1,4 @@
-package it.unimib.icasiduso.sportrack.ui.auth;
+package it.unimib.icasiduso.sportrack.viewmodel.user;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

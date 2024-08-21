@@ -39,8 +39,8 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class ScheduleFragment extends Fragment implements ScheduleRepositoryCallbackable {
-
+public class ScheduleFragment extends Fragment /*implements ScheduleRepositoryCallbackable*/ {
+/*
     private static final String TAG = ScheduleFragment.class.getSimpleName();
     private List<Schedule> scheduleList;
     private ScheduleRepository scheduleRepository;
@@ -167,5 +167,5 @@ public class ScheduleFragment extends Fragment implements ScheduleRepositoryCall
     @Override
     public void onFailure(String errorMessage) {
 
-    }
+    }*/
 }

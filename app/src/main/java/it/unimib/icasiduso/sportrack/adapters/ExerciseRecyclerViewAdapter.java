@@ -18,7 +18,6 @@ import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ExerciseViewHolder> {
     List<Exercise> exercises;
-    private final Application application;
     private final OnItemClickListener onItemClickListener;
 
 
@@ -26,10 +25,13 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         void onExerciseClick(Exercise exercise);
     }
 
-    public ExerciseRecyclerViewAdapter(List<Exercise> exercises, Application application, OnItemClickListener onItemClickListener) {
-        this.exercises = exercises;
-        this.application = application;
+    public ExerciseRecyclerViewAdapter(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+        notifyDataSetChanged();
     }
 
     @NonNull

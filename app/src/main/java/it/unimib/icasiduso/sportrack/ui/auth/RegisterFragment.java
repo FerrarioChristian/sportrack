@@ -10,30 +10,23 @@ import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
-import it.unimib.icasiduso.sportrack.model.Result;
-import it.unimib.icasiduso.sportrack.model.User;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
+import it.unimib.icasiduso.sportrack.viewmodel.user.UserViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.user.UserViewModelFactory;
 
 public class RegisterFragment extends Fragment {
     private static final String TAG = RegisterFragment.class.getSimpleName();
@@ -49,7 +42,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
         userViewModel = new ViewModelProvider(requireActivity(), new UserViewModelFactory(userRepository)).get(UserViewModel.class);
         userViewModel.setAuthenticationError(false);
     }

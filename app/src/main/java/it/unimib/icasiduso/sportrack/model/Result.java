@@ -1,10 +1,14 @@
 package it.unimib.icasiduso.sportrack.model;
 
+import java.util.List;
+
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+
 public abstract class Result {
     private Result() {}
 
     public boolean isSuccess() {
-        if (this instanceof UserResponseSuccess) {
+        if (this instanceof UserResponseSuccess || this instanceof ExercisesResponseSuccess) {
             return true;
         } else {
             return false;
@@ -19,6 +23,19 @@ public abstract class Result {
             return user;
         }
     }
+
+    public static final class ExercisesResponseSuccess extends Result {
+        private final List<Exercise> exercises;
+
+        public ExercisesResponseSuccess(List<Exercise> exercises) {
+            this.exercises = exercises;
+        }
+
+        public List<Exercise> getData() {
+            return this.exercises;
+        }
+    }
+
 
     public static final class Error extends Result {
         private final String message;

@@ -9,16 +9,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.JsonParserUtil;
 
-public class ExercisesMockRepository implements IExercisesRepository{
+public class ExercisesMockRepository implements IExercisesRepository {
     private static final String TAG = ExercisesMockRepository.class.getSimpleName();
 
     private final Application application;
     private final ExerciseRepositoryCallbackable responseCallback;
 
-    public ExercisesMockRepository(Application application, ExerciseRepositoryCallbackable responseCallback){
+    public ExercisesMockRepository(Application application, ExerciseRepositoryCallbackable responseCallback) {
         this.application = application;
         this.responseCallback = responseCallback;
     }
@@ -35,17 +36,21 @@ public class ExercisesMockRepository implements IExercisesRepository{
     }
 
     @Override
-    public MutableLiveData<List<Exercise>> getExercisesByMuscle(String muscle) {
-    return null;
-    }
+    public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {}
 
     @Override
-    public void getExerciseById(long id) {
+    public void getExerciseById(long id, GetExercisesCallback callback) {
 
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises) {
+    public void getExercisesByScheduleId(long scheduleId, GetExercisesCallback callback) {
 
     }
+
+    @Override
+    public void saveExercises(List<Exercise> exercises, GetExercisesCallback callback) {
+
+    }
+
 }

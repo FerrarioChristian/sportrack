@@ -1,0 +1,65 @@
+Index: app/src/main/java/it/unimib/icasiduso/sportrack/ui/exercise/ListExercisesFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.unimib.icasiduso.sportrack.ui.exercise;\r\n\r\nimport android.os.Bundle;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ProgressBar;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.lifecycle.ViewModelProvider;\r\nimport androidx.navigation.Navigation;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.google.android.material.snackbar.Snackbar;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport it.unimib.icasiduso.sportrack.R;\r\nimport it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;\r\nimport it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;\r\nimport it.unimib.icasiduso.sportrack.model.Result;\r\nimport it.unimib.icasiduso.sportrack.model.exercise.Exercise;\r\nimport it.unimib.icasiduso.sportrack.utils.ServiceLocator;\r\nimport it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;\r\nimport it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory;\r\n\r\npublic class ListExercisesFragment extends Fragment {\r\n\r\n    private static final String TAG = ListExercisesFragment.class.getSimpleName();\r\n    private ExerciseViewModel exerciseViewModel;\r\n    private List<Exercise> exercises;\r\n    private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;\r\n    private ProgressBar progressBar;\r\n\r\n    @Override\r\n    public void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n\r\n        IExercisesRepository exercisesRepository =\r\n                ServiceLocator.getInstance().getExercisesRepository(\r\n                        requireActivity().getApplication()\r\n                );\r\n\r\n        if (exercisesRepository != null) {\r\n            exerciseViewModel = new ViewModelProvider(\r\n                    requireActivity(), new ExerciseViewModelFactory(exercisesRepository)\r\n            ).get(ExerciseViewModel.class);\r\n        } else {\r\n            Snackbar.make(requireActivity().findViewById(\r\n                            android.R.id.content),\r\n                    getString(R.string.unexpected_error),\r\n                    Snackbar.LENGTH_LONG).show();\r\n        }\r\n        exercises = new ArrayList<>();\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {\r\n        return inflater.inflate(R.layout.fragment_list_exercises, container, false);\r\n    }\r\n\r\n    @Override\r\n    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {\r\n        super.onViewCreated(view, savedInstanceState);\r\n\r\n        progressBar = view.findViewById(R.id.progress_bar);\r\n        if (exercises.isEmpty()) {\r\n            progressBar.setVisibility(View.VISIBLE);\r\n        }\r\n\r\n        RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_exercise_list);\r\n        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);\r\n\r\n        Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();\r\n        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, requireActivity().getApplication(), exercise -> {\r\n            ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId, exercise);\r\n            Navigation.findNavController(view).navigate(action);\r\n        });\r\n        recyclerViewExerciseList.setLayoutManager(layoutManager);\r\n        recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);\r\n\r\n        String muscle = ListExercisesFragmentArgs.fromBundle(getArguments()).getMuscle();\r\n        try {\r\n            exerciseViewModel.getExercisesByMuscle(muscle).observe(\r\n                    getViewLifecycleOwner(),\r\n                    result -> {\r\n                        if(result.isSuccess()) {\r\n                            this.exercises = ((Result.ExercisesResponseSuccess) result).getData();\r\n                            this.exerciseRecyclerViewAdapter.notifyDataSetChanged();\r\n                        } else {\r\n                            //TODO Snackbar error (api error)\r\n                        }\r\n                    }\r\n            );\r\n        } catch (IllegalArgumentException e) {\r\n            //TODO Snackbar error (muscle invalid)\r\n            //This should never happen\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/it/unimib/icasiduso/sportrack/ui/exercise/ListExercisesFragment.java b/app/src/main/java/it/unimib/icasiduso/sportrack/ui/exercise/ListExercisesFragment.java
+--- a/app/src/main/java/it/unimib/icasiduso/sportrack/ui/exercise/ListExercisesFragment.java	
++++ b/app/src/main/java/it/unimib/icasiduso/sportrack/ui/exercise/ListExercisesFragment.java	
+@@ -28,14 +28,18 @@
+ import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
+ import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory;
+ 
+-public class ListExercisesFragment extends Fragment {
++public class ListExercisesFragment extends Fragment implements ExerciseRecyclerViewAdapter.OnItemClickListener {
+ 
+     private static final String TAG = ListExercisesFragment.class.getSimpleName();
++
+     private ExerciseViewModel exerciseViewModel;
+-    private List<Exercise> exercises;
+     private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
++
++    private List<Exercise> exercises;
+     private ProgressBar progressBar;
+ 
++    private View view;
++
+     @Override
+     public void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -66,6 +70,7 @@
+     @Override
+     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+         super.onViewCreated(view, savedInstanceState);
++        this.view = view;
+ 
+         progressBar = view.findViewById(R.id.progress_bar);
+         if (exercises.isEmpty()) {
+@@ -75,11 +80,8 @@
+         RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_exercise_list);
+         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+ 
+-        Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+-        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, requireActivity().getApplication(), exercise -> {
+-            ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId, exercise);
+-            Navigation.findNavController(view).navigate(action);
+-        });
++
++        exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(exercises, this);
+         recyclerViewExerciseList.setLayoutManager(layoutManager);
+         recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
+ 
+@@ -101,4 +103,11 @@
+             //This should never happen
+         }
+     }
++
++    @Override
++    public void onExerciseClick(Exercise exercise) {
++        Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
++        ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId, exercise);
++        Navigation.findNavController(view).navigate(action);
++    }
+ }
