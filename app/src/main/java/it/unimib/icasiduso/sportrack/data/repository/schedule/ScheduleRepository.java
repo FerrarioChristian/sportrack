@@ -13,13 +13,11 @@ import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 public class ScheduleRepository {
     private static final String TAG = ScheduleRepository.class.getSimpleName();
 
-    private final Application application;
     private final ScheduleDao scheduleDao;
     private final ScheduleRepositoryCallbackable scheduleRepositoryCallbackable;
 
     public ScheduleRepository(Application application, ScheduleRepositoryCallbackable scheduleRepositoryCallbackable) {
-        this.application = application;
-        ExerciseRoomDatabase exerciseRoomDatabase = ServiceLocator.getInstance().getExerciseDatabase(application);
+        ExerciseRoomDatabase exerciseRoomDatabase = ServiceLocator.getInstance().getExerciseDatabase();
         this.scheduleDao = exerciseRoomDatabase.scheduleDao();
         this.scheduleRepositoryCallbackable = scheduleRepositoryCallbackable;
     }

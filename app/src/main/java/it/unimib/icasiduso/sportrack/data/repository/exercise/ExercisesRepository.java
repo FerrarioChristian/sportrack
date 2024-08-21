@@ -23,9 +23,19 @@ public class ExercisesRepository implements IExercisesRepository {
     @Override
     public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {
         if (callback == null) return;
-        //TODO: Implementare
-        //exerciseLocalDataSource.getExercises(muscle);
-        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle, callback);
+        //TODO: Implementare salvataggio e recupero online/offline
+        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle, new IExercisesRepository.GetExercisesCallback() {
+            @Override
+            public void onSuccess(List<Exercise> exercises) {
+                saveExercises(exercises, callback);
+                exerciseLocalDataSource.getExercises(muscle, callback);
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+
+            }
+        });
     }
 
     @Override

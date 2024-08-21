@@ -13,7 +13,7 @@ public interface IWorkoutExerciseDataSource {
     }
 
     interface Local {
-        void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+        void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise);
         void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
         void getWorkoutExercisesByScheduleId(long scheduleId, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
         void deleteWorkoutExercisesByScheduleId(long scheduleId, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);

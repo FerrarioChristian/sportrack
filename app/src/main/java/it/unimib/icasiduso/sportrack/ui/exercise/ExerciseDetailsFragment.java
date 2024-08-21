@@ -1,48 +1,45 @@
 package it.unimib.icasiduso.sportrack.ui.exercise;
 
-import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+import androidx.lifecycle.ViewModelProvider;
 
-import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
-import it.unimib.icasiduso.sportrack.data.database.WorkoutExerciseDao;
-import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepository;
-import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepositoryCallbackable;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.databinding.FragmentExerciseDetailsBinding;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
+import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory;
+import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModelFactory;
 
-public class ExerciseDetailsFragment extends Fragment /*implements WorkoutExerciseRepositoryCallbackable*/ {
-    /*private static final String TAG = ExerciseDetailsFragment.class.getSimpleName();
+public class ExerciseDetailsFragment extends Fragment {
+    private static final String TAG = ExerciseDetailsFragment.class.getSimpleName();
+
+    private WorkoutExerciseViewModel workoutExerciseViewModel;
     private FragmentExerciseDetailsBinding binding;
-    private Application application;
-
-    private WorkoutExerciseRepository workoutExerciseRepository;
-    private WorkoutExerciseDao workoutExerciseDao;
-    private View view;
 
 
     public ExerciseDetailsFragment() {
+        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        workoutExerciseRepository = new WorkoutExerciseRepository(requireActivity().getApplication(), this);
+        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
+        WorkoutExerciseViewModelFactory workoutExerciseViewModelFactory = new WorkoutExerciseViewModelFactory(workoutExercisesRepository);
+        workoutExerciseViewModel = new ViewModelProvider(requireActivity(), workoutExerciseViewModelFactory).get(WorkoutExerciseViewModel.class);
     }
 
     @Override
@@ -55,17 +52,12 @@ public class ExerciseDetailsFragment extends Fragment /*implements WorkoutExerci
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-        this.application = getActivity().getApplication();
-        ExerciseRoomDatabase exerciseRoomDatabase = ServiceLocator.getInstance().getExerciseDatabase(application);
-        this.workoutExerciseDao = exerciseRoomDatabase.workoutExerciseDao();
-        this.view = view;
-
         super.onViewCreated(view, savedInstanceState);
 
         Exercise exercise = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getExercise();
-        long scheduleId = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getScheduleId();
-        Log.d(TAG, Long.toString(scheduleId));
+        //TODO cambiare scheduleID !!
+        //long scheduleId = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        long scheduleId = 1;
         if(scheduleId != 0L){
             View container = view.findViewById(R.id.scheduleInputContainer);
             container.setVisibility(View.VISIBLE);
@@ -74,10 +66,10 @@ public class ExerciseDetailsFragment extends Fragment /*implements WorkoutExerci
             container.setVisibility(View.GONE);
         }
 
-
+        //TODO sistemare le stringhe
         binding.textViewExerciseName.setText(exercise.getName());
         binding.textViewExerciseType.setText("tipo: " + exercise.getType());
-        binding.textViewExerciseMuscle.setText("musccolo: " + exercise.getMuscle());
+        binding.textViewExerciseMuscle.setText("muscolo: " + exercise.getMuscle());
         binding.textViewExerciseEquipment.setText("attrezzo: " + exercise.getEquipment());
         binding.textViewExerciseDifficulty.setText("livello: " + exercise.getDifficulty());
         binding.textViewExerciseDescription.setText(exercise.getInstructions());
@@ -86,7 +78,7 @@ public class ExerciseDetailsFragment extends Fragment /*implements WorkoutExerci
             String series = binding.textViewSeries.getText().toString();
             String reps = binding.textViewReps.getText().toString();
             WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exercise.getExerciseId(), scheduleId);
-            workoutExerciseRepository.saveWorkoutExercise(workoutExercise);
+            workoutExerciseViewModel.addWorkoutExerciseToSchedule(workoutExercise);
         });
     }
 
@@ -95,28 +87,4 @@ public class ExerciseDetailsFragment extends Fragment /*implements WorkoutExerci
         super.onDestroyView();
         binding = null;
     }
-
-    @Override
-    public void onSuccess() {
-        Activity activity = getActivity();
-        if (activity != null) {
-            activity.runOnUiThread(() -> {
-                Toast.makeText(getActivity(), R.string.saved_workout_exercise,
-                        Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(view).popBackStack(R.id.scheduleFragment,false);
-
-            });
-        }
-    }
-
-    @Override
-    public void onSuccess(List<WorkoutExercise> exercises) {
-
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-
-    }
-    */
 }
