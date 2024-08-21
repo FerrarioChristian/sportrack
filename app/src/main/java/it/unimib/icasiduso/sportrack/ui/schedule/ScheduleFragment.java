@@ -20,8 +20,6 @@ import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ScheduleRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.schedule.ScheduleRepository;
 import it.unimib.icasiduso.sportrack.data.repository.schedule.ScheduleRepositoryCallbackable;
-import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepository;
-import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepositoryCallbackable;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;

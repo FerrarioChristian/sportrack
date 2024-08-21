@@ -13,8 +13,6 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.WorkoutExerciseRecyclerViewAdapter;
-import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepository;
-import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.WorkoutExerciseRepositoryCallbackable;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
