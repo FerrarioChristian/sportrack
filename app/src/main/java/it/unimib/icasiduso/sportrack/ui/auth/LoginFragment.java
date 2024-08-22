@@ -33,8 +33,6 @@ public class LoginFragment extends Fragment {
     private static final String TAG = LoginFragment.class.getSimpleName();
 
     private UserViewModel userViewModel;
-    private TextInputLayout emailTextInput;
-    private TextInputLayout passwordTextInput;
 
     public LoginFragment(){}
 
@@ -60,10 +58,10 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        emailTextInput = view.findViewById(R.id.login_name_textfield_layout);
+        TextInputLayout emailTextInput = view.findViewById(R.id.login_name_textfield_layout);
 
         TextInputEditText emailEditText = (TextInputEditText) emailTextInput.getEditText();
-        passwordTextInput = view.findViewById(R.id.login_label_password_layout);
+        TextInputLayout passwordTextInput = view.findViewById(R.id.login_label_password_layout);
         TextInputEditText passwordEditText = (TextInputEditText) passwordTextInput.getEditText();
 
 
@@ -79,25 +77,20 @@ public class LoginFragment extends Fragment {
             String password = passwordEditText.getText().toString().trim();
 
             if(isEmailOk(email) && isPasswordOk(password)){
-                if (!userViewModel.isAuthenticationError()) {
                     userViewModel.getUserMutableLiveData(email, password, true).observe(
                             getViewLifecycleOwner(), result -> {
                                 if (result.isSuccess()) {
-                                    //User user = ((Result.UserResponseSuccess) result).getData();
-                                    userViewModel.setAuthenticationError(false);
                                     Log.d(TAG, "Login successful");
                                     Intent intent = new Intent(requireContext(), MainActivityWithBottomNav.class);
                                     startActivity(intent);
                                     requireActivity().finish();
                                 } else {
                                     Log.d(TAG, "Login failed");
-                                    userViewModel.setAuthenticationError(true);
                                     Toast.makeText(getActivity(), R.string.authentication_failed,
                                             Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
-            }
         });
 
         final SignInButton googleButton = view.findViewById(R.id.login_with_google);
@@ -112,7 +105,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        userViewModel.setAuthenticationError(false);
     }
 
     private boolean isPasswordOk(String password){

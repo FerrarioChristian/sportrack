@@ -13,19 +13,8 @@ public class UserViewModel extends ViewModel {
 
     private MutableLiveData<Result> userMutableLiveData;
 
-    private boolean authenticationError;
-
-    public boolean isAuthenticationError() {
-        return authenticationError;
-    }
-
-    public void setAuthenticationError(boolean authenticationError) {
-        this.authenticationError = authenticationError;
-    }
-
     public UserViewModel(IUserRepository userRepository) {
         this.userRepository = userRepository;
-        authenticationError = false;
     }
 
     public MutableLiveData<Result> getUserMutableLiveData(
