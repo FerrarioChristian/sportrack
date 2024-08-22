@@ -1,6 +1,21 @@
 package it.unimib.icasiduso.sportrack.data.source.exercise;
 
+import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_DATABASE;
+import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_EXERCISES_COLLECTION;
+import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_USERS_COLLECTION;
+
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -17,10 +32,14 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
     private static final String TAG = ExerciseRemoteDataSource.class.getSimpleName();
     private final ExercisesApiService exercisesApiService;
     private final String apiKey;
+    private final DatabaseReference databaseReference;
 
     public ExerciseRemoteDataSource(String apiKey) {
         this.exercisesApiService = ServiceLocator.getInstance().getExercisesApiService();
         this.apiKey = apiKey;
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(FIREBASE_DATABASE);
+        databaseReference = firebaseDatabase.getReference().getRef();
     }
 
 
@@ -45,6 +64,14 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
 
     @Override
     public void saveExercises(List<Exercise> exercises, IExercisesRepository.GetExercisesCallback callback) {
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            return;
+        }
+        DatabaseReference exercisesRef = databaseReference.child(FIREBASE_USERS_COLLECTION).child(user.getUid()).child(FIREBASE_EXERCISES_COLLECTION);
+        exercisesRef.setValue(exercises).addOnSuccessListener(aVoid -> {
+            //TODO Gestire meglio
+           callback.onSuccess(exercises);
+        }).addOnFailureListener(callback::onFailure);
     }
 }
