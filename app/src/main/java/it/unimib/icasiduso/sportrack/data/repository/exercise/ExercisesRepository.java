@@ -50,7 +50,9 @@ public class ExercisesRepository implements IExercisesRepository {
 
     @Override
     public void saveExercises(List<Exercise> exercises, GetExercisesCallback callback) {
+        //TODO gestire mancanza di connessione
         exerciseLocalDataSource.saveExercises(exercises, callback);
+        exerciseRemoteDataSource.saveExercises(exercises, callback);
     }
 
 }
