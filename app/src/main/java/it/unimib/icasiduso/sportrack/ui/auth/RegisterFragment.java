@@ -32,9 +32,6 @@ public class RegisterFragment extends Fragment {
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
     private UserViewModel userViewModel;
-    private TextInputLayout emailTextInput;
-    private TextInputLayout passwordTextInput;
-    private TextInputLayout confirmPasswordTextInput;
 
 
     public RegisterFragment(){}
@@ -44,7 +41,6 @@ public class RegisterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
         userViewModel = new ViewModelProvider(requireActivity(), new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-        userViewModel.setAuthenticationError(false);
     }
 
     @Override
@@ -62,11 +58,11 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        emailTextInput = view.findViewById(R.id.register_email_textfield_layout);
+        TextInputLayout emailTextInput = view.findViewById(R.id.register_email_textfield_layout);
         TextInputEditText emailEditText = (TextInputEditText) emailTextInput.getEditText();
-        passwordTextInput = view.findViewById(R.id.register_label_password_layout);
+        TextInputLayout passwordTextInput = view.findViewById(R.id.register_label_password_layout);
         TextInputEditText passwordEditText = (TextInputEditText) passwordTextInput.getEditText();
-        confirmPasswordTextInput = view.findViewById(R.id.register_label_confirm_password_layout);
+        TextInputLayout confirmPasswordTextInput = view.findViewById(R.id.register_label_confirm_password_layout);
         TextInputEditText confirmPasswordEditText = (TextInputEditText) confirmPasswordTextInput.getEditText();
 
         Button loginButton = view.findViewById(R.id.go_to_login_button);
@@ -81,21 +77,17 @@ public class RegisterFragment extends Fragment {
             String confirmPassword = confirmPasswordEditText.getText().toString();
 
             if(isEmailOk(email) && isPasswordOk(password, confirmPassword)){
-                if (!userViewModel.isAuthenticationError()) {
                     userViewModel.getUserMutableLiveData(email, password, false).observe(
                             getViewLifecycleOwner(), result -> {
                                 if (result.isSuccess()) {
-                                    userViewModel.setAuthenticationError(false);
                                     Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
                                     startActivity(intent);
                                 } else {
-                                    userViewModel.setAuthenticationError(true);
                                     Toast.makeText(getActivity(), "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
-            }
 
         });
 

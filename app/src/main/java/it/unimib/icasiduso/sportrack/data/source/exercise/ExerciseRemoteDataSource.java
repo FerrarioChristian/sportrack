@@ -71,6 +71,8 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
         DatabaseReference exercisesRef = databaseReference.child(FIREBASE_USERS_COLLECTION).child(user.getUid()).child(FIREBASE_EXERCISES_COLLECTION);
         exercisesRef.setValue(exercises).addOnSuccessListener(aVoid -> {
             //TODO Gestire meglio
+            //TODO Leggere dal database e far scrivere gli oggetti con l'ID sul remoto
+            //TODO Ora fa override, implementare append
            callback.onSuccess(exercises);
         }).addOnFailureListener(callback::onFailure);
     }
