@@ -75,6 +75,7 @@ public class WorkoutExerciseRecyclerViewAdapter /*extends RecyclerView.Adapter<W
 
 
        public void bind(WorkoutExercise workoutExercise) {
+       //TODO Usare ViewModel
            ExercisesRepository exercisesRepository = new ExercisesRepository(application, new ExerciseRepositoryCallbackable() {
                @Override
                public void onSuccess(List<Exercise> exercises) {

@@ -12,20 +12,19 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 
+import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
 public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRecyclerViewAdapter.ScheduleViewHolder> {
     List<Schedule> scheduleList;
-    private final Application application;
     private final OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
         void onScheduleClick(Schedule schedule);
     }
 
-    public ScheduleRecyclerViewAdapter(List<Schedule> scheduleList, Application application, OnItemClickListener onItemClickListener){
-        this.application = application;
+    public ScheduleRecyclerViewAdapter(List<Schedule> scheduleList, OnItemClickListener onItemClickListener){
         this.scheduleList = scheduleList;
         this.onItemClickListener = onItemClickListener;
     }
@@ -61,7 +60,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
         public void bind(Schedule schedule) {
             textViewExerciseName.setText(schedule.getName());
-            textViewExerciseDifficulty.setText(application.getApplicationContext().getResources().getString(R.string.difficulty) + schedule.getDifficulty());
+            textViewExerciseDifficulty.setText(App.getRes().getString(R.string.difficulty, schedule.getDifficulty()));
         }
 
         @Override

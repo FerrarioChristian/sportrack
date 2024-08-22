@@ -13,6 +13,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 
+import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
@@ -31,6 +32,8 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
     public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
+
+        //TODO verificare se c'e un modo migliore
         notifyDataSetChanged();
     }
 
@@ -56,19 +59,17 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
     public class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textViewExerciseName;
         private final TextView textViewExerciseDifficulty;
-        private final Context context;
 
         public ExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewExerciseName = itemView.findViewById(R.id.textViewExerciseName);
             textViewExerciseDifficulty = itemView.findViewById(R.id.textViewExerciseDifficulty);
             itemView.setOnClickListener(this);
-            context = itemView.getContext();
         }
 
         public void bind(Exercise exercise) {
             textViewExerciseName.setText(exercise.getName());
-            textViewExerciseDifficulty.setText(context.getString(R.string.difficulty, exercise.getDifficulty()));
+            textViewExerciseDifficulty.setText(App.getRes().getString(R.string.difficulty, exercise.getDifficulty()));
         }
 
         @Override

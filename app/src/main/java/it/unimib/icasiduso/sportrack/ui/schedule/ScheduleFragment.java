@@ -1,5 +1,7 @@
 package it.unimib.icasiduso.sportrack.ui.schedule;
 
+import android.widget.ProgressBar;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -19,15 +21,14 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ScheduleRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.schedule.ScheduleRepository;
-import it.unimib.icasiduso.sportrack.data.repository.schedule.ScheduleRepositoryCallbackable;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-public class ScheduleFragment extends Fragment /*implements ScheduleRepositoryCallbackable*/ {
-/*
+public class ScheduleFragment extends Fragment {} /*implements ScheduleRecyclerViewAdapter.OnItemClickListener {
+
     private static final String TAG = ScheduleFragment.class.getSimpleName();
     private List<Schedule> scheduleList;
     private ScheduleRepository scheduleRepository;
@@ -154,5 +155,5 @@ public class ScheduleFragment extends Fragment /*implements ScheduleRepositoryCa
     @Override
     public void onFailure(String errorMessage) {
 
-    }*/
-}
+    }
+}*/
