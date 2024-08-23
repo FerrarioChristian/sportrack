@@ -3,13 +3,10 @@ package it.unimib.icasiduso.sportrack.data.repository.exercise;
 import android.app.Application;
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.JsonParserUtil;
 

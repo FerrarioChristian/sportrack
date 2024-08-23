@@ -2,8 +2,6 @@ package it.unimib.icasiduso.sportrack.data.repository.user;
 
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.Set;
-
 import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.User;
 

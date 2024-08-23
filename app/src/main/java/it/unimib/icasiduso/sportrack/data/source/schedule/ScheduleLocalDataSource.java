@@ -9,7 +9,7 @@ import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
 public class ScheduleLocalDataSource extends BaseScheduleLocalDataSource {
 
-    private ScheduleDao scheduleDao;
+    private final ScheduleDao scheduleDao;
 
     public ScheduleLocalDataSource(ExerciseRoomDatabase exerciseRoomDatabase) {
         this.scheduleDao = exerciseRoomDatabase.scheduleDao();

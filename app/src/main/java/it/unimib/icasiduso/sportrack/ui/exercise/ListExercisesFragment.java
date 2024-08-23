@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
@@ -59,31 +58,25 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
 
     private void observeViewModel() {
         String muscle = ListExercisesFragmentArgs.fromBundle(getArguments()).getMuscle();
-        exerciseViewModel.getExercisesByMuscle(muscle).observe(
-                getViewLifecycleOwner(),
-                result -> {
-                    if (result.isSuccess()) {
-                        exerciseRecyclerViewAdapter.setExercises(((Result.ExercisesResponseSuccess) result).getData());
-                        //TODO implementare salvataggio nel database (nella repository)
-                        //exerciseViewModel.saveExercises(((Result.ExercisesResponseSuccess) result).getData());
-                    } else {
-                        //TODO Snackbar error (api error)
-                    }
-                }
-        );
+        exerciseViewModel.getExercisesByMuscle(muscle).observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccess()) {
+                exerciseRecyclerViewAdapter.setExercises(((Result.ExercisesResponseSuccess) result).getData());
+                //TODO implementare salvataggio nel database (nella repository)
+                //exerciseViewModel.saveExercises(((Result.ExercisesResponseSuccess) result).getData());
+            } else {
+                //TODO Snackbar error (api error)
+            }
+        });
 
 
         ProgressBar progressBar = requireView().findViewById(R.id.progress_bar);
-        exerciseViewModel.getIsLoadingLiveData().observe(
-                getViewLifecycleOwner(),
-                result -> {
-                    if (result) {
-                        progressBar.setVisibility(View.VISIBLE);
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }
-        );
+        exerciseViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (result) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
 
     }
 

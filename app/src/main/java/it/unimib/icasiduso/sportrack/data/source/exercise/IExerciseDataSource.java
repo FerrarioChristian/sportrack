@@ -2,7 +2,6 @@ package it.unimib.icasiduso.sportrack.data.source.exercise;
 
 import java.util.List;
 
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 

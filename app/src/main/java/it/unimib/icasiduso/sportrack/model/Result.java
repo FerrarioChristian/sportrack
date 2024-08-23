@@ -8,11 +8,7 @@ public abstract class Result {
     private Result() {}
 
     public boolean isSuccess() {
-        if (this instanceof UserResponseSuccess || this instanceof ExercisesResponseSuccess) {
-            return true;
-        } else {
-            return false;
-        }
+        return this instanceof UserResponseSuccess || this instanceof ExercisesResponseSuccess;
     }
     public static final class UserResponseSuccess extends Result {
         private final User user;

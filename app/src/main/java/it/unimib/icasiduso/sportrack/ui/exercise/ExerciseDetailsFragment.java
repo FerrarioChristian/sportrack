@@ -10,17 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.databinding.FragmentExerciseDetailsBinding;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModel;
-import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
-import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory;
 import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModelFactory;
 
 public class ExerciseDetailsFragment extends Fragment {

@@ -1,11 +1,9 @@
 package it.unimib.icasiduso.sportrack.adapters;
 
-import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
 

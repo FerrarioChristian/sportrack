@@ -6,20 +6,13 @@ import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_USERS_COLLE
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;

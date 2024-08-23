@@ -1,24 +1,5 @@
 package it.unimib.icasiduso.sportrack.adapters;
 
-import android.app.Application;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.content.Context;
-
-import androidx.recyclerview.widget.RecyclerView;
-
-import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.util.List;
-
-import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExerciseRepositoryCallbackable;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
-import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
-import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
-
 public class WorkoutExerciseRecyclerViewAdapter /*extends RecyclerView.Adapter<WorkoutExerciseRecyclerViewAdapter.WorkoutExerciseViewHolder>{
     List<WorkoutExercise> workoutExercises;
     private final Application application;

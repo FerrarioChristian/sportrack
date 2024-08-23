@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
-import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseCallback;
 import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 

@@ -6,8 +6,8 @@ import static it.unimib.icasiduso.sportrack.utils.Constants.UNEXPECTED_ERROR;
 import static it.unimib.icasiduso.sportrack.utils.Constants.USER_COLLISION_ERROR;
 import static it.unimib.icasiduso.sportrack.utils.Constants.WEAK_PASSWORD_ERROR;
 
-
 import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -34,7 +34,7 @@ public class AuthDataSource extends BaseAuthDataSource {
         if (firebaseUser == null) {
             return null;
         } else {
-            return new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(),firebaseUser.getUid());
+            return new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), firebaseUser.getUid());
         }
     }
 

@@ -8,7 +8,6 @@ import androidx.room.Upsert;
 
 import java.util.List;
 
-import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
 @Dao

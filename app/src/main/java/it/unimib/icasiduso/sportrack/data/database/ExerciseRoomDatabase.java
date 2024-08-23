@@ -3,8 +3,6 @@ package it.unimib.icasiduso.sportrack.data.database;
 import static it.unimib.icasiduso.sportrack.utils.Constants.DATABASE_VERSION;
 import static it.unimib.icasiduso.sportrack.utils.Constants.EXERCISE_DATABASE_NAME;
 
-import android.content.Context;
-
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;

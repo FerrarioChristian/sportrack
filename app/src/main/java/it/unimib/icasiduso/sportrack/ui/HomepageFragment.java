@@ -2,20 +2,20 @@ package it.unimib.icasiduso.sportrack.ui;
 
 import static java.lang.Integer.parseInt;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.graphics.Color;
-import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
 
 public class HomepageFragment extends Fragment {
     private static final String TAG = HomepageFragment.class.getSimpleName();

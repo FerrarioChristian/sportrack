@@ -1,31 +1,6 @@
 package it.unimib.icasiduso.sportrack.ui.schedule;
 
-import android.widget.ProgressBar;
-
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-
-import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.adapters.ScheduleRecyclerViewAdapter;
-import it.unimib.icasiduso.sportrack.data.repository.schedule.ScheduleRepository;
-import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
-import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
-import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class ScheduleFragment extends Fragment {} /*implements ScheduleRecyclerViewAdapter.OnItemClickListener {
 
