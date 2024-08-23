@@ -34,9 +34,12 @@ public class LoginFragment extends Fragment {
 
     private UserViewModel userViewModel;
 
-    public LoginFragment(){}
+    public LoginFragment() {
+    }
 
-    public static LoginFragment newInstance() { return new LoginFragment(); }
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,41 +68,41 @@ public class LoginFragment extends Fragment {
         TextInputEditText passwordEditText = (TextInputEditText) passwordTextInput.getEditText();
 
 
-
         final Button registerButton = view.findViewById(R.id.go_to_register_button);
-        registerButton.setOnClickListener( v ->  {
+        registerButton.setOnClickListener(v -> {
             Navigation.findNavController(requireView()).navigate(R.id.registerFragment);
         });
 
         final Button loginButton = view.findViewById(R.id.login_button);
-        loginButton.setOnClickListener( v ->  {
+        loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
-            if(isEmailOk(email) && isPasswordOk(password)){
-                    userViewModel.getUserMutableLiveData(email, password, true).observe(
-                            getViewLifecycleOwner(), result -> {
-                                if (result.isSuccess()) {
-                                    Log.d(TAG, "Login successful");
-                                    Intent intent = new Intent(requireContext(), MainActivityWithBottomNav.class);
-                                    startActivity(intent);
-                                    requireActivity().finish();
-                                } else {
-                                    Log.d(TAG, "Login failed");
-                                    Toast.makeText(getActivity(), R.string.authentication_failed,
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
+            if (isEmailOk(email) && isPasswordOk(password)) {
+                userViewModel.getUserMutableLiveData(email, password, true).observe(
+                        getViewLifecycleOwner(), result -> {
+                            if (result.isSuccess()) {
+                                Log.d(TAG, "Login successful");
+                                Intent intent = new Intent(requireContext(), MainActivityWithBottomNav.class);
+                                startActivity(intent);
+                                requireActivity().finish();
+                            } else {
+                                Log.d(TAG, "Login failed");
+                                Toast.makeText(getActivity(), R.string.authentication_failed,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
         });
 
         final SignInButton googleButton = view.findViewById(R.id.login_with_google);
-        googleButton.setOnClickListener( v -> {
+        googleButton.setOnClickListener(v -> {
             googleLogin();
         });
     }
 
-    private void googleLogin(){}
+    private void googleLogin() {
+    }
 
 
     @Override
@@ -107,7 +110,7 @@ public class LoginFragment extends Fragment {
         super.onResume();
     }
 
-    private boolean isPasswordOk(String password){
+    private boolean isPasswordOk(String password) {
 
         if (password == null || password.length() < 8) {
             Toast.makeText(getActivity(), R.string.invalid_password,
@@ -117,7 +120,7 @@ public class LoginFragment extends Fragment {
         return true;
     }
 
-    private boolean isEmailOk(String email){
+    private boolean isEmailOk(String email) {
         if (!EmailValidator.getInstance().isValid((email))) {
             Toast.makeText(getActivity(), R.string.invalid_email,
                     Toast.LENGTH_SHORT).show();

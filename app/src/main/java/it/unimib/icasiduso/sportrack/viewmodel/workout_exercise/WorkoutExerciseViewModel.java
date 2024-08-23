@@ -10,15 +10,15 @@ public class WorkoutExerciseViewModel extends ViewModel {
     private static final String TAG = WorkoutExerciseViewModel.class.getSimpleName();
     private final IWorkoutExercisesRepository workoutExerciseRepository;
 
-    WorkoutExerciseViewModel(IWorkoutExercisesRepository workoutExerciseRepository){
+    WorkoutExerciseViewModel(IWorkoutExercisesRepository workoutExerciseRepository) {
         this.workoutExerciseRepository = workoutExerciseRepository;
     }
 
-    public void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise){
+    public void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise) {
         workoutExerciseRepository.addWorkoutExerciseToSchedule(workoutExercise);
     }
 
-    public void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise){
+    public void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise) {
         workoutExerciseRepository.deleteWorkoutExerciseFromSchedule(workoutExercise);
     }
 }

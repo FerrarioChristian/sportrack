@@ -54,7 +54,7 @@ public class ExerciseDetailsFragment extends Fragment {
         //TODO cambiare scheduleID !!
         //long scheduleId = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getScheduleId();
         long scheduleId = 1;
-        if(scheduleId != 0L){
+        if (scheduleId != 0L) {
             View container = view.findViewById(R.id.scheduleInputContainer);
             container.setVisibility(View.VISIBLE);
         } else {

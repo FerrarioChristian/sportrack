@@ -47,6 +47,7 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
                     callback.onFailure(new Exception(response.message()));
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<List<Exercise>> call, @NonNull Throwable throwable) {
                 //TODO fix error message
@@ -67,7 +68,7 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
             //TODO Leggere dal database e far scrivere gli oggetti con l'ID sul remoto
             //TODO Ora fa override, implementare append
 
-           callback.onSuccess(exercises);
+            callback.onSuccess(exercises);
         }).addOnFailureListener(callback::onFailure);
     }
 }

@@ -34,7 +34,8 @@ public class RegisterFragment extends Fragment {
     private UserViewModel userViewModel;
 
 
-    public RegisterFragment(){}
+    public RegisterFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,35 +67,35 @@ public class RegisterFragment extends Fragment {
         TextInputEditText confirmPasswordEditText = (TextInputEditText) confirmPasswordTextInput.getEditText();
 
         Button loginButton = view.findViewById(R.id.go_to_login_button);
-        loginButton.setOnClickListener( v -> {
+        loginButton.setOnClickListener(v -> {
             Navigation.findNavController(requireView()).navigate(R.id.loginFragment);
         });
 
         Button registerButton = view.findViewById(R.id.register_button);
-        registerButton.setOnClickListener( v -> {
+        registerButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
             String confirmPassword = confirmPasswordEditText.getText().toString();
 
-            if(isEmailOk(email) && isPasswordOk(password, confirmPassword)){
-                    userViewModel.getUserMutableLiveData(email, password, false).observe(
-                            getViewLifecycleOwner(), result -> {
-                                if (result.isSuccess()) {
-                                    Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(getActivity(), "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
+            if (isEmailOk(email) && isPasswordOk(password, confirmPassword)) {
+                userViewModel.getUserMutableLiveData(email, password, false).observe(
+                        getViewLifecycleOwner(), result -> {
+                            if (result.isSuccess()) {
+                                Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(getActivity(), "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
 
         });
 
     }
 
 
-    private boolean isPasswordOk(String password, String confirmPassword){
+    private boolean isPasswordOk(String password, String confirmPassword) {
 
         if (password == null || password.length() < MIN_PASSWORD_LENGTH) {
             String pass_error = getString(R.string.invalid_password, MIN_PASSWORD_LENGTH);
@@ -102,7 +103,7 @@ public class RegisterFragment extends Fragment {
                     Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (!password.equals(confirmPassword)){
+        if (!password.equals(confirmPassword)) {
             Toast.makeText(getActivity(), R.string.invalid_confirm_password,
                     Toast.LENGTH_SHORT).show();
             return false;
@@ -110,7 +111,7 @@ public class RegisterFragment extends Fragment {
         return true;
     }
 
-    private boolean isEmailOk(String email){
+    private boolean isEmailOk(String email) {
         if (!EmailValidator.getInstance().isValid((email))) {
             Toast.makeText(getActivity(), R.string.invalid_email,
                     Toast.LENGTH_SHORT).show();

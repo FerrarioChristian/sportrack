@@ -4,6 +4,7 @@ import it.unimib.icasiduso.sportrack.model.User;
 
 public interface UserCallback {
     void onAuthSuccess(User user);
+
     void onAuthFailure(String message);
 
     void onDatabaseSuccess(User user);

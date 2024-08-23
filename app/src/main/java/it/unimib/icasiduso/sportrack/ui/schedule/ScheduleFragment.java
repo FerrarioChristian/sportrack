@@ -2,7 +2,8 @@ package it.unimib.icasiduso.sportrack.ui.schedule;
 
 import androidx.fragment.app.Fragment;
 
-public class ScheduleFragment extends Fragment {} /*implements ScheduleRecyclerViewAdapter.OnItemClickListener {
+public class ScheduleFragment extends Fragment {
+} /*implements ScheduleRecyclerViewAdapter.OnItemClickListener {
 
     private static final String TAG = ScheduleFragment.class.getSimpleName();
     private List<Schedule> scheduleList;

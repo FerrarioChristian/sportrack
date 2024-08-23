@@ -11,26 +11,6 @@ import java.util.Objects;
 
 @Entity
 public class Exercise implements Parcelable {
-    @PrimaryKey(autoGenerate = true)
-    private long exerciseId;
-    private String name;
-    private String type;
-    private String muscle;
-    private String equipment;
-    private String difficulty;
-    private String instructions;
-
-    public Exercise(){}
-
-    protected Exercise(Parcel in) {
-        name = in.readString();
-        type = in.readString();
-        muscle = in.readString();
-        equipment = in.readString();
-        difficulty = in.readString();
-        instructions = in.readString();
-    }
-
     public static final Creator<Exercise> CREATOR = new Creator<Exercise>() {
         @Override
         public Exercise createFromParcel(Parcel in) {
@@ -42,6 +22,26 @@ public class Exercise implements Parcelable {
             return new Exercise[size];
         }
     };
+    @PrimaryKey(autoGenerate = true)
+    private long exerciseId;
+    private String name;
+    private String type;
+    private String muscle;
+    private String equipment;
+    private String difficulty;
+    private String instructions;
+
+    public Exercise() {
+    }
+
+    protected Exercise(Parcel in) {
+        name = in.readString();
+        type = in.readString();
+        muscle = in.readString();
+        equipment = in.readString();
+        difficulty = in.readString();
+        instructions = in.readString();
+    }
 
     public long getExerciseId() {
         return exerciseId;
@@ -51,54 +51,53 @@ public class Exercise implements Parcelable {
         this.exerciseId = exerciseId;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setMuscle(String muscle) {
-        this.muscle = muscle;
-    }
-
-    public void setEquipment(String equipment) {
-        this.equipment = equipment;
-    }
-
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getMuscle() {
         return muscle;
+    }
+
+    public void setMuscle(String muscle) {
+        this.muscle = muscle;
     }
 
     public String getEquipment() {
         return equipment;
     }
 
+    public void setEquipment(String equipment) {
+        this.equipment = equipment;
+    }
+
     public String getDifficulty() {
         return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
     public String getInstructions() {
         return instructions;
     }
 
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
 
     @Override
     public boolean equals(Object o) {

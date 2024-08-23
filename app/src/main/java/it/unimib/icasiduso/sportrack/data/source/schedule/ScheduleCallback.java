@@ -6,5 +6,6 @@ import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
 public interface ScheduleCallback {
     void onSuccesFromLocal(List<Schedule> schedules);
+
     void onFailureFromLocal();
 }

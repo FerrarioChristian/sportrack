@@ -8,7 +8,8 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
 public class ScheduleWithWorkoutExercise {
-    @Embedded public Schedule schedule;
+    @Embedded
+    public Schedule schedule;
     @Relation(
             parentColumn = "scheduleId",
             entityColumn = "externalScheduleId"

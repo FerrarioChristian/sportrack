@@ -39,8 +39,8 @@ public class MainActivityWithBottomNav extends AppCompatActivity {
         //TODO
         bottomNav.setOnItemReselectedListener(item -> {
             int id = item.getItemId();
-            if(id == R.id.exercises){
-                    navController.navigate(R.id.action_global_exercisesFragment);
+            if (id == R.id.exercises) {
+                navController.navigate(R.id.action_global_exercisesFragment);
             } else if (id == R.id.schedule) {
                 navController.navigate(R.id.action_global_scheduleFragment);
             }
@@ -53,7 +53,7 @@ public class MainActivityWithBottomNav extends AppCompatActivity {
         return currentUser;
     }
 
-    private void checkSession(){
+    private void checkSession() {
         if (currentUser == null) {
             Intent intent = new Intent(this, MainActivityWithBottomNav.class);
             startActivity(intent);

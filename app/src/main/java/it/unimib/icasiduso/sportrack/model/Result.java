@@ -5,16 +5,20 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public abstract class Result {
-    private Result() {}
+    private Result() {
+    }
 
     public boolean isSuccess() {
         return this instanceof UserResponseSuccess || this instanceof ExercisesResponseSuccess;
     }
+
     public static final class UserResponseSuccess extends Result {
         private final User user;
+
         public UserResponseSuccess(User user) {
             this.user = user;
         }
+
         public User getData() {
             return user;
         }
@@ -35,9 +39,11 @@ public abstract class Result {
 
     public static final class Error extends Result {
         private final String message;
+
         public Error(String message) {
             this.message = message;
         }
+
         public String getMessage() {
             return message;
         }

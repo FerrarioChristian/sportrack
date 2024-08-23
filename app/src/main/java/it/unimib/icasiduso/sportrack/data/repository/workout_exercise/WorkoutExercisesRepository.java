@@ -4,7 +4,7 @@ import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepositor
 import it.unimib.icasiduso.sportrack.data.source.workout_exercise.IWorkoutExerciseDataSource;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
-public class WorkoutExercisesRepository implements IWorkoutExercisesRepository{
+public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
 
     private static final String TAG = ExercisesRepository.class.getSimpleName();
 
@@ -13,7 +13,7 @@ public class WorkoutExercisesRepository implements IWorkoutExercisesRepository{
 
 
     public WorkoutExercisesRepository(
-           // IWorkoutExerciseDataSource.Remote workoutExerciseRemoteDataSource,
+            // IWorkoutExerciseDataSource.Remote workoutExerciseRemoteDataSource,
             IWorkoutExerciseDataSource.Local workoutExerciseLocalDataSource
     ) {
         //this.workoutExerciseRemoteDataSource = workoutExerciseRemoteDataSource;

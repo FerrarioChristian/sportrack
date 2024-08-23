@@ -36,7 +36,7 @@ public class HomepageFragment extends Fragment {
     private double sumPeso;
     private LineGraphSeries<DataPoint> mediaSeries;
 
-    public HomepageFragment(){
+    public HomepageFragment() {
 
     }
 

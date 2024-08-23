@@ -33,7 +33,8 @@ public class ExercisesMockRepository implements IExercisesRepository {
     }
 
     @Override
-    public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {}
+    public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {
+    }
 
     @Override
     public void getExerciseById(long id, GetExercisesCallback callback) {

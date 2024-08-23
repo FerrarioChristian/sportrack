@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 
-public class WorkoutExerciseViewModelFactory implements ViewModelProvider.Factory{
+public class WorkoutExerciseViewModelFactory implements ViewModelProvider.Factory {
     private final IWorkoutExercisesRepository iWorkoutExercisesRepository;
 
     public WorkoutExerciseViewModelFactory(IWorkoutExercisesRepository iWorkoutExercisesRepository) {

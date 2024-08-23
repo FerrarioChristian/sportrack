@@ -15,8 +15,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import it.unimib.icasiduso.sportrack.model.User;
 
-public class UserRemoteDataSource extends BaseUserRemoteDataSource{
-    private static final String TAG =  UserRemoteDataSource.class.getSimpleName();
+public class UserRemoteDataSource extends BaseUserRemoteDataSource {
+    private static final String TAG = UserRemoteDataSource.class.getSimpleName();
     private final DatabaseReference databaseReference;
 
     public UserRemoteDataSource() {

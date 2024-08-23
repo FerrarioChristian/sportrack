@@ -25,12 +25,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;
-    private ServiceLocator() {}
+
+    private ServiceLocator() {
+    }
 
     public static ServiceLocator getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             synchronized (ServiceLocator.class) {
-                if(INSTANCE == null) {
+                if (INSTANCE == null) {
                     INSTANCE = new ServiceLocator();
                 }
             }
@@ -39,11 +41,11 @@ public class ServiceLocator {
     }
 
     public ExercisesApiService getExercisesApiService() {
-       Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
-       return retrofit.create(ExercisesApiService.class);
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        return retrofit.create(ExercisesApiService.class);
     }
 
-    public ExerciseRoomDatabase getExerciseDatabase(){
+    public ExerciseRoomDatabase getExerciseDatabase() {
         return ExerciseRoomDatabase.getDatabase();
     }
 
@@ -72,7 +74,6 @@ public class ServiceLocator {
 
         return new WorkoutExercisesRepository(workoutExerciseLocalDataSource);
     }
-
 
 
 }

@@ -6,13 +6,23 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class WorkoutExercise{
-    @PrimaryKey (autoGenerate = true)
+public class WorkoutExercise {
+    @PrimaryKey(autoGenerate = true)
     private long WorkoutExerciseId;
-    private  int series;
+    private int series;
     private int repetitions;
     private long externalExerciseId;
     private long externalScheduleId;
+
+    public WorkoutExercise(String series, String reps, long externalExerciseId, long externalScheduleId) {
+        this.series = parseInt(series);
+        this.repetitions = parseInt(reps);
+        this.externalExerciseId = externalExerciseId;
+        this.externalScheduleId = externalScheduleId;
+    }
+
+    public WorkoutExercise() {
+    }
 
     public long getExternalScheduleId() {
         return externalScheduleId;
@@ -20,13 +30,6 @@ public class WorkoutExercise{
 
     public void setExternalScheduleId(long scheduleId) {
         this.externalScheduleId = scheduleId;
-    }
-
-    public WorkoutExercise(String series, String reps, long externalExerciseId, long externalScheduleId) {
-        this.series = parseInt(series);
-        this.repetitions = parseInt(reps);
-        this.externalExerciseId = externalExerciseId;
-        this.externalScheduleId = externalScheduleId;
     }
 
     public long getWorkoutExerciseId() {
@@ -44,8 +47,6 @@ public class WorkoutExercise{
     public void setExternalExerciseId(long externalExerciseId) {
         this.externalExerciseId = externalExerciseId;
     }
-
-    public WorkoutExercise() {}
 
     public int getSeries() {
         return series;

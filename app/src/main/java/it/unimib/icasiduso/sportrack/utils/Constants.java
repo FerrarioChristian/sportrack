@@ -7,7 +7,7 @@ public class Constants {
     public static final String EXERCISES_ENDPOINT = "exercises";
     public static final String EXERCISES_MUSCLE_PARAMETER = "muscle";
 
-    public static final String  EXERCISE_DATABASE_NAME = "exercise_db";
+    public static final String EXERCISE_DATABASE_NAME = "exercise_db";
     public static final int DATABASE_VERSION = 1;
 
     public static final String INVALID_USER_ERROR = "invalidUserError";

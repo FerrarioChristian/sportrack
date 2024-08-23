@@ -16,14 +16,10 @@ import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
 public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRecyclerViewAdapter.ScheduleViewHolder> {
-    List<Schedule> scheduleList;
     private final OnItemClickListener onItemClickListener;
+    List<Schedule> scheduleList;
 
-    public interface OnItemClickListener {
-        void onScheduleClick(Schedule schedule);
-    }
-
-    public ScheduleRecyclerViewAdapter(List<Schedule> scheduleList, OnItemClickListener onItemClickListener){
+    public ScheduleRecyclerViewAdapter(List<Schedule> scheduleList, OnItemClickListener onItemClickListener) {
         this.scheduleList = scheduleList;
         this.onItemClickListener = onItemClickListener;
     }
@@ -34,6 +30,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.exercise_item, parent, false);
         return new ScheduleRecyclerViewAdapter.ScheduleViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(@NonNull ScheduleRecyclerViewAdapter.ScheduleViewHolder holder, int position) {
         holder.bind(scheduleList.get(position));
@@ -44,6 +41,10 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         if (scheduleList == null)
             return 0;
         return scheduleList.size();
+    }
+
+    public interface OnItemClickListener {
+        void onScheduleClick(Schedule schedule);
     }
 
     public class ScheduleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

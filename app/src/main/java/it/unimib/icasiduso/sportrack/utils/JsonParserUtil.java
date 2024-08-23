@@ -16,7 +16,8 @@ public class JsonParserUtil {
 
     private static final String TAG = JsonParserUtil.class.getSimpleName();
     private final Context context;
-    public JsonParserUtil(Application application){
+
+    public JsonParserUtil(Application application) {
         this.context = application.getApplicationContext();
     }
 

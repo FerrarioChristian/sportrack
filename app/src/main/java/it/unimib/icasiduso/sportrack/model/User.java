@@ -21,6 +21,7 @@ public class User {
     public void setIdToken(String idToken) {
         this.idToken = idToken;
     }
+
     public String getEmail() {
         return email;
     }

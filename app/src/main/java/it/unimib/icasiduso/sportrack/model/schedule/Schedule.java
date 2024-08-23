@@ -6,12 +6,12 @@ import androidx.room.PrimaryKey;
 
 
 @Entity
-public class Schedule{
-    @PrimaryKey (autoGenerate = true)
+public class Schedule {
+    @PrimaryKey(autoGenerate = true)
     private long scheduleId;
     private String name;
     private String difficulty;
-  
+
     public Schedule(String name, String difficulty) {
         this.name = name;
         this.difficulty = difficulty;

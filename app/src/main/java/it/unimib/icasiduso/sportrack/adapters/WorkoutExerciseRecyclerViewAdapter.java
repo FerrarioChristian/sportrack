@@ -91,4 +91,5 @@ public class WorkoutExerciseRecyclerViewAdapter /*extends RecyclerView.Adapter<W
         }
     }
 
-} */ {}
+} */ {
+}

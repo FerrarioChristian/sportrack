@@ -15,16 +15,12 @@ import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
-@Database(entities = {Exercise.class, WorkoutExercise.class, Schedule.class }, version = DATABASE_VERSION)
+@Database(entities = {Exercise.class, WorkoutExercise.class, Schedule.class}, version = DATABASE_VERSION)
 public abstract class ExerciseRoomDatabase extends RoomDatabase {
-    public abstract ExerciseDao exerciseDao();
-    public abstract WorkoutExerciseDao workoutExerciseDao();
-    public abstract ScheduleDao scheduleDao();
-
-    private static volatile ExerciseRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();
     public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    private static volatile ExerciseRoomDatabase INSTANCE;
 
     public static ExerciseRoomDatabase getDatabase() {
         if (INSTANCE == null) {
@@ -37,4 +33,10 @@ public abstract class ExerciseRoomDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
+    public abstract ExerciseDao exerciseDao();
+
+    public abstract WorkoutExerciseDao workoutExerciseDao();
+
+    public abstract ScheduleDao scheduleDao();
 }

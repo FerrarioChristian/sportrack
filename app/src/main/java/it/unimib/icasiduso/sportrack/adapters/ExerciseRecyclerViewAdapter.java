@@ -16,13 +16,9 @@ import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ExerciseViewHolder> {
-    List<Exercise> exercises;
     private final OnItemClickListener onItemClickListener;
+    List<Exercise> exercises;
 
-
-    public interface OnItemClickListener {
-        void onExerciseClick(Exercise exercise);
-    }
 
     public ExerciseRecyclerViewAdapter(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
@@ -52,6 +48,10 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         if (exercises == null)
             return 0;
         return exercises.size();
+    }
+
+    public interface OnItemClickListener {
+        void onExerciseClick(Exercise exercise);
     }
 
     public class ExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
