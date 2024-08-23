@@ -67,6 +67,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
         }
     };
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +118,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
         scheduleViewModel.getSchedules("").observe(getViewLifecycleOwner(), result -> {
             scheduleRecyclerViewAdapter.setSchedules(result);
         });
+
 
         ProgressBar progressBar = requireView().findViewById(R.id.schedule_progress_bar);
         scheduleViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), result -> {
