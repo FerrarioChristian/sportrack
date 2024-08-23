@@ -37,6 +37,36 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
 
     private ScheduleViewModel scheduleViewModel;
     private ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            /*
+            workoutExerciseRepository.deleteWorkoutExercisesByScheduleId(scheduleList.get(position).getScheduleId());
+            scheduleRepository.deleteSchedule(scheduleList.get(position));
+            scheduleViewModel.deleteSchedule(position);
+            scheduleRecyclerViewAdapter.notifyItemRemoved(position);
+            */
+
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.md_theme_errorContainer_mediumContrast))
+                    .addActionIcon(R.drawable.ic_baseline_delete_24)
+                    .setActionIconTint(ContextCompat.getColor(requireActivity(), R.color.md_theme_onErrorContainer))
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,59 +110,15 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
 
         });
 
-        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerViewScheduleList);*/
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerViewScheduleList);
     }
-
-/*
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-
-            WorkoutExerciseRepository workoutExerciseRepository = new WorkoutExerciseRepository(requireActivity().getApplication(), new WorkoutExerciseRepositoryCallbackable() {
-                @Override
-                public void onSuccess() {
-                }
-
-                @Override
-                public void onSuccess(List<WorkoutExercise> workoutExercises) {
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                }
-            });
-
-            workoutExerciseRepository.deleteWorkoutExercisesByScheduleId(scheduleList.get(position).getScheduleId());
-            scheduleRepository.deleteSchedule(scheduleList.get(position));
-            scheduleList.remove(position);
-            scheduleRecyclerViewAdapter.notifyItemRemoved(position);
-
-        }
-
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.md_theme_errorContainer_mediumContrast))
-                    .addActionIcon(R.drawable.ic_baseline_delete_24)
-                    .setActionIconTint(ContextCompat.getColor(requireActivity(), R.color.md_theme_onErrorContainer))
-                    .create()
-                    .decorate();
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };
-*/
 
     public void observeViewModel() {
         scheduleViewModel.getSchedules("").observe(getViewLifecycleOwner(), result -> {
             scheduleRecyclerViewAdapter.setSchedules(result);
         });
+
 
         ProgressBar progressBar = requireView().findViewById(R.id.schedule_progress_bar);
         scheduleViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), result -> {
