@@ -1,23 +1,49 @@
 package it.unimib.icasiduso.sportrack.ui.schedule;
 
-import androidx.fragment.app.Fragment;
+import android.graphics.Canvas;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
-public class ScheduleFragment extends Fragment {
-} /*implements ScheduleRecyclerViewAdapter.OnItemClickListener {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
+
+import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.adapters.ScheduleRecyclerViewAdapter;
+import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepository;
+import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
+import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
+import it.unimib.icasiduso.sportrack.viewmodel.schedule.ScheduleViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.schedule.ScheduleViewModelFactory;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAdapter.OnItemClickListener {
 
     private static final String TAG = ScheduleFragment.class.getSimpleName();
-    private List<Schedule> scheduleList;
-    private ScheduleRepository scheduleRepository;
-    private ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
-    private ProgressBar progressBar;
-    private FloatingActionButton newScheduleButton;
 
+    private ScheduleViewModel scheduleViewModel;
+    private ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scheduleRepository = new ScheduleRepository(requireActivity().getApplication(), this);
-        scheduleList = new ArrayList<>();
+        IScheduleRepository scheduleRepository = ServiceLocator.getInstance().getScheduleRepository();
+        ScheduleViewModelFactory factory = new ScheduleViewModelFactory(scheduleRepository);
+        scheduleViewModel = new ViewModelProvider(requireActivity(), factory).get(ScheduleViewModel.class);
     }
 
     @Override
@@ -29,16 +55,17 @@ public class ScheduleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressBar = view.findViewById(R.id.schedule_progress_bar);
-        if (scheduleList.isEmpty()) {
-            progressBar.setVisibility(View.VISIBLE);
-        }
+        RecyclerView recyclerViewScheduleList = view.findViewById(R.id.recyclerview_schedule_list);
+        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(this);
+        recyclerViewScheduleList.setAdapter(scheduleRecyclerViewAdapter);
 
-        newScheduleButton = view.findViewById(R.id.newScheduleFAB);
+        observeViewModel();
+
+        FloatingActionButton newScheduleButton = view.findViewById(R.id.newScheduleFAB);
         newScheduleButton.setOnClickListener(v -> {
             View customView = LayoutInflater.from(getContext()).inflate(R.layout.new_schedule_dialog, null);
 
-            new MaterialAlertDialogBuilder(getContext()).setTitle(getString(R.string.new_schedule)).setView(customView).setNegativeButton("Close", (dialog, which) -> {
+            new MaterialAlertDialogBuilder(requireContext()).setTitle(getString(R.string.new_schedule)).setView(customView).setNegativeButton("Close", (dialog, which) -> {
                     })
                     .setPositiveButton(R.string.add, (dialog, which) -> {
                         TextInputLayout scheduleName = customView.findViewById(R.id.scheduleName);
@@ -46,29 +73,18 @@ public class ScheduleFragment extends Fragment {
 
                         MaterialButton selectedButton = customView.findViewById(scheduleDifficulty.getCheckedButtonId());
                         String difficulty = selectedButton.getText().toString();
-
-                        scheduleRepository.insertSchedule(new Schedule(scheduleName.getEditText().getText().toString(), difficulty));
+                        //TODO verificare input
+                        scheduleViewModel.newSchedule(new Schedule(scheduleName.getEditText().getText().toString(), difficulty));
                     })
                     .show();
 
         });
 
-
-        RecyclerView recyclerViewScheduleList = view.findViewById(R.id.recyclerview_schedule_list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(scheduleList, requireActivity().getApplication(), schedule -> {
-            ScheduleFragmentDirections.ActionScheduleFragmentToListWorkoutExercisesFragment action = ScheduleFragmentDirections.actionScheduleFragmentToListWorkoutExercisesFragment(schedule.getScheduleId());
-            Navigation.findNavController(view).navigate(action);
-        });
-        recyclerViewScheduleList.setLayoutManager(layoutManager);
-        recyclerViewScheduleList.setAdapter(scheduleRecyclerViewAdapter);
-
-        scheduleRepository.fetchSchedules();
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerViewScheduleList);
+        /*ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerViewScheduleList);*/
     }
 
+/*
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -111,25 +127,26 @@ public class ScheduleFragment extends Fragment {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+*/
 
-    @Override
-    public void onSuccess(List<Schedule> scheduleList) {
-        if (scheduleList != null) {
-            this.scheduleList.clear();
-            this.scheduleList.addAll(scheduleList);
-            Activity activity = getActivity();
-            if (activity != null) {
+    public void observeViewModel() {
+        scheduleViewModel.getSchedules("").observe(getViewLifecycleOwner(), result -> {
+            scheduleRecyclerViewAdapter.setSchedules(result);
+        });
 
-                activity.runOnUiThread(() -> {
-                    scheduleRecyclerViewAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
-                });
+        ProgressBar progressBar = requireView().findViewById(R.id.schedule_progress_bar);
+        scheduleViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (result) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
             }
-        }
+        });
     }
 
     @Override
-    public void onFailure(String errorMessage) {
-
+    public void onScheduleClick(Schedule schedule) {
+        ScheduleFragmentDirections.ActionScheduleFragmentToListWorkoutExercisesFragment action = ScheduleFragmentDirections.actionScheduleFragmentToListWorkoutExercisesFragment(schedule.getScheduleId());
+        Navigation.findNavController(requireView()).navigate(action);
     }
-}*/
+}

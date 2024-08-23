@@ -6,6 +6,8 @@ import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepository;
+import it.unimib.icasiduso.sportrack.data.repository.schedule.ScheduleRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.UserRepository;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
@@ -14,6 +16,8 @@ import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
 import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseLocalDataSource;
 import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.exercise.IExerciseDataSource;
+import it.unimib.icasiduso.sportrack.data.source.schedule.IScheduleDataSource;
+import it.unimib.icasiduso.sportrack.data.source.schedule.ScheduleLocalDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.AuthDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.BaseAuthDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.BaseUserRemoteDataSource;
@@ -74,6 +78,14 @@ public class ServiceLocator {
 
         return new WorkoutExercisesRepository(workoutExerciseLocalDataSource);
     }
+
+    public IScheduleRepository getScheduleRepository() {
+        IScheduleDataSource.Local scheduleLocalDataSource = new ScheduleLocalDataSource(getExerciseDatabase());
+
+        return new ScheduleRepository(scheduleLocalDataSource);
+    }
+
+    //TODO si potrebbero fare le repository singleton.
 
 
 }
