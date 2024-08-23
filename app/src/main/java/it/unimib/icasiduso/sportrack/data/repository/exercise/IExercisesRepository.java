@@ -14,6 +14,7 @@ public interface IExercisesRepository {
 
     void saveExercises(List<Exercise> exercises, GetExercisesCallback callback);
 
+    //TODO Cambiare nome interfaccia
     interface GetExercisesCallback {
         void onSuccess(List<Exercise> exercises);
 

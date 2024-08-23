@@ -62,7 +62,7 @@ public class ExerciseDetailsFragment extends Fragment {
             container.setVisibility(View.GONE);
         }
 
-        //TODO sistemare le stringhe
+        //TODO sistemare le stringhe e spostare in Adapter.setItems()
         binding.textViewExerciseName.setText(exercise.getName());
         binding.textViewExerciseType.setText("tipo: " + exercise.getType());
         binding.textViewExerciseMuscle.setText("muscolo: " + exercise.getMuscle());

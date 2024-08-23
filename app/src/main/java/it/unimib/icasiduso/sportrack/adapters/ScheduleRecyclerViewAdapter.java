@@ -19,9 +19,13 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     private final OnItemClickListener onItemClickListener;
     List<Schedule> scheduleList;
 
-    public ScheduleRecyclerViewAdapter(List<Schedule> scheduleList, OnItemClickListener onItemClickListener) {
-        this.scheduleList = scheduleList;
+    public ScheduleRecyclerViewAdapter(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setSchedules(List<Schedule> scheduleList) {
+        this.scheduleList = scheduleList;
+        notifyDataSetChanged();
     }
 
     @NonNull

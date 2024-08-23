@@ -5,9 +5,10 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
 import it.unimib.icasiduso.sportrack.data.database.ScheduleDao;
+import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepository;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
-public class ScheduleLocalDataSource extends BaseScheduleLocalDataSource {
+public class ScheduleLocalDataSource implements IScheduleDataSource.Local {
 
     private final ScheduleDao scheduleDao;
 
@@ -17,27 +18,27 @@ public class ScheduleLocalDataSource extends BaseScheduleLocalDataSource {
 
 
     @Override
-    public void getSchedules() {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            scheduleCallback.onSuccesFromLocal(scheduleDao.getAll());
-        });
-    }
-
-    @Override
-    public void addSchedule(Schedule schedule) {
+    public void newSchedule(Schedule schedule, IScheduleRepository.ScheduleCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Schedule> scheduleList = new ArrayList<>();
             scheduleList.add(schedule);
             scheduleDao.insertScheduleList(scheduleList);
-            scheduleCallback.onSuccesFromLocal(scheduleDao.getAll());
+            callback.onSuccess(scheduleDao.getAll());
         });
     }
 
     @Override
-    public void deleteSchedule(Schedule schedule) {
+    public void deleteSchedule(Schedule schedule, IScheduleRepository.ScheduleCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             scheduleDao.deleteSchedule(schedule);
-            scheduleCallback.onSuccesFromLocal(scheduleDao.getAll());
+            callback.onSuccess(scheduleDao.getAll());
+        });
+    }
+
+    @Override
+    public void getSchedules(String userId, IScheduleRepository.ScheduleCallback callback) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
+            callback.onSuccess(scheduleDao.getAll());
         });
     }
 }
