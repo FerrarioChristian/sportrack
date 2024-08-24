@@ -14,11 +14,9 @@ public interface IExercisesRepository {
 
     void saveExercises(List<Exercise> exercises, ExercisesCallback callback);
 
-
     interface ExercisesCallback {
         void onSuccess(Exercise exercise);
         void onSuccess(List<Exercise> exercises);
         void onFailure(Exception exception);
     }
-
 }
