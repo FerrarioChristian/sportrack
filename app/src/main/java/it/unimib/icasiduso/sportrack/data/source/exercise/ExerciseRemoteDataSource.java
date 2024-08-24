@@ -36,7 +36,7 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
     }
 
 
-    public void fetchExercisesByMuscle(String muscle, IExercisesRepository.GetExercisesCallback callback) {
+    public void fetchExercisesByMuscle(String muscle, IExercisesRepository.ExercisesCallback callback) {
         Call<List<Exercise>> exercisesResponseCall = exercisesApiService.getExercises(muscle, apiKey);
         exercisesResponseCall.enqueue(new Callback<List<Exercise>>() {
             @Override
@@ -57,7 +57,7 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises, IExercisesRepository.GetExercisesCallback callback) {
+    public void saveExercises(List<Exercise> exercises, IExercisesRepository.ExercisesCallback callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             return;

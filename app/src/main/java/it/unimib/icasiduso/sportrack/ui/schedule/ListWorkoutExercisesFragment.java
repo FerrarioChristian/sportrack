@@ -1,102 +1,42 @@
 package it.unimib.icasiduso.sportrack.ui.schedule;
 
-import androidx.fragment.app.Fragment;
+import android.graphics.Canvas;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
-public class ListWorkoutExercisesFragment extends Fragment /*implements WorkoutExerciseRepositoryCallbackable, WorkoutExerciseRecyclerViewAdapter.OnItemClickListener*/ {
-/*
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
+import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.adapters.WorkoutExerciseRecyclerViewAdapter;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
+import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
+import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
+import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory;
+import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModelFactory;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExerciseRecyclerViewAdapter.OnItemClickListener {
+
     private static final String TAG = ListWorkoutExercisesFragment.class.getSimpleName();
 
-    private List<WorkoutExercise> workoutExercises;
-    private WorkoutExerciseRepository workoutExercisesRepository;
+    private WorkoutExerciseViewModel workoutExerciseViewModel;
     private WorkoutExerciseRecyclerViewAdapter workoutExerciseRecyclerViewAdapter;
-    private ProgressBar progressBar;
-    private FloatingActionButton addExerciseButton;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        workoutExercisesRepository = new WorkoutExerciseRepository(requireActivity().getApplication(), this);
-        workoutExercises = new ArrayList<>();
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_workout_exercises, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
-
-        progressBar = view.findViewById(R.id.list_workout_exercises_progress_bar);
-        if(workoutExercises.isEmpty()){
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        addExerciseButton = view.findViewById(R.id.addExerciseButton);
-        addExerciseButton.setOnClickListener(v -> {
-            ListWorkoutExercisesFragmentDirections.ActionListWorkoutExercisesFragmentToExercises action = ListWorkoutExercisesFragmentDirections.actionListWorkoutExercisesFragmentToExercises(scheduleId);
-            Navigation.findNavController(view).navigate(action);
-        });
-
-
-        RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_workout_exercise_list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-
-
-
-        //ExercisesRepository exercisesRepository = new ExercisesRepository(requireActivity().getApplication(),this);
-
-
-        workoutExerciseRecyclerViewAdapter = new WorkoutExerciseRecyclerViewAdapter(workoutExercises, requireActivity().getApplication(), this);
-        recyclerViewExerciseList.setLayoutManager(layoutManager);
-        recyclerViewExerciseList.setAdapter(workoutExerciseRecyclerViewAdapter);
-
-        workoutExercisesRepository.fetchWorkoutExercisesByScheduleId(scheduleId);
-
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerViewExerciseList);
-    }
-
-    @Override
-    public void onSuccess() {
-
-    }
-
-    @Override
-    public void onSuccess(List<WorkoutExercise> workoutExercises) {
-        if(workoutExercises != null){
-            this.workoutExercises.clear();
-            this.workoutExercises.addAll(workoutExercises);
-            Activity activity = getActivity();
-            if(activity != null){
-                activity.runOnUiThread(() -> {
-                    workoutExerciseRecyclerViewAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
-                });
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-        progressBar.setVisibility(View.GONE);
-        Log.d(TAG, errorMessage);
-    }
-
-    @Override
-    public void onExerciseClick(WorkoutExercise workoutExercise) {
-            //ListWorkoutExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId,);
-            //Navigation.findNavController(view).navigate(action);
-    }
-
-    @Override
-    public void onLongExerciseClick(WorkoutExercise workoutExercise) {
-
-    }
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -105,10 +45,10 @@ public class ListWorkoutExercisesFragment extends Fragment /*implements WorkoutE
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
+            /*int position = viewHolder.getAdapterPosition();
             workoutExercisesRepository.deleteWorkoutExercise(workoutExercises.get(position));
             workoutExercises.remove(position);
-            workoutExerciseRecyclerViewAdapter.notifyItemRemoved(position);
+            workoutExerciseRecyclerViewAdapter.notifyItemRemoved(position);*/
         }
 
         @Override
@@ -123,6 +63,69 @@ public class ListWorkoutExercisesFragment extends Fragment /*implements WorkoutE
         }
     };
 
-*/
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
+        WorkoutExerciseViewModelFactory factory = new WorkoutExerciseViewModelFactory(workoutExercisesRepository);
+        workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(WorkoutExerciseViewModel.class);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_list_workout_exercises, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        IExercisesRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
+        ExerciseViewModelFactory factory = new ExerciseViewModelFactory(exercisesRepository);
+        ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
+
+        RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_workout_exercise_list);
+        workoutExerciseRecyclerViewAdapter = new WorkoutExerciseRecyclerViewAdapter(this,getViewLifecycleOwner(), exerciseViewModel);
+        recyclerViewExerciseList.setAdapter(workoutExerciseRecyclerViewAdapter);
+
+        observeViewModel();
+
+        Long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        View addExerciseButton = view.findViewById(R.id.addExerciseButton);
+        addExerciseButton.setOnClickListener(v -> {
+            ListWorkoutExercisesFragmentDirections.ActionListWorkoutExercisesFragmentToExercises action = ListWorkoutExercisesFragmentDirections.actionListWorkoutExercisesFragmentToExercises(scheduleId);
+            Navigation.findNavController(view).navigate(action);
+        });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerViewExerciseList);
+    }
+
+    private void observeViewModel() {
+        long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        workoutExerciseViewModel.getWorkoutExercisesByScheduleId(scheduleId).observe(getViewLifecycleOwner(), result -> {
+            workoutExerciseRecyclerViewAdapter.setWorkoutExercises(result);
+        });
+
+        ProgressBar progressBar = requireView().findViewById(R.id.list_workout_exercises_progress_bar);
+        workoutExerciseViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (result) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+            }
+
+        });
+    }
+
+    @Override
+    public void onExerciseClick(WorkoutExercise workoutExercise) {
+       /* ListWorkoutExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId);
+        Navigation.findNavController(view).navigate(action);*/
+    }
 
 }

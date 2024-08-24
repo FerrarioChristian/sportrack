@@ -5,11 +5,12 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 public interface IWorkoutExercisesRepository {
-    void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise);
 
-    void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise);
+    void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
 
-    void getWorkoutExerciseByScheduleId(Long scheduleId);
+    void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+
+    void getWorkoutExercisesByScheduleId(Long scheduleId, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
 
     interface WorkoutExerciseCallback {
         void onSuccess(List<WorkoutExercise> workoutExercises);

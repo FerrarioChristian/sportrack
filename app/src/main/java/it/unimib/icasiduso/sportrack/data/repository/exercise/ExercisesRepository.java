@@ -21,10 +21,13 @@ public class ExercisesRepository implements IExercisesRepository {
     }
 
     @Override
-    public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {
+    public void getExercisesByMuscle(String muscle, ExercisesCallback callback) {
         if (callback == null) return;
         //TODO: Implementare salvataggio e recupero online/offline
-        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle, new IExercisesRepository.GetExercisesCallback() {
+        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle, new IExercisesRepository.ExercisesCallback() {
+            @Override
+            public void onSuccess(Exercise exercise) {}
+
             @Override
             public void onSuccess(List<Exercise> exercises) {
                 saveExercises(exercises, callback);
@@ -39,17 +42,18 @@ public class ExercisesRepository implements IExercisesRepository {
     }
 
     @Override
-    public void getExerciseById(long id, GetExercisesCallback callback) {
+    public void getExerciseById(long id, ExercisesCallback callback) {
+        if (callback == null) return;
         exerciseLocalDataSource.getExercise(id, callback);
     }
 
     @Override
-    public void getExercisesByScheduleId(long scheduleId, GetExercisesCallback callback) {
+    public void getExercisesByScheduleId(long scheduleId, ExercisesCallback callback) {
 
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises, GetExercisesCallback callback) {
+    public void saveExercises(List<Exercise> exercises, ExercisesCallback callback) {
         //TODO gestire mancanza di connessione
         exerciseLocalDataSource.saveExercises(exercises, callback);
         exerciseRemoteDataSource.saveExercises(exercises, callback);
