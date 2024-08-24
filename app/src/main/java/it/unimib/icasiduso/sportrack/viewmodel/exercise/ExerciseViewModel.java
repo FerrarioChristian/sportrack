@@ -9,7 +9,7 @@ import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesReposito
 import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
-public class ExerciseViewModel extends ViewModel implements IExercisesRepository.GetExercisesCallback {
+public class ExerciseViewModel extends ViewModel implements IExercisesRepository.ExercisesCallback {
     private static final String TAG = ExerciseViewModel.class.getSimpleName();
 
     private final MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
@@ -37,13 +37,38 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
     }
 
     public MutableLiveData<Exercise> getExerciseById(long id) {
-        return null;
-        //TODO: Implement
+        setIsLoading(true);
+        final MutableLiveData<Exercise> result = new MutableLiveData<>();
+
+        exercisesRepository.getExerciseById(id, new IExercisesRepository.ExercisesCallback() {
+            @Override
+            public void onSuccess(Exercise exercise) {
+                setIsLoading(false);
+                result.postValue(exercise);
+            }
+
+            @Override
+            public void onSuccess(List<Exercise> exercises) {
+
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                setIsLoading(false);
+            }
+        });
+        return result;
     }
 
     public MutableLiveData<List<Exercise>> getExercisesBySchedule(long scheduleId) {
         return null;
         //TODO: Implement
+    }
+
+    @Override
+    public void onSuccess(Exercise exercise) {
+        setIsLoading(false);
+        exerciseLiveData.postValue(exercise);
     }
 
     @Override

@@ -1,20 +1,42 @@
 package it.unimib.icasiduso.sportrack.adapters;
 
-public class WorkoutExerciseRecyclerViewAdapter /*extends RecyclerView.Adapter<WorkoutExerciseRecyclerViewAdapter.WorkoutExerciseViewHolder>{
-    List<WorkoutExercise> workoutExercises;
-    private final Application application;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import it.unimib.icasiduso.sportrack.App;
+import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
+import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
+
+public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutExerciseRecyclerViewAdapter.WorkoutExerciseViewHolder> {
     private final OnItemClickListener onItemClickListener;
+    private List<WorkoutExercise> workoutExercises;
+
+    private final ExerciseViewModel exerciseViewModel;
+    private final LifecycleOwner lifecycleOwner;
 
 
-    public interface OnItemClickListener {
-        void onExerciseClick(WorkoutExercise workoutExercise);
-        void onLongExerciseClick(WorkoutExercise workoutExercise);
+    public WorkoutExerciseRecyclerViewAdapter(OnItemClickListener onItemClickListener, LifecycleOwner lifecycleOwner, ExerciseViewModel exerciseViewModel) {
+        this.onItemClickListener = onItemClickListener;
+        this.lifecycleOwner = lifecycleOwner;
+        this.exerciseViewModel = exerciseViewModel;
     }
 
-    public WorkoutExerciseRecyclerViewAdapter(List<WorkoutExercise> workoutExercises, Application application, OnItemClickListener onItemClickListener) {
+    public void setWorkoutExercises(List<WorkoutExercise> workoutExercises) {
         this.workoutExercises = workoutExercises;
-        this.application = application;
-        this.onItemClickListener = onItemClickListener;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -36,13 +58,14 @@ public class WorkoutExerciseRecyclerViewAdapter /*extends RecyclerView.Adapter<W
         return workoutExercises.size();
     }
 
-    public class WorkoutExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ExerciseRepositoryCallbackable {
+    public interface OnItemClickListener {
+        void onExerciseClick(WorkoutExercise workoutExercise);
+    }
+
+    public class WorkoutExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView exerciseName;
         private final TextView exerciseSeries;
         private final TextView exerciseRepetitions;
-        private final Context context;
-
-        private Exercise exercise;
 
         public WorkoutExerciseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -50,46 +73,32 @@ public class WorkoutExerciseRecyclerViewAdapter /*extends RecyclerView.Adapter<W
             exerciseSeries = itemView.findViewById(R.id.exerciseSeries);
             exerciseRepetitions = itemView.findViewById(R.id.exerciseRepetitions);
             itemView.setOnClickListener(this);
-            context = itemView.getContext();
         }
 
 
+        public void bind(WorkoutExercise workoutExercise) {
+            //TODO sistemare i nomi uguali
+            exerciseViewModel.getExerciseById(workoutExercise.getExternalExerciseId()).observe(lifecycleOwner, new Observer<Exercise>() {
+                @Override
+                public void onChanged(Exercise exercise) {
+                    exerciseName.setText(exercise.getName());
+                    Log.d( "onChanged: " , exercise.getName());
+                }
+            });
 
-       public void bind(WorkoutExercise workoutExercise) {
-       //TODO Usare ViewModel
-           ExercisesRepository exercisesRepository = new ExercisesRepository(application, new ExerciseRepositoryCallbackable() {
-               @Override
-               public void onSuccess(List<Exercise> exercises) {
-                   exercise = exercises.get(0);
-                   exerciseName.setText(exercise.getName());
-               }
-
-               @Override
-               public void onFailure(String errorMessage) {
-               }
-           });
-            exercisesRepository.getExerciseById(workoutExercise.getExternalExerciseId());
-            exerciseSeries.setText(context.getString(R.string.series) + workoutExercise.getSeries());
-            exerciseRepetitions.setText(context.getString(R.string.repetitions) + workoutExercise.getRepetitions());
+            //TODO sistemare stringhe
+            exerciseSeries.setText(App.getRes().getString(R.string.series) + workoutExercise.getSeries());
+            exerciseRepetitions.setText(App.getRes().getString(R.string.repetitions) + workoutExercise.getRepetitions());
 
         }
+
 
         @Override
         public void onClick(View v) {
             onItemClickListener.onExerciseClick(workoutExercises.get(getAdapterPosition()));
-            onItemClickListener.onLongExerciseClick(workoutExercises.get(getAdapterPosition()));
         }
 
-        @Override
-        public void onSuccess(List<Exercise> exercises) {
-
-        }
-
-        @Override
-        public void onFailure(String errorMessage) {
-
-        }
     }
 
-} */ {
 }
+

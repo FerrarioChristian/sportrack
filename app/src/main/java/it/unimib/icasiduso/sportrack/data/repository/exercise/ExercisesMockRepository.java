@@ -33,21 +33,21 @@ public class ExercisesMockRepository implements IExercisesRepository {
     }
 
     @Override
-    public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {
+    public void getExercisesByMuscle(String muscle, ExercisesCallback callback) {
     }
 
     @Override
-    public void getExerciseById(long id, GetExercisesCallback callback) {
-
-    }
-
-    @Override
-    public void getExercisesByScheduleId(long scheduleId, GetExercisesCallback callback) {
+    public void getExerciseById(long id, ExercisesCallback callback) {
 
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises, GetExercisesCallback callback) {
+    public void getExercisesByScheduleId(long scheduleId, ExercisesCallback callback) {
+
+    }
+
+    @Override
+    public void saveExercises(List<Exercise> exercises, ExercisesCallback callback) {
 
     }
 

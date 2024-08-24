@@ -11,7 +11,6 @@ public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
     private final IWorkoutExerciseDataSource.Local workoutExerciseLocalDataSource;
     //private final IWorkoutExerciseDataSource.Remote workoutExerciseRemoteDataSource;
 
-
     public WorkoutExercisesRepository(
             // IWorkoutExerciseDataSource.Remote workoutExerciseRemoteDataSource,
             IWorkoutExerciseDataSource.Local workoutExerciseLocalDataSource
@@ -23,18 +22,18 @@ public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
 
     //TODO Verificare se serve una callback (e implementare db remoto)
     @Override
-    public void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise) {
+    public void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise, WorkoutExerciseCallback callback) {
         workoutExerciseLocalDataSource.addWorkoutExerciseToSchedule(workoutExercise);
     }
 
     @Override
-    public void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise) {
+    public void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise, WorkoutExerciseCallback callback) {
 
     }
 
     @Override
-    public void getWorkoutExerciseByScheduleId(Long scheduleId) {
-
+    public void getWorkoutExercisesByScheduleId(Long scheduleId, WorkoutExerciseCallback callback) {
+        workoutExerciseLocalDataSource.getWorkoutExercisesByScheduleId(scheduleId, callback);
     }
 }
 

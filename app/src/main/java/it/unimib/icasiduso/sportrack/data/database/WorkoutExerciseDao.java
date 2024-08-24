@@ -19,7 +19,7 @@ public interface WorkoutExerciseDao {
     List<WorkoutExercise> getAll();
 
     @Query("SELECT * FROM workoutexercise WHERE externalScheduleId = :scheduleId")
-    List<WorkoutExercise> getWorkoutExerciseByScheduleId(Long scheduleId);
+    List<WorkoutExercise> getWorkoutExercisesByScheduleId(Long scheduleId);
 
     @Delete
     void deleteWorkoutExercise(WorkoutExercise workoutExercise);
