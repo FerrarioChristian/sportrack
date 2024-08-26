@@ -51,9 +51,7 @@ public class ExerciseDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Exercise exercise = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getExercise();
-        //TODO cambiare scheduleID !!
-        //long scheduleId = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getScheduleId();
-        long scheduleId = 1;
+        long scheduleId = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getScheduleId();
         if (scheduleId != 0L) {
             View container = view.findViewById(R.id.scheduleInputContainer);
             container.setVisibility(View.VISIBLE);

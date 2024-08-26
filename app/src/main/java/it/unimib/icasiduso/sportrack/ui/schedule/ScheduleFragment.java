@@ -67,7 +67,6 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
         }
     };
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

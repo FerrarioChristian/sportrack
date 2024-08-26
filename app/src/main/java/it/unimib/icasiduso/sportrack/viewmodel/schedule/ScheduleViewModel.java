@@ -43,7 +43,6 @@ public class ScheduleViewModel extends ViewModel implements IScheduleRepository.
         scheduleRepository.deleteSchedule(schedule, this);
         //TODO: eliminare anche gli esercizi!!
         //workoutExerciseRepository.deleteWorkoutExercisesByScheduleId(scheduleList.get(position).getScheduleId()); ??
-
     }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {

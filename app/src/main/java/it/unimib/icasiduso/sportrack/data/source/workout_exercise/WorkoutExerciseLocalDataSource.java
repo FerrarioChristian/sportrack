@@ -30,7 +30,7 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
     @Override
     public void getWorkoutExercisesByScheduleId(long scheduleId, IWorkoutExercisesRepository.WorkoutExerciseCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            callback.onSuccess(workoutExerciseDao.getWorkoutExerciseByScheduleId(scheduleId));
+            callback.onSuccess(workoutExerciseDao.getWorkoutExercisesByScheduleId(scheduleId));
         });
     }
 

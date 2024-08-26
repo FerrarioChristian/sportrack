@@ -1,5 +1,7 @@
 package it.unimib.icasiduso.sportrack.data.source.exercise;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
     }
 
     @Override
-    public void getExercises(String muscle, IExercisesRepository.GetExercisesCallback callback) {
+    public void getExercises(String muscle, IExercisesRepository.ExercisesCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             callback.onSuccess(exerciseDao.getExercisesByMuscle(muscle));
         });
@@ -24,17 +26,14 @@ public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
     }
 
     @Override
-    public void getExercise(long id, IExercisesRepository.GetExercisesCallback callback) {
+    public void getExercise(long id, IExercisesRepository.ExercisesCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            ArrayList<Exercise> exercise = new ArrayList<>();
-            exercise.add(exerciseDao.getExerciseById(id));
-            callback.onSuccess(exercise);
-
+            callback.onSuccess(exerciseDao.getExerciseById(id));
         });
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises, IExercisesRepository.GetExercisesCallback callback) {
+    public void saveExercises(List<Exercise> exercises, IExercisesRepository.ExercisesCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Exercise> dbExercises = exerciseDao.getAll();
 
