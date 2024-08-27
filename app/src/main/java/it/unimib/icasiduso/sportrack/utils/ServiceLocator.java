@@ -85,7 +85,4 @@ public class ServiceLocator {
         return new ScheduleRepository(scheduleLocalDataSource);
     }
 
-    //TODO si potrebbero fare le repository singleton.
-
-
 }

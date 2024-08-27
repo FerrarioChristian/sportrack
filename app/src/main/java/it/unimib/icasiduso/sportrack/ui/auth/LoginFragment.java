@@ -2,7 +2,6 @@ package it.unimib.icasiduso.sportrack.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +36,6 @@ public class LoginFragment extends Fragment {
     public LoginFragment() {
     }
 
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,25 +64,22 @@ public class LoginFragment extends Fragment {
 
 
         final Button registerButton = view.findViewById(R.id.go_to_register_button);
-        registerButton.setOnClickListener(v -> {
-            Navigation.findNavController(requireView()).navigate(R.id.registerFragment);
-        });
+        registerButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.registerFragment));
 
         final Button loginButton = view.findViewById(R.id.login_button);
         loginButton.setOnClickListener(v -> {
-            String email = emailEditText.getText().toString().trim();
-            String password = passwordEditText.getText().toString().trim();
+
+            String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";
+            String password = passwordEditText.getText() != null ? passwordEditText.getText().toString().trim() : "";
 
             if (isEmailOk(email) && isPasswordOk(password)) {
                 userViewModel.getUserMutableLiveData(email, password, true).observe(
                         getViewLifecycleOwner(), result -> {
                             if (result.isSuccess()) {
-                                Log.d(TAG, "Login successful");
                                 Intent intent = new Intent(requireContext(), MainActivityWithBottomNav.class);
                                 startActivity(intent);
                                 requireActivity().finish();
                             } else {
-                                Log.d(TAG, "Login failed");
                                 Toast.makeText(getActivity(), R.string.authentication_failed,
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -96,9 +88,7 @@ public class LoginFragment extends Fragment {
         });
 
         final SignInButton googleButton = view.findViewById(R.id.login_with_google);
-        googleButton.setOnClickListener(v -> {
-            googleLogin();
-        });
+        googleButton.setOnClickListener(v -> googleLogin());
     }
 
     private void googleLogin() {

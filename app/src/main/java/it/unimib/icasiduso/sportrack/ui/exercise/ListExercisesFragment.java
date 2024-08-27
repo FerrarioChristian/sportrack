@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,10 +62,9 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
         exerciseViewModel.getExercisesByMuscle(muscle).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
                 exerciseRecyclerViewAdapter.setExercises(((Result.ExercisesResponseSuccess) result).getData());
-                //TODO implementare salvataggio nel database (nella repository)
-                //exerciseViewModel.saveExercises(((Result.ExercisesResponseSuccess) result).getData());
             } else {
-                //TODO Snackbar error (api error)
+                Toast.makeText(getActivity(),getString(R.string.loading_error_check_internet),
+                        Toast.LENGTH_SHORT).show();
             }
         });
 

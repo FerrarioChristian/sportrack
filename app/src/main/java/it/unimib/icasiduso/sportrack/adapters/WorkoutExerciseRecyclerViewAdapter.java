@@ -1,6 +1,5 @@
 package it.unimib.icasiduso.sportrack.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +7,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
-import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
 
@@ -77,21 +73,12 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
 
 
         public void bind(WorkoutExercise workoutExercise) {
-            //TODO sistemare i nomi uguali
-            exerciseViewModel.getExerciseById(workoutExercise.getExternalExerciseId()).observe(lifecycleOwner, new Observer<Exercise>() {
-                @Override
-                public void onChanged(Exercise exercise) {
-                    exerciseName.setText(exercise.getName());
-                    Log.d( "onChanged: " , exercise.getName());
-                }
-            });
+            exerciseViewModel.getExerciseById(workoutExercise.getExternalExerciseId()).observe(lifecycleOwner, exercise -> exerciseName.setText(exercise.getName()));
 
-            //TODO sistemare stringhe
-            exerciseSeries.setText(App.getRes().getString(R.string.series) + workoutExercise.getSeries());
-            exerciseRepetitions.setText(App.getRes().getString(R.string.repetitions) + workoutExercise.getRepetitions());
+            exerciseSeries.setText(App.getRes().getString(R.string.series, workoutExercise.getSeries()));
+            exerciseRepetitions.setText(App.getRes().getString(R.string.repetitions, workoutExercise.getRepetitions()));
 
         }
-
 
         @Override
         public void onClick(View v) {
@@ -99,6 +86,5 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
         }
 
     }
-
 }
 
