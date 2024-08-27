@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,31 +51,32 @@ public class ExerciseDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Exercise exercise = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getExercise();
-        long scheduleId = ExerciseDetailsFragmentArgs.fromBundle(getArguments()).getScheduleId();
-        if (scheduleId != 0L) {
-            View container = view.findViewById(R.id.scheduleInputContainer);
-            container.setVisibility(View.VISIBLE);
-        } else {
-            View container = view.findViewById(R.id.scheduleInputContainer);
-            container.setVisibility(View.GONE);
-        }
+        ExerciseDetailsFragmentArgs args = ExerciseDetailsFragmentArgs.fromBundle(getArguments());
+        Exercise exercise = args.getExercise();
+        long scheduleId = args.getScheduleId();
 
-        //TODO sistemare le stringhe e spostare in Adapter.setItems()
-        binding.textViewExerciseName.setText(exercise.getName());
-        binding.textViewExerciseType.setText("tipo: " + exercise.getType());
-        binding.textViewExerciseMuscle.setText("muscolo: " + exercise.getMuscle());
-        binding.textViewExerciseEquipment.setText("attrezzo: " + exercise.getEquipment());
-        binding.textViewExerciseDifficulty.setText("livello: " + exercise.getDifficulty());
-        binding.textViewExerciseDescription.setText(exercise.getInstructions());
+        binding.setExercise(exercise);
+
+        View scheduleInputContainer = view.findViewById(R.id.scheduleInputContainer);
+        scheduleInputContainer.setVisibility(scheduleId != 0L ? View.VISIBLE : View.GONE);
 
         binding.addExerciseToSchedule.setOnClickListener(v -> {
-            String series = binding.textViewSeries.getText().toString();
-            String reps = binding.textViewReps.getText().toString();
+            String series = binding.textViewSeries.getText() != null ? binding.textViewSeries.getText().toString() : "";
+            String reps = binding.textViewReps.getText() != null ? binding.textViewReps.getText().toString() : "";
+            if (!isValidInput(series, reps)) {
+                Toast.makeText(requireContext(), getString(R.string.invalid_input), Toast.LENGTH_SHORT).show();
+                return;
+            }
             WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exercise.getExerciseId(), scheduleId);
             workoutExerciseViewModel.addWorkoutExerciseToSchedule(workoutExercise);
+            //TODO show toast and back to ListExerciseFragment
         });
     }
+
+    private boolean isValidInput(String series, String reps) {
+        return !series.isEmpty() && !reps.isEmpty();
+    }
+
 
     @Override
     public void onDestroyView() {

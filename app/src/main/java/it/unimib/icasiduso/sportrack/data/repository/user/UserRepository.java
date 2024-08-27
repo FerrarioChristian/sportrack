@@ -88,6 +88,6 @@ public class UserRepository implements IUserRepository, UserCallback {
 
     @Override
     public void onSuccessLogout() {
-
+        userMutableLiveData.postValue(null);
     }
 }

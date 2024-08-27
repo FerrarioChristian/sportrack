@@ -2,7 +2,6 @@ package it.unimib.icasiduso.sportrack.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ public class SettingsFragment extends Fragment {
 
     private static final String TAG = SettingsFragment.class.getSimpleName();
 
-    private Button signOutButton;
     private UserViewModel userViewModel;
 
     @Override
@@ -46,21 +44,12 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //TODO Fix logout (tocca prima sistemare UserViewModel, Login e Register)
-        signOutButton = view.findViewById(R.id.logoutButton);
-        signOutButton.setOnClickListener(v -> {
-            Log.d(TAG, "Logout pressed");
-            userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
-                Log.d(TAG, "Logout observed");
-                if (result.isSuccess()) {
-                    Intent intent = new Intent(view.getContext(), MainActivity.class);
-                    startActivity(intent);
-                    requireActivity().finish();
-                    Log.d(TAG, "Logout successful");
-                } else {
-                    Log.d(TAG, "Logout failed");
-                }
-            });
-        });
+        Button signOutButton = view.findViewById(R.id.logoutButton);
+        signOutButton.setOnClickListener(v -> userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
+        }));
 
     }
 }
