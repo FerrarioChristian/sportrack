@@ -39,10 +39,27 @@ public class ScheduleViewModel extends ViewModel implements IScheduleRepository.
         scheduleRepository.newSchedule(schedule, this);
     }
 
-    public void deleteSchedule(Schedule schedule) {
-        scheduleRepository.deleteSchedule(schedule, this);
-        //TODO: eliminare anche gli esercizi!!
-        //workoutExerciseRepository.deleteWorkoutExercisesByScheduleId(scheduleList.get(position).getScheduleId()); ??
+    public void deleteSchedule(int position) {
+        List<Schedule> scheduleList = schedulesLiveData.getValue();
+        if (scheduleList != null && position < scheduleList.size()) {
+         Schedule schedule = scheduleList.remove(position);
+         scheduleRepository.deleteSchedule(schedule, new IScheduleRepository.ScheduleCallback() {
+             @Override
+             public void onSuccess() {
+                 schedulesLiveData.postValue(scheduleList);
+             }
+
+             @Override
+             public void onSuccess(List<Schedule> scheduleList) {
+
+             }
+
+             @Override
+             public void onFailure(String errorMessage) {
+
+             }
+         });
+        }
     }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {

@@ -69,7 +69,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onScheduleClick(scheduleList.get(getAdapterPosition()));
+            onItemClickListener.onScheduleClick(scheduleList.get(getBindingAdapterPosition()));
         }
     }
 

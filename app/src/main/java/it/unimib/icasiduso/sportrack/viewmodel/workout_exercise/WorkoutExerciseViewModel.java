@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
-import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 
@@ -24,11 +23,7 @@ public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExerc
     }
 
     public void setIsLoading(boolean isLoading) {
-        if (isLoading) {
-           isLoadingLiveData.postValue(true);
-        } else {
-           isLoadingLiveData.postValue(false);
-        }
+           isLoadingLiveData.postValue(isLoading);
     }
 
 
@@ -42,8 +37,25 @@ public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExerc
         workoutExerciseRepository.addWorkoutExerciseToSchedule(workoutExercise, this);
     }
 
-    public void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise) {
-        workoutExerciseRepository.deleteWorkoutExerciseFromSchedule(workoutExercise, this);
+    public void deleteWorkoutExerciseFromSchedule(int position) {
+        List<WorkoutExercise> workoutExercises = workoutExercisesLiveData.getValue();
+        if (workoutExercises != null && position < workoutExercises.size()){
+            WorkoutExercise workoutExercise = workoutExercises.remove(position);
+            workoutExerciseRepository.deleteWorkoutExerciseFromSchedule(workoutExercise, new IWorkoutExercisesRepository.WorkoutExerciseCallback() {
+                @Override
+                public void onSuccess(List<WorkoutExercise> workoutExercises) {
+                }
+
+                @Override
+                public void onSuccess() {
+                    workoutExercisesLiveData.postValue(workoutExercises);
+                }
+
+                @Override
+                public void onFailure(Exception exception) {
+                }
+            });
+        }
     }
 
     @Override

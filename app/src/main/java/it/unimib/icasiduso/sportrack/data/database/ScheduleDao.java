@@ -23,4 +23,5 @@ public interface ScheduleDao {
 
     @Delete
     void deleteSchedule(Schedule schedule);
+    //eliminare anche tutti i workoutexercises con lo stesso scheduleId
 }

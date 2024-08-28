@@ -2,7 +2,6 @@ package it.unimib.icasiduso.sportrack.ui.schedule;
 
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,10 +43,9 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            /*int position = viewHolder.getAdapterPosition();
-            workoutExercisesRepository.deleteWorkoutExercise(workoutExercises.get(position));
-            workoutExercises.remove(position);
-            workoutExerciseRecyclerViewAdapter.notifyItemRemoved(position);*/
+            int position = viewHolder.getBindingAdapterPosition();
+            workoutExerciseViewModel.deleteWorkoutExerciseFromSchedule(position);
+            workoutExerciseRecyclerViewAdapter.notifyItemRemoved(position);
         }
 
         @Override
