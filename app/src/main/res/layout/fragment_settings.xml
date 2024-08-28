@@ -36,6 +36,7 @@
         android:id="@+id/imageViewUser"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:contentDescription="@string/logo"
         android:src="@drawable/setting1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>

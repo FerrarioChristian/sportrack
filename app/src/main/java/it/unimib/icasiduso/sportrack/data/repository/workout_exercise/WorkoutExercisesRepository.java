@@ -28,7 +28,7 @@ public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
 
     @Override
     public void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise, WorkoutExerciseCallback callback) {
-
+        workoutExerciseLocalDataSource.deleteWorkoutExerciseFromSchedule(workoutExercise, callback);
     }
 
     @Override

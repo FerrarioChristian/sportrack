@@ -1,7 +1,11 @@
 package it.unimib.icasiduso.sportrack.data.repository.exercise;
 
+import android.widget.Toast;
+
 import java.util.List;
 
+import it.unimib.icasiduso.sportrack.App;
+import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.source.exercise.IExerciseDataSource;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
@@ -36,7 +40,7 @@ public class ExercisesRepository implements IExercisesRepository {
 
             @Override
             public void onFailure(Exception exception) {
-
+                Toast.makeText(App.getInstance(), App.getRes().getString(R.string.unexpected_error), Toast.LENGTH_SHORT).show();
             }
         });
     }

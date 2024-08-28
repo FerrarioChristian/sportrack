@@ -26,8 +26,6 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
     public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
-
-        //TODO verificare se c'e un modo migliore
         notifyDataSetChanged();
     }
 
@@ -72,7 +70,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onExerciseClick(exercises.get(getAdapterPosition()));
+            onItemClickListener.onExerciseClick(exercises.get(getBindingAdapterPosition()));
         }
     }
 

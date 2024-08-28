@@ -47,14 +47,9 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-            /*
-            workoutExerciseRepository.deleteWorkoutExercisesByScheduleId(scheduleList.get(position).getScheduleId());
-            scheduleRepository.deleteSchedule(scheduleList.get(position));
+            int position = viewHolder.getBindingAdapterPosition();
             scheduleViewModel.deleteSchedule(position);
             scheduleRecyclerViewAdapter.notifyItemRemoved(position);
-            */
-
         }
 
         @Override
@@ -125,7 +120,6 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
 
     public void observeViewModel() {
         scheduleViewModel.getSchedules("").observe(getViewLifecycleOwner(), result -> scheduleRecyclerViewAdapter.setSchedules(result));
-
 
 
         ProgressBar progressBar = requireView().findViewById(R.id.schedule_progress_bar);

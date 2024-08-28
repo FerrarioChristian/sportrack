@@ -2,10 +2,14 @@ package it.unimib.icasiduso.sportrack.model.exercise;
 
 import static java.lang.Integer.parseInt;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity
+import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
+
+@Entity(foreignKeys = @ForeignKey(entity = Schedule.class, parentColumns = "scheduleId", childColumns = "externalScheduleId", onDelete = ForeignKey.CASCADE))
 public class WorkoutExercise {
     @PrimaryKey(autoGenerate = true)
     private long WorkoutExerciseId;
@@ -36,8 +40,8 @@ public class WorkoutExercise {
         return WorkoutExerciseId;
     }
 
-    public void setWorkoutExerciseId(long scheduledExcerciseId) {
-        this.WorkoutExerciseId = scheduledExcerciseId;
+    public void setWorkoutExerciseId(long scheduledExerciseId) {
+        this.WorkoutExerciseId = scheduledExerciseId;
     }
 
     public long getExternalExerciseId() {

@@ -82,7 +82,7 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onExerciseClick(workoutExercises.get(getAdapterPosition()));
+            onItemClickListener.onExerciseClick(workoutExercises.get(getBindingAdapterPosition()));
         }
 
     }
