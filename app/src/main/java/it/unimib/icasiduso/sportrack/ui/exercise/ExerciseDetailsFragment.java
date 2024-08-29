@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
@@ -69,7 +70,9 @@ public class ExerciseDetailsFragment extends Fragment {
             }
             WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exercise.getExerciseId(), scheduleId);
             workoutExerciseViewModel.addWorkoutExerciseToSchedule(workoutExercise);
-            //TODO show toast and back to ListExerciseFragment
+            Toast.makeText(getActivity(), R.string.saved_workout_exercise,
+                    Toast.LENGTH_SHORT).show();
+            Navigation.findNavController(view).popBackStack(R.id.listWorkoutExercisesFragment,false);
         });
     }
 
