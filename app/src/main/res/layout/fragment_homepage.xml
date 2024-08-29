@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -9,84 +10,111 @@
 
 
     <TextView
-        android:id="@+id/tvSelectedDate"
+        android:id="@+id/settings_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="-8dp"
         android:fontFamily="@font/darkcollegefont"
-        android:text="@string/homepage"
-        android:textAllCaps="true"
-        android:textAlignment="center"
-        android:textSize="32sp" />
+        android:text="SPORT"
+        android:textSize="45sp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewUser"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewUser"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.49" />
 
+
+    <TextView
+        android:id="@+id/textViewRightLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-8dp"
+        android:fontFamily="@font/darkcollegefont"
+        android:text="TRACK"
+        android:textSize="45sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewUser"
+        app:layout_constraintStart_toEndOf="@+id/imageViewUser"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.49" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewUser"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/muscle_logo"
+        android:tint="@color/md_theme_onPrimaryFixed"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.jjoe64.graphview.GraphView
-        android:layout_below="@id/tvSelectedDate"
+        android:id="@+id/graph"
         android:layout_width="match_parent"
         android:layout_height="200dip"
-        android:id="@+id/graph" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/tvSelectedDate"
-        android:background="@android:color/darker_gray" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewUser" />
+
     <TextView
         android:id="@+id/tvMediaPeso"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Media Peso: "
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_below="@id/graph"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/graph" />
 
     <TextView
         android:id="@+id/tvFeedback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvMediaPeso"
-        android:layout_alignParentEnd="true"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMediaPeso" />
 
     <EditText
         android:id="@+id/Weight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvFeedback"
         android:layout_marginTop="16dp"
+        android:drawablePadding="8dp"
         android:hint="Inserisci il peso"
         android:inputType="number"
         android:selectAllOnFocus="true"
-        android:drawablePadding="8dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFeedback" />
 
 
     <EditText
         android:id="@+id/etNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/Weight"
         android:layout_marginTop="16dp"
         android:hint="Inserisci le tue note"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Weight" />
 
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etNotes"
         android:layout_marginTop="16dp"
-        android:text="Salva" />
+        android:text="Salva"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNotes" />
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/imageFilterView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnSave"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="117dp"
-        android:layout_marginBottom="3dp" />
+        android:layout_marginBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSave" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
