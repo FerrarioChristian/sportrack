@@ -5,41 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.schedule.ListWorkoutExerciseFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <TextView
+            android:id="@+id/workout_exercise_headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ui.schedule.ListWorkoutExerciseFragment">
+            android:fontFamily="@font/darkcollegefont"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:text="@string/exercises"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            android:textColor="@color/material_on_background_emphasis_high_type"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_workout_exercise_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/workout_exercise_headline">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_workout_exercise_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/list_workout_exercises_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/recyclerview_workout_exercise_list"
-                app:trackCornerRadius="5dp" />
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/list_workout_exercises_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recyclerview_workout_exercise_list"
+            app:trackCornerRadius="5dp" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/no_exercises_text"

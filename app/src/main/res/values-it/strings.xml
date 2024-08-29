@@ -4,6 +4,7 @@
     <string name="app_name">SporTrack</string>
     <string name="logo">Logo</string>
     <string name="add">Aggiungi</string>
+    <string name="save">Salva</string>
     <!-- Strings used for login and register fragments -->
     <string name="login_label">Login</string>
     <string name="login_label_email">Email</string>
@@ -50,11 +51,11 @@
     <string name="repetitions">Ripetizioni: %1$d</string>
     <string name="series_placeholder">serie</string>
     <string name="reps_placeholder">ripetizioni</string>
+    <string name="no_exercises">NESSUN ESERCIZIO</string>
+    <string name="no_schedules">NESSUNA SCHEDA</string>
 
     <!-- Strings used for errors -->
     <string name="unexpected_error">Errore inaspettato</string>
     <string name="invalid_input">I valori inseriti non sono validi.</string>
     <string name="loading_error_check_internet">Errore nel caricamento, controlla la connessione e riprova</string>
-    <string name="no_exercises">NESSUN ESERCIZIO</string>
-    <string name="no_schedules">NESSUNA SCHEDA</string>
 </resources>

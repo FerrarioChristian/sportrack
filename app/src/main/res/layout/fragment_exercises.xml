@@ -9,7 +9,7 @@
         tools:context=".ui.exercise.ExercisesFragment">
 
         <TextView
-            android:id="@+id/headline"
+            android:id="@+id/exercise_headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/exercises"
@@ -27,16 +27,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headline">
+            app:layout_constraintTop_toBottomOf="@id/exercise_headline">
 
             <GridLayout
                 android:id="@+id/gridLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
-                android:useDefaultMargins="true"
-                android:padding="8dp"
-                >
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:useDefaultMargins="true">
 
                 <include
                     android:id="@+id/abdominals_card"
@@ -44,8 +44,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/abdominals}"
-                    app:image="@{@drawable/abdominals}"/>
+                    app:image="@{@drawable/abdominals}"
+                    app:muscle="@{@string/abdominals}" />
 
                 <include
                     android:id="@+id/biceps_card"
@@ -53,8 +53,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/biceps}"
-                    app:image="@{@drawable/biceps}"/>
+                    app:image="@{@drawable/biceps}"
+                    app:muscle="@{@string/biceps}" />
 
                 <include
                     android:id="@+id/chest_card"
@@ -62,8 +62,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/chest}"
-                    app:image="@{@drawable/chest}"/>
+                    app:image="@{@drawable/chest}"
+                    app:muscle="@{@string/chest}" />
 
 
                 <include
@@ -72,8 +72,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/lats}"
-                    app:image="@{@drawable/lats}"/>
+                    app:image="@{@drawable/lats}"
+                    app:muscle="@{@string/lats}" />
 
                 <include
                     android:id="@+id/middle_back_card"
@@ -81,8 +81,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/middle_back}"
-                    app:image="@{@drawable/middle_back}"/>
+                    app:image="@{@drawable/middle_back}"
+                    app:muscle="@{@string/middle_back}" />
 
                 <include
                     android:id="@+id/lower_back_card"
@@ -90,8 +90,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/lower_back}"
-                    app:image="@{@drawable/lower_back}"/>
+                    app:image="@{@drawable/lower_back}"
+                    app:muscle="@{@string/lower_back}" />
 
                 <include
                     android:id="@+id/triceps_card"
@@ -99,8 +99,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/triceps}"
-                    app:image="@{@drawable/triceps}"/>
+                    app:image="@{@drawable/triceps}"
+                    app:muscle="@{@string/triceps}" />
 
                 <include
                     android:id="@+id/quadriceps_card"
@@ -108,8 +108,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/quadriceps}"
-                    app:image="@{@drawable/quadriceps}"/>
+                    app:image="@{@drawable/quadriceps}"
+                    app:muscle="@{@string/quadriceps}" />
 
                 <include
                     android:id="@+id/hamstrings_card"
@@ -117,8 +117,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/hamstrings}"
-                    app:image="@{@drawable/hamstrings}"/>
+                    app:image="@{@drawable/hamstrings}"
+                    app:muscle="@{@string/hamstrings}" />
 
                 <include
                     android:id="@+id/glutes_card"
@@ -126,8 +126,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    app:muscle="@{@string/glutes}"
-                    app:image="@{@drawable/glutes}"/>
+                    app:image="@{@drawable/glutes}"
+                    app:muscle="@{@string/glutes}" />
 
             </GridLayout>
         </ScrollView>
