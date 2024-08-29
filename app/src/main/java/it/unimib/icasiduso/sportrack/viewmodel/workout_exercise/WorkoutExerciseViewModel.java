@@ -1,10 +1,14 @@
 package it.unimib.icasiduso.sportrack.viewmodel.workout_exercise;
 
+import android.widget.Toast;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import it.unimib.icasiduso.sportrack.App;
+import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
@@ -13,7 +17,6 @@ public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExerc
     private static final String TAG = WorkoutExerciseViewModel.class.getSimpleName();
 
     private final MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
-    private final MutableLiveData<WorkoutExercise> workoutExerciseLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<WorkoutExercise>> workoutExercisesLiveData = new MutableLiveData<>();
 
     private final IWorkoutExercisesRepository workoutExerciseRepository;
@@ -73,18 +76,11 @@ public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExerc
     @Override
     public void onFailure(Exception exception) {
         setIsLoading(false);
-        //TODO implementare eccezione
+        Toast.makeText(App.getInstance(), R.string.unexpected_error, Toast.LENGTH_SHORT).show();
     }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {
         return isLoadingLiveData;
     }
 
-    public MutableLiveData<WorkoutExercise> getWorkoutExerciseLiveData() {
-        return workoutExerciseLiveData;
-    }
-
-    public MutableLiveData<List<WorkoutExercise>> getWorkoutExercisesLiveData() {
-        return workoutExercisesLiveData;
-    }
 }
