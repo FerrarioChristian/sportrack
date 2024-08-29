@@ -106,6 +106,7 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
         long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
         workoutExerciseViewModel.getWorkoutExercisesByScheduleId(scheduleId).observe(getViewLifecycleOwner(), result -> {
             workoutExerciseRecyclerViewAdapter.setWorkoutExercises(result);
+            requireView().findViewById(R.id.no_exercises_text).setVisibility(result.isEmpty() ? View.VISIBLE : View.GONE);
         });
 
         ProgressBar progressBar = requireView().findViewById(R.id.list_workout_exercises_progress_bar);
