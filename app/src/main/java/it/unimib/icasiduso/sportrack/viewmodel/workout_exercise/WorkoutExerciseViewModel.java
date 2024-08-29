@@ -28,6 +28,7 @@ public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExerc
 
 
     public MutableLiveData<List<WorkoutExercise>> getWorkoutExercisesByScheduleId(Long scheduleId) {
+        setIsLoading(true);
         workoutExerciseRepository.getWorkoutExercisesByScheduleId(scheduleId, this);
         return workoutExercisesLiveData;
     }
@@ -66,7 +67,7 @@ public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExerc
 
     @Override
     public void onSuccess() {
-
+        setIsLoading(false);
     }
 
     @Override

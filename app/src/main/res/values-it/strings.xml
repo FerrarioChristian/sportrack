@@ -55,4 +55,6 @@
     <string name="unexpected_error">Errore inaspettato</string>
     <string name="invalid_input">I valori inseriti non sono validi.</string>
     <string name="loading_error_check_internet">Errore nel caricamento, controlla la connessione e riprova</string>
+    <string name="no_exercises">NESSUN ESERCIZIO</string>
+    <string name="no_schedules">NESSUNA SCHEDA</string>
 </resources>

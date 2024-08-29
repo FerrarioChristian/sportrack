@@ -119,7 +119,10 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
     }
 
     public void observeViewModel() {
-        scheduleViewModel.getSchedules("").observe(getViewLifecycleOwner(), result -> scheduleRecyclerViewAdapter.setSchedules(result));
+        scheduleViewModel.getSchedules("").observe(getViewLifecycleOwner(), result -> {
+            scheduleRecyclerViewAdapter.setSchedules(result);
+            requireView().findViewById(R.id.no_schedule_text).setVisibility(result.isEmpty() ? View.VISIBLE : View.GONE);
+        });
 
 
         ProgressBar progressBar = requireView().findViewById(R.id.schedule_progress_bar);
