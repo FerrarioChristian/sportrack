@@ -20,9 +20,7 @@
     <string name="exercises">Exercises</string>
     <string name="settings">Settings</string>
 
-    <string name="invalid_email">Invalid email.</string>
-    <string name="invalid_password">Password must be at least %1$d characters long.</string>
-    <string name="invalid_confirm_password">Passwords don\'t match.</string>
+
     <!-- Strings used for muscles -->
     <string name="abdominals">abdominals</string>
     <string name="biceps">biceps</string>
@@ -40,10 +38,10 @@
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
     <string name="saved_workout_exercise">The exercise has been added</string>
-    <string name="exercise_type">type: %1$s</string>
-    <string name="exercise_muscle">muscle: %1$s</string>
-    <string name="exercise_tool">tool: %1$s</string>
-    <string name="exercise_difficulty">difficulty: %1$s</string>
+    <string name="exercise_type">Type: %1$s</string>
+    <string name="exercise_muscle">Muscle: %1$s</string>
+    <string name="exercise_tool">Tool: %1$s</string>
+    <string name="exercise_difficulty">Difficulty: %1$s</string>
     <!-- Strings used for schedule -->
     <string name="new_schedule">New schedule</string>
     <string name="schedule_name">Schedule name</string>
@@ -55,6 +53,9 @@
     <string name="no_schedules">NO SCHEDULES</string>
 
     <!-- Strings used for errors -->
+    <string name="invalid_email">Invalid email.</string>
+    <string name="invalid_password">Password must be at least %1$d characters long.</string>
+    <string name="invalid_confirm_password">Passwords don\'t match.</string>
     <string name="unexpected_error">Unexpected error</string>
     <string name="invalid_input">Inserted values not valid.</string>
     <string name="loading_error_check_internet">Loading error, check your network and try again</string>

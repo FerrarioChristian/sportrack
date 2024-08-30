@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-<data>
-    <variable
-        name="exercise"
-        type="it.unimib.icasiduso.sportrack.model.exercise.Exercise" />
-</data>
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <data>
+
+        <variable
+            name="exercise"
+            type="it.unimib.icasiduso.sportrack.model.exercise.Exercise" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,38 +17,33 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp">
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <TextView
                     android:id="@+id/textViewExerciseName"
-                    android:text="@{exercise.name}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp"
                     android:fontFamily="@font/darkcollegefont"
-                    android:padding="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="@{exercise.name}"
                     android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                    android:textColor="@color/material_on_background_emphasis_high_type"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
                 <TextView
                     android:id="@+id/textViewExerciseType"
-                    android:text="@{@string/exercise_type(exercise.type)}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="fill_horizontal"
                     android:padding="1dp"
+                    android:text="@{@string/exercise_type(exercise.type)}"
                     android:textSize="17sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -55,11 +52,11 @@
 
                 <TextView
                     android:id="@+id/textViewExerciseMuscle"
-                    android:text="@{@string/exercise_muscle(exercise.muscle)}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="fill_horizontal"
                     android:padding="1dp"
+                    android:text="@{@string/exercise_muscle(exercise.muscle)}"
                     android:textSize="17sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -69,11 +66,11 @@
 
                 <TextView
                     android:id="@+id/textViewExerciseEquipment"
-                    android:text="@{@string/exercise_tool(exercise.equipment)}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="fill_horizontal"
                     android:padding="1dp"
+                    android:text="@{@string/exercise_tool(exercise.equipment)}"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -83,11 +80,11 @@
 
                 <TextView
                     android:id="@+id/textViewExerciseDifficulty"
-                    android:text="@{@string/exercise_difficulty(exercise.difficulty)}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="fill_horizontal"
                     android:padding="1dp"
+                    android:text="@{@string/exercise_difficulty(exercise.difficulty)}"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -103,10 +100,10 @@
 
                 <TextView
                     android:id="@+id/textViewExerciseDescription"
-                    android:text="@{exercise.instructions}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="25dp"
+                    android:text="@{exercise.instructions}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewExerciseDifficulty" />

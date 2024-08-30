@@ -81,6 +81,7 @@ public class RegisterFragment extends Fragment {
                             if (result.isSuccess()) {
                                 Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
                                 startActivity(intent);
+                                requireActivity().finish();
                             } else {
                                 Toast.makeText(getActivity(), R.string.authentication_failed,
                                         Toast.LENGTH_SHORT).show();

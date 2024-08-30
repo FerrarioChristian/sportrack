@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -96,26 +98,30 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
     private void showNewScheduleDialog() {
         View customView = LayoutInflater.from(getContext()).inflate(R.layout.new_schedule_dialog, null);
 
-        new MaterialAlertDialogBuilder(requireContext())
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.new_schedule))
                 .setView(customView)
                 .setNegativeButton("Close", null)
-                .setPositiveButton(R.string.add, (dialog, which) -> {
-                    TextInputLayout scheduleNameInput = customView.findViewById(R.id.scheduleName);
-                    MaterialButtonToggleGroup scheduleDifficulty = customView.findViewById(R.id.difficultyButton);
-
-                    String scheduleName = scheduleNameInput.getEditText().getText() != null ? scheduleNameInput.getEditText().getText().toString() : "";
-
-                    if (scheduleName.isEmpty()) {
-                        Toast.makeText(requireContext(), getString(R.string.invalid_input), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    MaterialButton selectedButton = customView.findViewById(scheduleDifficulty.getCheckedButtonId());
-                    String difficulty = selectedButton.getText().toString();
-                    scheduleViewModel.newSchedule(new Schedule(scheduleName, difficulty));
-                })
+                .setPositiveButton(R.string.add, null)
                 .show();
+
+        Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        b.setOnClickListener(view -> {
+                TextInputLayout scheduleNameInput = customView.findViewById(R.id.scheduleName);
+                MaterialButtonToggleGroup scheduleDifficulty = customView.findViewById(R.id.difficultyButton);
+
+                String scheduleName = scheduleNameInput.getEditText().getText() != null ? scheduleNameInput.getEditText().getText().toString() : "";
+
+                if (scheduleName.isEmpty()) {
+                    Toast.makeText(requireContext(), getString(R.string.invalid_input), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                MaterialButton selectedButton = customView.findViewById(scheduleDifficulty.getCheckedButtonId());
+                String difficulty = selectedButton.getText().toString();
+                scheduleViewModel.newSchedule(new Schedule(scheduleName, difficulty));
+                dialog.dismiss();
+            });
     }
 
     public void observeViewModel() {

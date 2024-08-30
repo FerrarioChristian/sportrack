@@ -20,16 +20,14 @@
     <string name="exercises">Esercizi</string>
     <string name="settings">Impostazioni</string>
 
-    <string name="invalid_email">Email invalida..</string>
-    <string name="invalid_password">La password deve essere lunga almeno %1$d caratteri.</string>
-    <string name="invalid_confirm_password">Le due password non coincidono.</string>
+
     <!-- Strings used for muscles -->
     <string name="abdominals">addominali</string>
     <string name="biceps">bicipiti</string>
     <string name="chest">petto</string>
-    <string name="lats">spalle</string>
+    <string name="lats">dorsali</string>
     <string name="middle_back">centro schiena</string>
-    <string name="lower_back">dorsali</string>
+    <string name="lower_back">lombari</string>
     <string name="triceps">tricipiti</string>
     <string name="quadriceps">quadricipiti</string>
     <string name="hamstrings">femorali</string>
@@ -41,9 +39,9 @@
     <string name="hard">Difficile</string>
     <string name="saved_workout_exercise">L\'esercizio è stato aggiunto</string>
     <string name="exercise_type">Tipo: %1$s</string>
-    <string name="exercise_muscle">musolo: %1$s</string>
-    <string name="exercise_tool">attrezzo: %1$s</string>
-    <string name="exercise_difficulty">difficoltà: %1$s</string>
+    <string name="exercise_muscle">Muscolo: %1$s</string>
+    <string name="exercise_tool">Attrezzo: %1$s</string>
+    <string name="exercise_difficulty">Difficoltà: %1$s</string>
     <!-- Strings used for schedule -->
     <string name="new_schedule">Nuova scheda</string>
     <string name="schedule_name">Nome scheda</string>
@@ -55,6 +53,9 @@
     <string name="no_schedules">NESSUNA SCHEDA</string>
 
     <!-- Strings used for errors -->
+    <string name="invalid_email">Email invalida.</string>
+    <string name="invalid_password">La password deve essere lunga almeno %1$d caratteri.</string>
+    <string name="invalid_confirm_password">Le due password non coincidono.</string>
     <string name="unexpected_error">Errore inaspettato</string>
     <string name="invalid_input">I valori inseriti non sono validi.</string>
     <string name="loading_error_check_internet">Errore nel caricamento, controlla la connessione e riprova</string>
