@@ -5,6 +5,10 @@
     <string name="logo">Logo</string>
     <string name="add">Aggiungi</string>
     <string name="save">Salva</string>
+    <string name="next">Avanti</string>
+    <string name="previous">Indietro</string>
+    <string name="cancel">Annulla</string>
+    <string name="name">Name</string>
     <!-- Strings used for login and register fragments -->
     <string name="login_label">Login</string>
     <string name="login_label_email">Email</string>
@@ -13,14 +17,10 @@
     <string name="register_label">Registrati</string>
     <string name="authentication_failed">Autenticazione fallita.</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="next">Avanti</string>
-    <string name="previous">Indietro</string>
     <string name="homepage">Homepage</string>
     <string name="schedule">Scheda</string>
     <string name="exercises">Esercizi</string>
     <string name="settings">Impostazioni</string>
-
-
     <!-- Strings used for muscles -->
     <string name="abdominals">addominali</string>
     <string name="biceps">bicipiti</string>

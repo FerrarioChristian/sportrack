@@ -101,7 +101,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.new_schedule))
                 .setView(customView)
-                .setNegativeButton("Close", null)
+                .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.add, null)
                 .show();
 
