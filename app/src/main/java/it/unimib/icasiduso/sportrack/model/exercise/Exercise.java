@@ -5,8 +5,15 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 @Entity
@@ -22,7 +29,7 @@ public class Exercise implements Parcelable {
             return new Exercise[size];
         }
     };
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private long exerciseId;
     private String name;
     private String type;
@@ -30,6 +37,35 @@ public class Exercise implements Parcelable {
     private String equipment;
     private String difficulty;
     private String instructions;
+
+    @Ignore
+    @JsonCreator
+    public Exercise(
+            @JsonProperty("name") String name,
+            @JsonProperty("type") String type,
+            @JsonProperty("muscle") String muscle,
+            @JsonProperty("equipment") String equipment,
+            @JsonProperty("difficulty") String difficulty,
+            @JsonProperty("instructions") String instructions) {
+        this.name = name;
+        this.type = type;
+        this.muscle = muscle;
+        this.equipment = equipment;
+        this.difficulty = difficulty;
+        this.instructions = instructions;
+        this.exerciseId = generateExerciseId(name);
+    }
+
+    private long generateExerciseId(String name) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(name.getBytes());
+            BigInteger no = new BigInteger(1, messageDigest);
+            return Math.abs(no.longValue());
+        } catch (NoSuchAlgorithmException e) {
+            return 0;
+        }
+    }
 
     public Exercise() {
     }

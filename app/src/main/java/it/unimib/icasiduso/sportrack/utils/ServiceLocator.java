@@ -1,6 +1,9 @@
 package it.unimib.icasiduso.sportrack.utils;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
@@ -24,6 +27,7 @@ import it.unimib.icasiduso.sportrack.data.source.user.BaseUserRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.UserRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.workout_exercise.IWorkoutExerciseDataSource;
 import it.unimib.icasiduso.sportrack.data.source.workout_exercise.WorkoutExerciseLocalDataSource;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -45,7 +49,10 @@ public class ServiceLocator {
     }
 
     public ExercisesApiService getExercisesApiService() {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(
+                        new GsonBuilder().registerTypeAdapter(Exercise.class, new ExerciseDeserializer()).create()))
+                .build();
         return retrofit.create(ExercisesApiService.class);
     }
 
