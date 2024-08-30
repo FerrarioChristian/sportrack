@@ -2,14 +2,14 @@ package it.unimib.icasiduso.sportrack.model.exercise;
 
 import static java.lang.Integer.parseInt;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
-@Entity(foreignKeys = @ForeignKey(entity = Schedule.class, parentColumns = "scheduleId", childColumns = "externalScheduleId", onDelete = ForeignKey.CASCADE))
+@Entity(foreignKeys = @ForeignKey(entity = Schedule.class, parentColumns = "scheduleId", childColumns = "externalScheduleId", onDelete = ForeignKey.CASCADE), indices = {@Index("externalScheduleId")})
 public class WorkoutExercise {
     @PrimaryKey(autoGenerate = true)
     private long WorkoutExerciseId;
@@ -67,4 +67,6 @@ public class WorkoutExercise {
     public void setRepetitions(int repetitions) {
         this.repetitions = repetitions;
     }
+
+
 }

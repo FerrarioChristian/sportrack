@@ -1,7 +1,9 @@
-package it.unimib.icasiduso.sportrack.viewmodel.exercise;
+package it.unimib.icasiduso.sportrack.viewmodel;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
@@ -93,5 +95,24 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
 
     public MutableLiveData<Exercise> getExerciseLiveData() {
         return exerciseLiveData;
+    }
+
+    public static class Factory implements ViewModelProvider.Factory {
+        private final IExercisesRepository repository;
+
+        public Factory(IExercisesRepository repository) {
+            this.repository = repository;
+        }
+
+        @SuppressWarnings("unchecked")
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            if (modelClass.isAssignableFrom(ExerciseViewModel.class)) {
+                return (T) new ExerciseViewModel(repository);
+            }
+            throw new IllegalArgumentException("Unknown ViewModel class");
+        }
+
     }
 }

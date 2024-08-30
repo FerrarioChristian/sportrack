@@ -22,10 +22,8 @@ import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesReposito
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
-import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
-import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory;
-import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModel;
-import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModelFactory;
+import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.WorkoutExerciseViewModel;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExerciseRecyclerViewAdapter.OnItemClickListener {
@@ -65,7 +63,7 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
         super.onCreate(savedInstanceState);
 
         IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
-        WorkoutExerciseViewModelFactory factory = new WorkoutExerciseViewModelFactory(workoutExercisesRepository);
+        WorkoutExerciseViewModel.Factory factory = new WorkoutExerciseViewModel.Factory(workoutExercisesRepository);
         workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(WorkoutExerciseViewModel.class);
 
     }
@@ -82,7 +80,7 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
         super.onViewCreated(view, savedInstanceState);
 
         IExercisesRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
-        ExerciseViewModelFactory factory = new ExerciseViewModelFactory(exercisesRepository);
+        ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
         ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
 
         RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_workout_exercise_list);

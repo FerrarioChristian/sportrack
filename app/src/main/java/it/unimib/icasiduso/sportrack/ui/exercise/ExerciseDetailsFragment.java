@@ -18,8 +18,7 @@ import it.unimib.icasiduso.sportrack.databinding.FragmentExerciseDetailsBinding;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
-import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModel;
-import it.unimib.icasiduso.sportrack.viewmodel.workout_exercise.WorkoutExerciseViewModelFactory;
+import it.unimib.icasiduso.sportrack.viewmodel.WorkoutExerciseViewModel;
 
 public class ExerciseDetailsFragment extends Fragment {
     private static final String TAG = ExerciseDetailsFragment.class.getSimpleName();
@@ -36,7 +35,7 @@ public class ExerciseDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
-        WorkoutExerciseViewModelFactory workoutExerciseViewModelFactory = new WorkoutExerciseViewModelFactory(workoutExercisesRepository);
+        WorkoutExerciseViewModel.Factory workoutExerciseViewModelFactory = new WorkoutExerciseViewModel.Factory(workoutExercisesRepository);
         workoutExerciseViewModel = new ViewModelProvider(requireActivity(), workoutExerciseViewModelFactory).get(WorkoutExerciseViewModel.class);
     }
 

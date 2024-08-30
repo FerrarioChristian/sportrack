@@ -30,8 +30,7 @@ import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepositor
 import it.unimib.icasiduso.sportrack.databinding.FragmentScheduleBinding;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
-import it.unimib.icasiduso.sportrack.viewmodel.schedule.ScheduleViewModel;
-import it.unimib.icasiduso.sportrack.viewmodel.schedule.ScheduleViewModelFactory;
+import it.unimib.icasiduso.sportrack.viewmodel.ScheduleViewModel;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAdapter.OnItemClickListener {
@@ -70,7 +69,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         IScheduleRepository scheduleRepository = ServiceLocator.getInstance().getScheduleRepository();
-        ScheduleViewModelFactory factory = new ScheduleViewModelFactory(scheduleRepository);
+        ScheduleViewModel.Factory factory = new ScheduleViewModel.Factory(scheduleRepository);
         scheduleViewModel = new ViewModelProvider(requireActivity(), factory).get(ScheduleViewModel.class);
     }
 

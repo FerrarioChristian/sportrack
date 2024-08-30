@@ -14,7 +14,7 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
-import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
 
 public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutExerciseRecyclerViewAdapter.WorkoutExerciseViewHolder> {
     private final OnItemClickListener onItemClickListener;

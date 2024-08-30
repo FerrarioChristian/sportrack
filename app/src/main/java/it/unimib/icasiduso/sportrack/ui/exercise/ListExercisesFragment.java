@@ -20,8 +20,7 @@ import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesReposito
 import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
-import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModel;
-import it.unimib.icasiduso.sportrack.viewmodel.exercise.ExerciseViewModelFactory;
+import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
 
 public class ListExercisesFragment extends Fragment implements ExerciseRecyclerViewAdapter.OnItemClickListener {
 
@@ -37,7 +36,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
 
         IExercisesRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
 
-        ExerciseViewModelFactory factory = new ExerciseViewModelFactory(exercisesRepository);
+        ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
         exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
     }
 

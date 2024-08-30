@@ -1,9 +1,11 @@
-package it.unimib.icasiduso.sportrack.viewmodel.workout_exercise;
+package it.unimib.icasiduso.sportrack.viewmodel;
 
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExerc
 
     private final IWorkoutExercisesRepository workoutExerciseRepository;
 
-    WorkoutExerciseViewModel(IWorkoutExercisesRepository workoutExerciseRepository) {
+    public WorkoutExerciseViewModel(IWorkoutExercisesRepository workoutExerciseRepository) {
         this.workoutExerciseRepository = workoutExerciseRepository;
     }
 
@@ -83,4 +85,22 @@ public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExerc
         return isLoadingLiveData;
     }
 
+
+    public static class Factory implements ViewModelProvider.Factory {
+        private final IWorkoutExercisesRepository repository;
+
+        public Factory(IWorkoutExercisesRepository repository) {
+            this.repository = repository;
+        }
+
+        @SuppressWarnings("unchecked")
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            if (modelClass.isAssignableFrom(WorkoutExerciseViewModel.class)) {
+                return (T) new WorkoutExerciseViewModel(repository);
+            }
+            throw new IllegalArgumentException("Unknown ViewModel class");
+        }
+    }
 }

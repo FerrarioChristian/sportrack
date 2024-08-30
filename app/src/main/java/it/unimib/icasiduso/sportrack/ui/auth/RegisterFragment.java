@@ -25,8 +25,7 @@ import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
-import it.unimib.icasiduso.sportrack.viewmodel.user.UserViewModel;
-import it.unimib.icasiduso.sportrack.viewmodel.user.UserViewModelFactory;
+import it.unimib.icasiduso.sportrack.viewmodel.UserViewModel;
 
 public class RegisterFragment extends Fragment {
     private static final String TAG = RegisterFragment.class.getSimpleName();
@@ -41,7 +40,7 @@ public class RegisterFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
-        userViewModel = new ViewModelProvider(requireActivity(), new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity(), new UserViewModel.Factory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
