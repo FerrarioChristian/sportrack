@@ -1,6 +1,7 @@
 package it.unimib.icasiduso.sportrack.ui.exercise;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +62,8 @@ public class ExerciseDetailsFragment extends Fragment {
         scheduleInputContainer.setVisibility(scheduleId != 0L ? View.VISIBLE : View.GONE);
 
         binding.addExerciseToSchedule.setOnClickListener(v -> {
-            String series = binding.textViewSeries.getText() != null ? binding.textViewSeries.getText().toString() : "";
-            String reps = binding.textViewReps.getText() != null ? binding.textViewReps.getText().toString() : "";
+            String series = binding.textViewSeries.getEditText().getText() != null ? binding.textViewSeries.getEditText().getText().toString() : "";
+            String reps = binding.textViewReps.getEditText().getText() != null ? binding.textViewReps.getEditText().getText().toString() : "";
             if (!isValidInput(series, reps)) {
                 Toast.makeText(requireContext(), getString(R.string.invalid_input), Toast.LENGTH_SHORT).show();
                 return;

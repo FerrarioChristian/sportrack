@@ -15,7 +15,6 @@ public class Constants {
     public static final String USER_COLLISION_ERROR = "userCollisionError";
     public static final String WEAK_PASSWORD_ERROR = "passwordIsWeak";
 
-    public static final String UNEXPECTED_ERROR = "unexpected_error";
 
     public static final String FIREBASE_DATABASE = "https://sportrack-5fc02-default-rtdb.europe-west1.firebasedatabase.app/";
 

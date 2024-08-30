@@ -2,7 +2,6 @@ package it.unimib.icasiduso.sportrack.data.source.user;
 
 import static it.unimib.icasiduso.sportrack.utils.Constants.INVALID_CREDENTIALS_ERROR;
 import static it.unimib.icasiduso.sportrack.utils.Constants.INVALID_USER_ERROR;
-import static it.unimib.icasiduso.sportrack.utils.Constants.UNEXPECTED_ERROR;
 import static it.unimib.icasiduso.sportrack.utils.Constants.USER_COLLISION_ERROR;
 import static it.unimib.icasiduso.sportrack.utils.Constants.WEAK_PASSWORD_ERROR;
 
@@ -15,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
+import it.unimib.icasiduso.sportrack.App;
+import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.model.User;
 
 public class AuthDataSource extends BaseAuthDataSource {
@@ -90,6 +91,7 @@ public class AuthDataSource extends BaseAuthDataSource {
         });
     }
 
+    //TODO sistemare i messaggi d'errore
     private String getErrorMessage(Exception exception) {
         if (exception instanceof FirebaseAuthWeakPasswordException) {
             return WEAK_PASSWORD_ERROR;
@@ -100,6 +102,6 @@ public class AuthDataSource extends BaseAuthDataSource {
         } else if (exception instanceof FirebaseAuthUserCollisionException) {
             return USER_COLLISION_ERROR;
         }
-        return UNEXPECTED_ERROR;
+        return App.getRes().getString(R.string.unexpected_error);
     }
 }

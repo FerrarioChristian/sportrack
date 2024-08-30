@@ -42,6 +42,7 @@
     <string name="exercise_muscle">Muscolo: %1$s</string>
     <string name="exercise_tool">Attrezzo: %1$s</string>
     <string name="exercise_difficulty">Difficoltà: %1$s</string>
+    <string name="instructions">Istruzioni</string>
     <!-- Strings used for schedule -->
     <string name="new_schedule">Nuova scheda</string>
     <string name="schedule_name">Nome scheda</string>
