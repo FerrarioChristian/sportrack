@@ -15,6 +15,9 @@ public interface ScheduleDao {
     @Query("SELECT * FROM schedule")
     List<Schedule> getAll();
 
+    @Query("SELECT * FROM schedule WHERE userId IN (:userId)")
+    List<Schedule> getSchedulesByUserId(String userId);
+
     @Upsert
     List<Long> insertScheduleList(List<Schedule> scheduleList);
 

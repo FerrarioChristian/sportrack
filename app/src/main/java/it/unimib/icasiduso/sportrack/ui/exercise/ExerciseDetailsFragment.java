@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.databinding.FragmentExerciseDetailsBinding;
@@ -68,7 +71,11 @@ public class ExerciseDetailsFragment extends Fragment {
                 Toast.makeText(requireContext(), getString(R.string.invalid_input), Toast.LENGTH_SHORT).show();
                 return;
             }
-            WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exercise.getExerciseId(), scheduleId);
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            assert user != null;
+            WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exercise.getExerciseId(), scheduleId, user.getUid());
             workoutExerciseViewModel.addWorkoutExerciseToSchedule(workoutExercise);
             Toast.makeText(getActivity(), R.string.saved_workout_exercise,
                     Toast.LENGTH_SHORT).show();

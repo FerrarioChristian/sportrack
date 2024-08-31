@@ -18,7 +18,7 @@ public interface WorkoutExerciseDao {
     @Query("SELECT * FROM workoutexercise")
     List<WorkoutExercise> getAll();
 
-    @Query("SELECT * FROM workoutexercise WHERE externalScheduleId = :scheduleId")
+    @Query("SELECT * FROM workoutexercise WHERE scheduleId = :scheduleId")
     List<WorkoutExercise> getWorkoutExercisesByScheduleId(Long scheduleId);
 
     @Delete
@@ -27,6 +27,6 @@ public interface WorkoutExerciseDao {
     @Upsert
     List<Long> insertWorkoutExercise(List<WorkoutExercise> workoutExercise);
 
-    @Query("DELETE FROM workoutexercise WHERE externalScheduleId = :scheduleId")
+    @Query("DELETE FROM workoutexercise WHERE scheduleId = :scheduleId")
     void deleteWorkoutExercisesByScheduleId(long scheduleId);
 }

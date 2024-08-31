@@ -23,7 +23,7 @@ public class ScheduleLocalDataSource implements IScheduleDataSource.Local {
             List<Schedule> scheduleList = new ArrayList<>();
             scheduleList.add(schedule);
             scheduleDao.insertScheduleList(scheduleList);
-            callback.onSuccess(scheduleDao.getAll());
+            callback.onSuccess(scheduleDao.getSchedulesByUserId(schedule.getUserId()));
         });
     }
 
@@ -37,6 +37,6 @@ public class ScheduleLocalDataSource implements IScheduleDataSource.Local {
 
     @Override
     public void getSchedules(String userId, IScheduleRepository.ScheduleCallback callback) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(scheduleDao.getAll()));
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(scheduleDao.getSchedulesByUserId(userId)));
     }
 }

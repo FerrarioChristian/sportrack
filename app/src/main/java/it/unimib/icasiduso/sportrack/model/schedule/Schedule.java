@@ -1,20 +1,24 @@
 package it.unimib.icasiduso.sportrack.model.schedule;
 
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 
-@Entity
+@Entity(indices = {@Index(value = {"userId", "scheduleId"}, unique = true)})
 public class Schedule {
     @PrimaryKey(autoGenerate = true)
     private long scheduleId;
+    private String userId;
     private String name;
     private String difficulty;
 
-    public Schedule(String name, String difficulty) {
+    public Schedule(String userId, String name, String difficulty) {
         this.name = name;
         this.difficulty = difficulty;
+        this.userId = userId;
     }
 
     public long getScheduleId() {
@@ -39,5 +43,13 @@ public class Schedule {
 
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

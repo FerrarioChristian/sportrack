@@ -23,6 +23,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ScheduleRecyclerViewAdapter;
@@ -39,6 +41,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
 
     private ScheduleViewModel scheduleViewModel;
     private ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
@@ -118,13 +121,14 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
 
                 MaterialButton selectedButton = customView.findViewById(scheduleDifficulty.getCheckedButtonId());
                 String difficulty = selectedButton.getText().toString();
-                scheduleViewModel.newSchedule(new Schedule(scheduleName, difficulty));
+                scheduleViewModel.newSchedule(new Schedule(user.getUid(),scheduleName, difficulty));
+
                 dialog.dismiss();
             });
     }
 
     public void observeViewModel() {
-        scheduleViewModel.getSchedules("").observe(getViewLifecycleOwner(), result -> {
+        scheduleViewModel.getSchedules(user.getUid()).observe(getViewLifecycleOwner(), result -> {
             scheduleRecyclerViewAdapter.setSchedules(result);
             requireView().findViewById(R.id.no_schedule_text).setVisibility(result.isEmpty() ? View.VISIBLE : View.GONE);
         });
