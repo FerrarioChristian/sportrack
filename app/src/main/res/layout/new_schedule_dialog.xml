@@ -32,15 +32,15 @@
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/difficultyButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        app:checkedButton="@id/beginner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scheduleName"
-        app:checkedButton="@id/beginner"
         app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
@@ -48,6 +48,7 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/easy" />
 
         <com.google.android.material.button.MaterialButton
@@ -55,6 +56,7 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/medium" />
 
         <com.google.android.material.button.MaterialButton
@@ -62,6 +64,7 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/hard" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
