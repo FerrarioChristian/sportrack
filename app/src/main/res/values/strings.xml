@@ -60,4 +60,6 @@
     <string name="unexpected_error">Unexpected error</string>
     <string name="invalid_input">Inserted values not valid.</string>
     <string name="loading_error_check_internet">Loading error, check your network and try again</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="logout" translatable="false">Logout</string>
 </resources>

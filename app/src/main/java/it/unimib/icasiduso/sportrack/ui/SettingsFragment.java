@@ -1,6 +1,7 @@
 package it.unimib.icasiduso.sportrack.ui;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,11 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
@@ -49,6 +53,14 @@ public class SettingsFragment extends Fragment {
                 startActivity(intent);
                 requireActivity().finish();
         }));
+
+        MaterialSwitch darkModeSwitch = view.findViewById(R.id.darkModeSwitch);
+        darkModeSwitch.post(() -> {
+            int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            darkModeSwitch.setChecked(currentNightMode == Configuration.UI_MODE_NIGHT_YES);
+        });
+        darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO));
 
     }
 }
