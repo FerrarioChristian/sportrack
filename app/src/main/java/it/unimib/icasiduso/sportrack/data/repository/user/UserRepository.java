@@ -1,93 +1,48 @@
 package it.unimib.icasiduso.sportrack.data.repository.user;
 
-import androidx.lifecycle.MutableLiveData;
-
-import it.unimib.icasiduso.sportrack.data.source.user.BaseAuthDataSource;
-import it.unimib.icasiduso.sportrack.data.source.user.BaseUserRemoteDataSource;
-import it.unimib.icasiduso.sportrack.data.source.user.UserCallback;
-import it.unimib.icasiduso.sportrack.model.Result;
+import it.unimib.icasiduso.sportrack.data.source.user.IUserDataSource;
 import it.unimib.icasiduso.sportrack.model.User;
 
-public class UserRepository implements IUserRepository, UserCallback {
+public class UserRepository implements IUserRepository {
+
     private static final String TAG = UserRepository.class.getSimpleName();
 
-    private final BaseAuthDataSource authDataSource;
-    private final BaseUserRemoteDataSource userRemoteDataSource;
+    private final IUserDataSource.Auth authDataSource;
+    private final IUserDataSource.Remote userRemoteDataSource;
 
-    private final MutableLiveData<Result> userMutableLiveData;
-
-    public UserRepository(BaseAuthDataSource authDataSource, BaseUserRemoteDataSource userRemoteDataSource) {
+    public UserRepository(IUserDataSource.Auth authDataSource, IUserDataSource.Remote userRemoteDataSource) {
         this.authDataSource = authDataSource;
-        this.userMutableLiveData = new MutableLiveData<>();
-        this.authDataSource.setUserRepositoryCallbackable(this);
         this.userRemoteDataSource = userRemoteDataSource;
-        this.userRemoteDataSource.setUserCallback(this);
     }
 
 
     @Override
-    public MutableLiveData<Result> getUser(String email, String password, boolean isUserRegistered) {
+    public void getUser(String email, String password, boolean isUserRegistered, UserAuthCallback callback) {
         if (isUserRegistered) {
-            signIn(email, password);
+            signIn(email, password, callback);
         } else {
-            signUp(email, password);
-        }
-        return userMutableLiveData;
-    }
-
-    @Override
-    public MutableLiveData<Result> getGoogleUser(String idToken) {
-        return null;
-    }
-
-    @Override
-    public MutableLiveData<Result> logout() {
-        authDataSource.logout();
-        return userMutableLiveData;
-    }
-
-    @Override
-    public User getLoggedUser() {
-        return null;
-    }
-
-    @Override
-    public void signUp(String email, String password) {
-        authDataSource.signUp(email, password);
-
-    }
-
-    @Override
-    public void signIn(String email, String password) {
-        authDataSource.signIn(email, password);
-    }
-
-    @Override
-    public void onAuthSuccess(User user) {
-        if (user != null) {
-            userRemoteDataSource.saveUser(user);
+            signUp(email, password, callback);
         }
     }
 
     @Override
-    public void onAuthFailure(String message) {
-        userMutableLiveData.postValue(new Result.Error(message));
+    public void logout(IUserRepository.UserLogoutCallback callback) {
+        authDataSource.logout(callback);
     }
 
     @Override
-    public void onDatabaseSuccess(User user) {
-        Result.UserResponseSuccess result = new Result.UserResponseSuccess(user);
-        userMutableLiveData.postValue(result);
+    public void signUp(String email, String password, UserAuthCallback callback) {
+        authDataSource.signUp(email, password, callback);
     }
 
     @Override
-    public void onDatabaseFailure(String message) {
-        Result.Error result = new Result.Error(message);
-        userMutableLiveData.postValue(result);
+    public void signIn(String email, String password, UserAuthCallback callback) {
+        authDataSource.signIn(email, password, callback);
     }
 
-    @Override
-    public void onSuccessLogout() {
-        userMutableLiveData.postValue(null);
+
+    public void saveUser(User user, UserDatabaseCallback callback) {
+        userRemoteDataSource.saveUser(user, callback);
     }
+
 }

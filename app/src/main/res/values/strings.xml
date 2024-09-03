@@ -52,6 +52,10 @@
     <string name="reps_placeholder">reps</string>
     <string name="no_exercises">NO EXERCISES</string>
     <string name="no_schedules">NO SCHEDULES</string>
+    <!-- Strings used for settings -->
+    <string name="dark_mode">Dark mode</string>
+    <string name="logout">Logout</string>
+    <string name="setItalianLanguage">Italian language</string>
 
     <!-- Strings used for errors -->
     <string name="invalid_email">Invalid email.</string>
@@ -60,7 +64,5 @@
     <string name="unexpected_error">Unexpected error</string>
     <string name="invalid_input">Inserted values not valid.</string>
     <string name="loading_error_check_internet">Loading error, check your network and try again</string>
-    <string name="dark_mode">Dark mode</string>
-    <string name="logout" translatable="false">Logout</string>
-    <string name="setItalianLanguage">Italian language</string>
+    <string name="user_not_logged">User not logged</string>
 </resources>

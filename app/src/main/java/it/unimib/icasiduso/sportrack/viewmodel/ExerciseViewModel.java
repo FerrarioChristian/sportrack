@@ -16,7 +16,7 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
 
     private final MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
     private final MutableLiveData<Exercise> exerciseLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Result> exercisesLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Result<List<Exercise>>> exercisesLiveData = new MutableLiveData<>();
 
     private final IExercisesRepository exercisesRepository;
 
@@ -32,7 +32,7 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
         }
     }
 
-    public MutableLiveData<Result> getExercisesByMuscle(String muscle) {
+    public MutableLiveData<Result<List<Exercise>>> getExercisesByMuscle(String muscle) {
         setIsLoading(true);
         exercisesRepository.getExercisesByMuscle(muscle, this);
         return exercisesLiveData;
@@ -62,11 +62,6 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
         return result;
     }
 
-    public MutableLiveData<List<Exercise>> getExercisesBySchedule(long scheduleId) {
-        return null;
-        //TODO: Implement
-    }
-
     @Override
     public void onSuccess(Exercise exercise) {
         setIsLoading(false);
@@ -76,7 +71,7 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
     @Override
     public void onSuccess(List<Exercise> exercises) {
         setIsLoading(false);
-        exercisesLiveData.postValue(new Result.ExercisesResponseSuccess(exercises));
+        exercisesLiveData.postValue(new Result.Success<>(exercises));
     }
 
     @Override
@@ -89,7 +84,7 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
         return isLoadingLiveData;
     }
 
-    public MutableLiveData<Result> getExercisesLiveData() {
+    public MutableLiveData<Result<List<Exercise>>> getExercisesLiveData() {
         return exercisesLiveData;
     }
 

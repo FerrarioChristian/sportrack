@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
-import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
@@ -60,7 +59,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
         String muscle = ListExercisesFragmentArgs.fromBundle(getArguments()).getMuscle();
         exerciseViewModel.getExercisesByMuscle(muscle).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
-                exerciseRecyclerViewAdapter.setExercises(((Result.ExercisesResponseSuccess) result).getData());
+                exerciseRecyclerViewAdapter.setExercises(result.getSuccessData());
             } else {
                 Toast.makeText(getActivity(),getString(R.string.loading_error_check_internet),
                         Toast.LENGTH_SHORT).show();

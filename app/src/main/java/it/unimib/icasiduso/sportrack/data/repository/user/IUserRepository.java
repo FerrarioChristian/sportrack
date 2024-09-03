@@ -1,20 +1,32 @@
 package it.unimib.icasiduso.sportrack.data.repository.user;
 
-import androidx.lifecycle.MutableLiveData;
-
-import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.User;
 
 public interface IUserRepository {
-    MutableLiveData<Result> getUser(String email, String password, boolean isUserRegistered);
 
-    MutableLiveData<Result> getGoogleUser(String idToken);
+    void getUser(String email, String password, boolean isUserRegistered, UserAuthCallback callback);
 
-    MutableLiveData<Result> logout();
+    void logout(IUserRepository.UserLogoutCallback callback);
 
-    User getLoggedUser();
+    void signUp(String email, String password, UserAuthCallback callback);
 
-    void signUp(String email, String password);
+    void signIn(String email, String password, UserAuthCallback callback);
 
-    void signIn(String email, String password);
+    interface UserAuthCallback {
+        void onAuthSuccess(User user);
+
+        void onAuthFailure(String message);
+
+    }
+
+    interface UserLogoutCallback {
+        void onLogoutSuccess();
+    }
+
+    interface UserDatabaseCallback {
+        void onDatabaseSuccess(User user);
+
+        void onDatabaseFailure(String message);
+    }
+
 }

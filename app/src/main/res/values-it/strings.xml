@@ -52,6 +52,10 @@
     <string name="reps_placeholder">ripetizioni</string>
     <string name="no_exercises">NESSUN ESERCIZIO</string>
     <string name="no_schedules">NESSUNA SCHEDA</string>
+    <!-- Strings used for settings -->
+    <string name="dark_mode">Modalità scura</string>
+    <string name="logout">Logout</string>
+    <string name="setItalianLanguage">Lingua italiana</string>
 
     <!-- Strings used for errors -->
     <string name="invalid_email">Email invalida.</string>
@@ -60,6 +64,5 @@
     <string name="unexpected_error">Errore inaspettato</string>
     <string name="invalid_input">I valori inseriti non sono validi.</string>
     <string name="loading_error_check_internet">Errore nel caricamento, controlla la connessione e riprova</string>
-    <string name="dark_mode">Modalità scura</string>
-    <string name="setItalianLanguage">Lingua italiana</string>
+    <string name="user_not_logged">Nessun utente loggato</string>
 </resources>

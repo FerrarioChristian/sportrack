@@ -1,51 +1,56 @@
 package it.unimib.icasiduso.sportrack.model;
 
-import java.util.List;
-
-import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
-
-public abstract class Result {
+public abstract class Result<T> {
     private Result() {
     }
 
     public boolean isSuccess() {
-        return this instanceof UserResponseSuccess || this instanceof ExercisesResponseSuccess;
+        return this instanceof Success;
     }
 
-    public static final class UserResponseSuccess extends Result {
-        private final User user;
-
-        public UserResponseSuccess(User user) {
-            this.user = user;
-        }
-
-        public User getData() {
-            return user;
+    public T getSuccessData() {
+        if (this instanceof Success) {
+            return ((Success<T>) this).data;
+        } else {
+            return null; // Or throw an exception
         }
     }
 
-    public static final class ExercisesResponseSuccess extends Result {
-        private final List<Exercise> exercises;
-
-        public ExercisesResponseSuccess(List<Exercise> exercises) {
-            this.exercises = exercises;
-        }
-
-        public List<Exercise> getData() {
-            return this.exercises;
+    public Throwable getError() {
+        if (this instanceof Error) {
+            return ((Error<T>) this).exception;
+        } else {
+            return null; // Or throw an exception
         }
     }
 
+    public static final class Success<T> extends Result<T> {
+        private final T data;
 
-    public static final class Error extends Result {
+        public Success(T data) {
+            this.data = data;
+        }
+
+        public T getData() {
+            return data;
+        }
+    }
+
+    public static final class Error<T> extends Result<T> {
         private final String message;
+        private final Throwable exception;
 
-        public Error(String message) {
+        public Error(String message, Throwable exception) {
             this.message = message;
+            this.exception = exception;
         }
 
         public String getMessage() {
             return message;
+        }
+
+        public Throwable getException() {
+            return exception;
         }
     }
 }

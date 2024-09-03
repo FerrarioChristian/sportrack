@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,13 +15,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
 import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
+import it.unimib.icasiduso.sportrack.databinding.FragmentRegisterBinding;
 import it.unimib.icasiduso.sportrack.main.MainActivityWithBottomNav;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.UserViewModel;
@@ -31,6 +28,7 @@ public class RegisterFragment extends Fragment {
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
     private UserViewModel userViewModel;
+    private FragmentRegisterBinding binding;
 
 
     public RegisterFragment() {
@@ -44,51 +42,49 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        binding = FragmentRegisterBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextInputLayout emailTextInput = view.findViewById(R.id.register_email_textfield_layout);
-        TextInputEditText emailEditText = (TextInputEditText) emailTextInput.getEditText();
-        TextInputLayout passwordTextInput = view.findViewById(R.id.register_label_password_layout);
-        TextInputEditText passwordEditText = (TextInputEditText) passwordTextInput.getEditText();
-        TextInputLayout confirmPasswordTextInput = view.findViewById(R.id.register_label_confirm_password_layout);
-        TextInputEditText confirmPasswordEditText = (TextInputEditText) confirmPasswordTextInput.getEditText();
+        setListeners();
+        observeViewModel();
 
-        Button loginButton = view.findViewById(R.id.go_to_login_button);
-        loginButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.loginFragment));
+    }
 
-        Button registerButton = view.findViewById(R.id.register_button);
-        registerButton.setOnClickListener(v -> {
-            String email = emailEditText.getText() != null ? emailEditText.getText().toString().trim() : "";
-            String password = passwordEditText.getText() != null ? passwordEditText.getText().toString().trim() : "";
-            String confirmPassword = confirmPasswordEditText.getText() != null ? confirmPasswordEditText.getText().toString().trim() : "";
+    private void setListeners() {
+        binding.goToLoginButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.loginFragment));
+
+
+        binding.registerButton.setOnClickListener(v -> {
+            String email = binding.registerEmailEditText.getText() != null ? binding.registerEmailEditText.getText().toString().trim() : "";
+            String password = binding.registerPasswordEditText.getText() != null ? binding.registerPasswordEditText.getText().toString().trim() : "";
+            String confirmPassword = binding.registerConfirmPasswordEditText.getText() != null ? binding.registerConfirmPasswordEditText.getText().toString().trim() : "";
 
             if (isEmailOk(email) && isPasswordOk(password, confirmPassword)) {
-                userViewModel.getUserMutableLiveData(email, password, false).observe(
-                        getViewLifecycleOwner(), result -> {
-                            if (result.isSuccess()) {
-                                Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
-                                startActivity(intent);
-                                requireActivity().finish();
-                            } else {
-                                Toast.makeText(getActivity(), R.string.authentication_failed,
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                userViewModel.getUserData(email, password, false);
             }
 
         });
+    }
+
+    private void observeViewModel() {
+        userViewModel.getUserMutableLiveData().observe(
+                getViewLifecycleOwner(), result -> {
+                    if (result.isSuccess()) {
+                        Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
+                        startActivity(intent);
+                        requireActivity().finish();
+                    } else {
+                        Toast.makeText(getActivity(), R.string.authentication_failed,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 

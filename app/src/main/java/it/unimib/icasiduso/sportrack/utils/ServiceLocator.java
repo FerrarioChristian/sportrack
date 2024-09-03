@@ -1,7 +1,6 @@
 package it.unimib.icasiduso.sportrack.utils;
 
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import it.unimib.icasiduso.sportrack.App;
@@ -22,8 +21,7 @@ import it.unimib.icasiduso.sportrack.data.source.exercise.IExerciseDataSource;
 import it.unimib.icasiduso.sportrack.data.source.schedule.IScheduleDataSource;
 import it.unimib.icasiduso.sportrack.data.source.schedule.ScheduleLocalDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.AuthDataSource;
-import it.unimib.icasiduso.sportrack.data.source.user.BaseAuthDataSource;
-import it.unimib.icasiduso.sportrack.data.source.user.BaseUserRemoteDataSource;
+import it.unimib.icasiduso.sportrack.data.source.user.IUserDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.UserRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.workout_exercise.IWorkoutExerciseDataSource;
 import it.unimib.icasiduso.sportrack.data.source.workout_exercise.WorkoutExerciseLocalDataSource;
@@ -62,8 +60,8 @@ public class ServiceLocator {
 
     public IUserRepository getUserRepository() {
 
-        BaseAuthDataSource authDataSource = new AuthDataSource();
-        BaseUserRemoteDataSource userRemoteDataSource = new UserRemoteDataSource();
+        IUserDataSource.Auth authDataSource = new AuthDataSource();
+        IUserDataSource.Remote userRemoteDataSource = new UserRemoteDataSource();
 
         return new UserRepository(authDataSource, userRemoteDataSource);
 

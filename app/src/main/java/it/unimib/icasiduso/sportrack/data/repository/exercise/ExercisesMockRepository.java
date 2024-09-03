@@ -14,11 +14,9 @@ public class ExercisesMockRepository implements IExercisesRepository {
     private static final String TAG = ExercisesMockRepository.class.getSimpleName();
 
     private final Application application;
-    private final ExerciseRepositoryCallbackable responseCallback;
 
-    public ExercisesMockRepository(Application application, ExerciseRepositoryCallbackable responseCallback) {
+    public ExercisesMockRepository(Application application) {
         this.application = application;
-        this.responseCallback = responseCallback;
     }
 
     public void fetchExercises(String muscle) {
@@ -26,7 +24,6 @@ public class ExercisesMockRepository implements IExercisesRepository {
         try {
             Exercise[] exercisesArray = jsonParserUtil.parseFromFileWithGSON(muscle + ".json");
             Log.d(TAG, Arrays.asList(exercisesArray).toString());
-            responseCallback.onSuccess(Arrays.asList(exercisesArray));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

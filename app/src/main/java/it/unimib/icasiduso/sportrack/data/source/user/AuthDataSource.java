@@ -16,9 +16,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.model.User;
 
-public class AuthDataSource extends BaseAuthDataSource {
+public class AuthDataSource implements IUserDataSource.Auth {
 
     private static final String TAG = AuthDataSource.class.getSimpleName();
 
@@ -30,23 +31,23 @@ public class AuthDataSource extends BaseAuthDataSource {
 
 
     @Override
-    public User getLoggedUser() {
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            return null;
+    public void getLoggedUser(IUserRepository.UserAuthCallback callback) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            callback.onAuthFailure(App.getRes().getString(R.string.user_not_logged));
         } else {
-            return new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), firebaseUser.getUid());
+            callback.onAuthSuccess(new User(user.getDisplayName(), user.getEmail(), user.getUid()));
         }
     }
 
     @Override
-    public void logout() {
+    public void logout(IUserRepository.UserLogoutCallback callback) {
         FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() == null) {
                     firebaseAuth.removeAuthStateListener(this);
-                    userCallback.onSuccessLogout();
+                    callback.onLogoutSuccess();
                 }
             }
         };
@@ -55,38 +56,38 @@ public class AuthDataSource extends BaseAuthDataSource {
     }
 
     @Override
-    public void signUp(String email, String password) {
+    public void signUp(String email, String password, IUserRepository.UserAuthCallback callback) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 if (firebaseUser != null) {
-                    userCallback.onAuthSuccess(
+                    callback.onAuthSuccess(
                             new User(firebaseUser.getDisplayName(), email, firebaseUser.getUid())
                     );
                 } else {
-                    userCallback.onAuthFailure(getErrorMessage(task.getException()));
+                    callback.onAuthFailure(getErrorMessage(task.getException()));
                 }
             } else {
-                userCallback.onAuthFailure(getErrorMessage(task.getException()));
+                callback.onAuthFailure(getErrorMessage(task.getException()));
             }
         });
 
     }
 
     @Override
-    public void signIn(String email, String password) {
+    public void signIn(String email, String password, IUserRepository.UserAuthCallback callback) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 if (firebaseUser != null) {
-                    userCallback.onAuthSuccess(
+                    callback.onAuthSuccess(
                             new User(firebaseUser.getDisplayName(), email, firebaseUser.getUid())
                     );
                 } else {
-                    userCallback.onAuthFailure(getErrorMessage(task.getException()));
+                    callback.onAuthFailure(getErrorMessage(task.getException()));
                 }
             } else {
-                userCallback.onAuthFailure(getErrorMessage(task.getException()));
+                callback.onAuthFailure(getErrorMessage(task.getException()));
             }
         });
     }

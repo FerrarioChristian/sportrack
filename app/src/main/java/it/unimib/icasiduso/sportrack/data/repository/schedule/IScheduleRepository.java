@@ -8,12 +8,16 @@ import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 public interface IScheduleRepository {
 
     void getSchedules(String userId, ScheduleCallback callback);
+
     void newSchedule(Schedule schedule, ScheduleCallback callback);
+
     void deleteSchedule(Schedule schedule, ScheduleCallback callback);
 
     interface ScheduleCallback {
         void onSuccess();
+
         void onSuccess(List<Schedule> scheduleList);
+
         void onFailure(String errorMessage);
     }
 }
