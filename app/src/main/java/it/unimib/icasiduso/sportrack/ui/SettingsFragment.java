@@ -1,5 +1,7 @@
 package it.unimib.icasiduso.sportrack.ui;
 
+import static androidx.core.app.ActivityCompat.recreate;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
+
+import java.util.Locale;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
@@ -54,6 +58,8 @@ public class SettingsFragment extends Fragment {
                 requireActivity().finish();
         }));
 
+
+        //TODO Spostare nel ViewModel
         MaterialSwitch darkModeSwitch = view.findViewById(R.id.darkModeSwitch);
         darkModeSwitch.post(() -> {
             int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
@@ -61,6 +67,19 @@ public class SettingsFragment extends Fragment {
         });
         darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
                 AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO));
+
+        MaterialSwitch languageSwitch = view.findViewById(R.id.languageSwitch);
+
+        Locale currentLocale = getResources().getConfiguration().getLocales().get(0);
+        languageSwitch.setChecked(currentLocale.getLanguage().equals("it"));
+
+        languageSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Locale newLocale = isChecked ? new Locale("it") : new Locale("en");
+            Configuration config = new Configuration();
+            config.setLocale(newLocale);
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            recreate(requireActivity());
+        });
 
     }
 }

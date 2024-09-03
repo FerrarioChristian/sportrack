@@ -62,4 +62,5 @@
     <string name="loading_error_check_internet">Loading error, check your network and try again</string>
     <string name="dark_mode">Dark mode</string>
     <string name="logout" translatable="false">Logout</string>
+    <string name="setItalianLanguage">Italian language</string>
 </resources>

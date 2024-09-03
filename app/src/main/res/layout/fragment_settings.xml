@@ -175,4 +175,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/languageSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:checked="false"
+        android:text="@string/setItalianLanguage"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/darkModeSwitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
