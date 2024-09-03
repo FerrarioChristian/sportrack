@@ -6,8 +6,8 @@ import com.google.gson.GsonBuilder;
 import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.ExerciseRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
 import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepository;
 import it.unimib.icasiduso.sportrack.data.repository.schedule.ScheduleRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
@@ -67,14 +67,14 @@ public class ServiceLocator {
 
     }
 
-    public IExercisesRepository getExercisesRepository() {
+    public IExerciseRepository getExercisesRepository() {
         IExerciseDataSource.Remote exerciseRemoteDataSource;
         IExerciseDataSource.Local exerciseLocalDataSource;
 
         exerciseRemoteDataSource = new ExerciseRemoteDataSource(App.getRes().getString(R.string.api_key));
         exerciseLocalDataSource = new ExerciseLocalDataSource(getExerciseDatabase());
 
-        return new ExercisesRepository(exerciseRemoteDataSource, exerciseLocalDataSource);
+        return new ExerciseRepository(exerciseRemoteDataSource, exerciseLocalDataSource);
     }
 
     public IWorkoutExercisesRepository getWorkoutExercisesRepository() {

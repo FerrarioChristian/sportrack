@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.WorkoutExerciseRecyclerViewAdapter;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
@@ -79,7 +79,7 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        IExercisesRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
+        IExerciseRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
         ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
         ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
 

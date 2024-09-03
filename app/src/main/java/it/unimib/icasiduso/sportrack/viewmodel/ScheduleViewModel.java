@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepository;
@@ -62,6 +63,28 @@ public class ScheduleViewModel extends ViewModel implements IScheduleRepository.
              }
          });
         }
+    }
+
+    public void deleteUserSchedules(String userId) {
+        scheduleRepository.deleteUserSchedules(userId, new IScheduleRepository.ScheduleCallback() {
+            @Override
+            public void onSuccess() {
+                List<Schedule> currentSchedules = schedulesLiveData.getValue();
+                if(currentSchedules != null) {
+                    schedulesLiveData.setValue(new ArrayList<>());
+                }
+            }
+
+            @Override
+            public void onSuccess(List<Schedule> scheduleList) {
+
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
     }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {

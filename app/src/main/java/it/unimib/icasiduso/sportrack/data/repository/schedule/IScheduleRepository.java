@@ -13,6 +13,8 @@ public interface IScheduleRepository {
 
     void deleteSchedule(Schedule schedule, ScheduleCallback callback);
 
+    void deleteUserSchedules(String userId, ScheduleCallback callback);
+
     interface ScheduleCallback {
         void onSuccess();
 

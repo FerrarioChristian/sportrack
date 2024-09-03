@@ -9,14 +9,14 @@ import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.source.exercise.IExerciseDataSource;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
-public class ExercisesRepository implements IExercisesRepository {
+public class ExerciseRepository implements IExerciseRepository {
 
-    private static final String TAG = ExercisesRepository.class.getSimpleName();
+    private static final String TAG = ExerciseRepository.class.getSimpleName();
 
     private final IExerciseDataSource.Local exerciseLocalDataSource;
     private final IExerciseDataSource.Remote exerciseRemoteDataSource;
 
-    public ExercisesRepository(
+    public ExerciseRepository(
             IExerciseDataSource.Remote exerciseRemoteDataSource,
             IExerciseDataSource.Local exerciseLocalDataSource
     ) {
@@ -28,7 +28,7 @@ public class ExercisesRepository implements IExercisesRepository {
     public void getExercisesByMuscle(String muscle, ExercisesCallback callback) {
         if (callback == null) return;
         //TODO: Implementare salvataggio e recupero online/offline
-        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle, new IExercisesRepository.ExercisesCallback() {
+        exerciseRemoteDataSource.fetchExercisesByMuscle(muscle, new IExerciseRepository.ExercisesCallback() {
             @Override
             public void onSuccess(Exercise exercise) {}
 

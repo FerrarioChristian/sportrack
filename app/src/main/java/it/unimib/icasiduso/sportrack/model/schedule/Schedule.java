@@ -1,7 +1,6 @@
 package it.unimib.icasiduso.sportrack.model.schedule;
 
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;

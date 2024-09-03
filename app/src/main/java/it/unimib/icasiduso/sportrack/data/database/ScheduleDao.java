@@ -21,10 +21,12 @@ public interface ScheduleDao {
     @Upsert
     List<Long> insertScheduleList(List<Schedule> scheduleList);
 
+    @Query("DELETE FROM schedule WHERE userId = :userId")
+    void deleteUserSchedules(String userId);
+
     @Insert
     void insertAll(Schedule... schedules);
 
     @Delete
     void deleteSchedule(Schedule schedule);
-    //eliminare anche tutti i workoutexercises con lo stesso scheduleId
 }

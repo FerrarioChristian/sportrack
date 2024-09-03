@@ -7,20 +7,20 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
-import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
 import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
-public class ExerciseViewModel extends ViewModel implements IExercisesRepository.ExercisesCallback {
+public class ExerciseViewModel extends ViewModel implements IExerciseRepository.ExercisesCallback {
     private static final String TAG = ExerciseViewModel.class.getSimpleName();
 
     private final MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
     private final MutableLiveData<Exercise> exerciseLiveData = new MutableLiveData<>();
     private final MutableLiveData<Result<List<Exercise>>> exercisesLiveData = new MutableLiveData<>();
 
-    private final IExercisesRepository exercisesRepository;
+    private final IExerciseRepository exercisesRepository;
 
-    public ExerciseViewModel(IExercisesRepository exercisesRepository) {
+    public ExerciseViewModel(IExerciseRepository exercisesRepository) {
         this.exercisesRepository = exercisesRepository;
     }
 
@@ -42,7 +42,7 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
         setIsLoading(true);
         final MutableLiveData<Exercise> result = new MutableLiveData<>();
 
-        exercisesRepository.getExerciseById(id, new IExercisesRepository.ExercisesCallback() {
+        exercisesRepository.getExerciseById(id, new IExerciseRepository.ExercisesCallback() {
             @Override
             public void onSuccess(Exercise exercise) {
                 setIsLoading(false);
@@ -93,9 +93,9 @@ public class ExerciseViewModel extends ViewModel implements IExercisesRepository
     }
 
     public static class Factory implements ViewModelProvider.Factory {
-        private final IExercisesRepository repository;
+        private final IExerciseRepository repository;
 
-        public Factory(IExercisesRepository repository) {
+        public Factory(IExerciseRepository repository) {
             this.repository = repository;
         }
 

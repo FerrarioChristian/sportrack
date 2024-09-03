@@ -4,7 +4,7 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
-public interface IExercisesRepository {
+public interface IExerciseRepository {
 
     void getExercisesByMuscle(String muscle, ExercisesCallback callback);
 

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
@@ -33,7 +33,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IExercisesRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
+        IExerciseRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
 
         ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
         exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);

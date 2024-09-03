@@ -149,6 +149,7 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:importantForAutofill="no"
                         android:id="@+id/textViewSeries"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -158,6 +159,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:longClickable="false"
+                            android:importantForAutofill="no"
                             android:layout_width="match_parent"
                             android:layout_height="61dp"
                             android:autofillHints="emailAddress"
@@ -178,6 +181,7 @@
                         android:layout_weight="0.05" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:importantForAutofill="no"
                         android:id="@+id/textViewReps"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -187,6 +191,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:longClickable="false"
+                            android:importantForAutofill="no"
                             android:layout_width="match_parent"
                             android:layout_height="61dp"
                             android:autofillHints="emailAddress"

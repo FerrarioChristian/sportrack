@@ -10,12 +10,12 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.JsonParserUtil;
 
-public class ExercisesMockRepository implements IExercisesRepository {
-    private static final String TAG = ExercisesMockRepository.class.getSimpleName();
+public class ExerciseMockRepository implements IExerciseRepository {
+    private static final String TAG = ExerciseMockRepository.class.getSimpleName();
 
     private final Application application;
 
-    public ExercisesMockRepository(Application application) {
+    public ExerciseMockRepository(Application application) {
         this.application = application;
     }
 

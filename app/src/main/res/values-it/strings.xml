@@ -56,6 +56,7 @@
     <string name="dark_mode">Modalità scura</string>
     <string name="logout">Logout</string>
     <string name="setItalianLanguage">Lingua italiana</string>
+    <string name="reset">Cancella i dati</string>
 
     <!-- Strings used for errors -->
     <string name="invalid_email">Email invalida.</string>

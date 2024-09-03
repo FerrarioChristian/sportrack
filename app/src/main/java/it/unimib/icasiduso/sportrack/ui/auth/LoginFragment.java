@@ -37,10 +37,9 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
         userViewModel = new ViewModelProvider(requireActivity(), new UserViewModel.Factory(userRepository)).get(UserViewModel.class);
-
-
     }
 
     @Override
@@ -61,7 +60,6 @@ public class LoginFragment extends Fragment {
     }
 
     private void setListeners() {
-
         binding.goToRegisterButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.registerFragment));
 
         binding.loginButton.setOnClickListener(v -> {

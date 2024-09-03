@@ -1,13 +1,10 @@
 package it.unimib.icasiduso.sportrack.data.source.exercise;
 
-import android.util.Log;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.database.ExerciseDao;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
-import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
@@ -18,22 +15,18 @@ public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
     }
 
     @Override
-    public void getExercises(String muscle, IExercisesRepository.ExercisesCallback callback) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            callback.onSuccess(exerciseDao.getExercisesByMuscle(muscle));
-        });
+    public void getExercises(String muscle, IExerciseRepository.ExercisesCallback callback) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(exerciseDao.getExercisesByMuscle(muscle)));
 
     }
 
     @Override
-    public void getExercise(long id, IExercisesRepository.ExercisesCallback callback) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            callback.onSuccess(exerciseDao.getExerciseById(id));
-        });
+    public void getExercise(long id, IExerciseRepository.ExercisesCallback callback) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(exerciseDao.getExerciseById(id)));
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises, IExercisesRepository.ExercisesCallback callback) {
+    public void saveExercises(List<Exercise> exercises, IExerciseRepository.ExercisesCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Exercise> dbExercises = exerciseDao.getAll();
 

@@ -1,12 +1,12 @@
 package it.unimib.icasiduso.sportrack.data.repository.workout_exercise;
 
-import it.unimib.icasiduso.sportrack.data.repository.exercise.ExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.ExerciseRepository;
 import it.unimib.icasiduso.sportrack.data.source.workout_exercise.IWorkoutExerciseDataSource;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
 
-    private static final String TAG = ExercisesRepository.class.getSimpleName();
+    private static final String TAG = ExerciseRepository.class.getSimpleName();
 
     private final IWorkoutExerciseDataSource.Local workoutExerciseLocalDataSource;
     //private final IWorkoutExerciseDataSource.Remote workoutExerciseRemoteDataSource;

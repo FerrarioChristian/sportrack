@@ -39,4 +39,11 @@ public class ScheduleLocalDataSource implements IScheduleDataSource.Local {
     public void getSchedules(String userId, IScheduleRepository.ScheduleCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(scheduleDao.getSchedulesByUserId(userId)));
     }
+
+    @Override
+    public void deleteUserSchedules(String userId, IScheduleRepository.ScheduleCallback callback) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> scheduleDao.deleteUserSchedules(userId));
+    }
+
+
 }

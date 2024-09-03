@@ -30,6 +30,12 @@ public class ScheduleRepository implements IScheduleRepository {
     @Override
     public void deleteSchedule(Schedule schedule, ScheduleCallback callback) {
         scheduleLocalDataSource.deleteSchedule(schedule, callback);
-
     }
+
+    @Override
+    public void deleteUserSchedules(String userId, ScheduleCallback callback) {
+        scheduleLocalDataSource.deleteUserSchedules(userId, callback);
+    }
+
+
 }

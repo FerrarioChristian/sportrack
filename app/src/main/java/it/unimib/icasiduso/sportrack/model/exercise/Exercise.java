@@ -56,17 +56,6 @@ public class Exercise implements Parcelable {
         this.exerciseId = generateExerciseId(name);
     }
 
-    private long generateExerciseId(String name) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] messageDigest = md.digest(name.getBytes());
-            BigInteger no = new BigInteger(1, messageDigest);
-            return Math.abs(no.longValue());
-        } catch (NoSuchAlgorithmException e) {
-            return 0;
-        }
-    }
-
     public Exercise() {
     }
 
@@ -77,6 +66,17 @@ public class Exercise implements Parcelable {
         equipment = in.readString();
         difficulty = in.readString();
         instructions = in.readString();
+    }
+
+    private long generateExerciseId(String name) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(name.getBytes());
+            BigInteger no = new BigInteger(1, messageDigest);
+            return Math.abs(no.longValue());
+        } catch (NoSuchAlgorithmException e) {
+            return 0;
+        }
     }
 
     public long getExerciseId() {
@@ -148,6 +148,7 @@ public class Exercise implements Parcelable {
         return Objects.hash(name, type, muscle, equipment, difficulty, instructions);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Exercise{" +

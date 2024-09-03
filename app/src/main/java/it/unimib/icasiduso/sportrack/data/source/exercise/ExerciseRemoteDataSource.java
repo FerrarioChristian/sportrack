@@ -13,7 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-import it.unimib.icasiduso.sportrack.data.repository.exercise.IExercisesRepository;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
 import it.unimib.icasiduso.sportrack.data.service.ExercisesApiService;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
@@ -36,7 +36,7 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
     }
 
 
-    public void fetchExercisesByMuscle(String muscle, IExercisesRepository.ExercisesCallback callback) {
+    public void fetchExercisesByMuscle(String muscle, IExerciseRepository.ExercisesCallback callback) {
         Call<List<Exercise>> exercisesResponseCall = exercisesApiService.getExercises(muscle, apiKey);
         exercisesResponseCall.enqueue(new Callback<List<Exercise>>() {
             @Override
@@ -57,7 +57,7 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises, IExercisesRepository.ExercisesCallback callback) {
+    public void saveExercises(List<Exercise> exercises, IExerciseRepository.ExercisesCallback callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             return;
