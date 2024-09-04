@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="?attr/materialCardViewFilledStyle"
 
-    android:useDefaultMargins="true"
     android:layout_marginHorizontal="12dp"
     android:layout_marginVertical="4dp"
-    >
+    android:useDefaultMargins="true"
+    app:cardBackgroundColor="@color/md_theme_surfaceContainer">
 
     <LinearLayout
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"
-        style="?attr/materialCardViewFilledStyle"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView

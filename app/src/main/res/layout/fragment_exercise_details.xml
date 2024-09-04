@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/md_theme_surfaceContainer"
                 app:layout_constraintTop_toBottomOf="@+id/textViewExerciseName">
 
 

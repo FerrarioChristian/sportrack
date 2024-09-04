@@ -45,7 +45,7 @@
     <string name="exercise_difficulty">Difficoltà: %1$s</string>
     <string name="instructions">Istruzioni</string>
     <!-- Strings used for schedule -->
-    <string name="new_schedule">Nuova scheda</string>
+    <string name="new_schedule">Inserisci nuova scheda</string>
     <string name="schedule_name">Nome scheda</string>
     <string name="series">Serie: %1$d</string>
     <string name="repetitions">Ripetizioni: %1$d</string>
