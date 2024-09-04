@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:text="@string/exercises"
             android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
-            android:textColor="@color/material_on_background_emphasis_high_type"
+            android:textColor="@color/md_theme_onSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

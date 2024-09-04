@@ -62,7 +62,7 @@
     <string name="invalid_email">Invalid email.</string>
     <string name="invalid_password">Password must be at least %1$d characters long.</string>
     <string name="invalid_confirm_password">Passwords don\'t match.</string>
-    <string name="unexpected_error">Unexpected error</string>
+    <string name="unexpected_error">Unexpected error: %1$s</string>
     <string name="invalid_input">Inserted values not valid.</string>
     <string name="loading_error_check_internet">Loading error, check your network and try again</string>
     <string name="user_not_logged">User not logged</string>
