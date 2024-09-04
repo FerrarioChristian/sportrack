@@ -60,7 +60,6 @@ public class RegisterFragment extends Fragment {
     private void setListeners() {
         binding.goToLoginButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.loginFragment));
 
-
         binding.registerButton.setOnClickListener(v -> {
             String email = binding.registerEmailEditText.getText() != null ? binding.registerEmailEditText.getText().toString().trim() : "";
             String password = binding.registerPasswordEditText.getText() != null ? binding.registerPasswordEditText.getText().toString().trim() : "";
@@ -114,4 +113,9 @@ public class RegisterFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

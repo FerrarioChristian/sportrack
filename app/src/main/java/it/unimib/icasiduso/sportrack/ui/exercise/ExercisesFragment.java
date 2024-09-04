@@ -30,14 +30,13 @@ public class ExercisesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentExercisesBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.setOnClickListeners();
+        setOnClickListeners();
 
     }
 
@@ -60,7 +59,6 @@ public class ExercisesFragment extends Fragment {
         setMuscleOnClickListener(binding.tricepsCard.cardview, "triceps");
         setMuscleOnClickListener(binding.middleBackCard.cardview, "middle_back");
         setMuscleOnClickListener(binding.lowerBackCard.cardview, "lower_back");
-
     }
 
     @Override

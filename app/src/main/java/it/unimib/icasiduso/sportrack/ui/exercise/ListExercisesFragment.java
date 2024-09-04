@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,11 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.ExerciseRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
+import it.unimib.icasiduso.sportrack.databinding.FragmentListExercisesBinding;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
@@ -27,6 +26,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
 
     private ExerciseViewModel exerciseViewModel;
     private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
+    private FragmentListExercisesBinding binding;
 
 
     @Override
@@ -34,23 +34,22 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
         super.onCreate(savedInstanceState);
 
         IExerciseRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
-
         ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
         exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list_exercises, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentListExercisesBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerViewExerciseList = view.findViewById(R.id.recyclerview_exercise_list);
         exerciseRecyclerViewAdapter = new ExerciseRecyclerViewAdapter(this);
-        recyclerViewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
+        binding.recyclerviewExerciseList.setAdapter(exerciseRecyclerViewAdapter);
 
         observeViewModel();
     }
@@ -67,12 +66,11 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
         });
 
 
-        ProgressBar progressBar = requireView().findViewById(R.id.progress_bar);
         exerciseViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), result -> {
             if (result) {
-                progressBar.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.VISIBLE);
             } else {
-                progressBar.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -84,4 +82,10 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
         ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId, exercise);
         Navigation.findNavController(requireView()).navigate(action);
     }
+
+   @Override
+   public void onDestroyView() {
+       super.onDestroyView();
+       binding = null;
+   }
 }

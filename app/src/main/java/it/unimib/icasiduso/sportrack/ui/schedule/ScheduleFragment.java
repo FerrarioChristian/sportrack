@@ -41,6 +41,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
 
     private ScheduleViewModel scheduleViewModel;
     private ScheduleRecyclerViewAdapter scheduleRecyclerViewAdapter;
+    FragmentScheduleBinding binding;
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -71,20 +72,21 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         IScheduleRepository scheduleRepository = ServiceLocator.getInstance().getScheduleRepository();
         ScheduleViewModel.Factory factory = new ScheduleViewModel.Factory(scheduleRepository);
         scheduleViewModel = new ViewModelProvider(requireActivity(), factory).get(ScheduleViewModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentScheduleBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FragmentScheduleBinding binding = FragmentScheduleBinding.bind(view);
 
         scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(this);
         binding.recyclerviewScheduleList.setAdapter(scheduleRecyclerViewAdapter);
@@ -148,5 +150,11 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
     public void onScheduleClick(Schedule schedule) {
         ScheduleFragmentDirections.ActionScheduleFragmentToListWorkoutExercisesFragment action = ScheduleFragmentDirections.actionScheduleFragmentToListWorkoutExercisesFragment(schedule.getScheduleId());
         Navigation.findNavController(requireView()).navigate(action);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

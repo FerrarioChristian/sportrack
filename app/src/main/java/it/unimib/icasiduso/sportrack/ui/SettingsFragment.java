@@ -101,5 +101,9 @@ public class SettingsFragment extends Fragment {
     private void observeViewModel() {
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

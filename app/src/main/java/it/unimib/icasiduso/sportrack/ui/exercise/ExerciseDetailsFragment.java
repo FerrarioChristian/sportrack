@@ -37,6 +37,7 @@ public class ExerciseDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
         WorkoutExerciseViewModel.Factory workoutExerciseViewModelFactory = new WorkoutExerciseViewModel.Factory(workoutExercisesRepository);
         workoutExerciseViewModel = new ViewModelProvider(requireActivity(), workoutExerciseViewModelFactory).get(WorkoutExerciseViewModel.class);
@@ -60,8 +61,7 @@ public class ExerciseDetailsFragment extends Fragment {
 
         binding.setExercise(exercise);
 
-        View scheduleInputContainer = view.findViewById(R.id.scheduleInputContainer);
-        scheduleInputContainer.setVisibility(scheduleId != 0L ? View.VISIBLE : View.GONE);
+        binding.scheduleInputContainer.setVisibility(scheduleId != 0L ? View.VISIBLE : View.GONE);
 
         binding.addExerciseToSchedule.setOnClickListener(v -> {
             String series = binding.textViewSeries.getEditText().getText() != null ? binding.textViewSeries.getEditText().getText().toString() : "";
@@ -70,9 +70,7 @@ public class ExerciseDetailsFragment extends Fragment {
                 Toast.makeText(requireContext(), getString(R.string.invalid_input), Toast.LENGTH_SHORT).show();
                 return;
             }
-
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
             assert user != null;
             WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exercise.getExerciseId(), scheduleId, user.getUid());
             workoutExerciseViewModel.addWorkoutExerciseToSchedule(workoutExercise);
