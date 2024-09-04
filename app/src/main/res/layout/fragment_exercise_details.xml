@@ -64,6 +64,7 @@
                             android:gravity="fill_horizontal"
                             android:padding="1dp"
                             android:text="@{@string/exercise_muscle(exercise.muscle)}"
+                            android:textColor="@color/md_theme_onSurface"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -75,6 +76,7 @@
                             android:gravity="fill_horizontal"
                             android:padding="1dp"
                             android:text="@{@string/exercise_type(exercise.type)}"
+                            android:textColor="@color/md_theme_onSurface"
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -93,6 +95,7 @@
                             android:gravity="fill_horizontal"
                             android:padding="0dp"
                             android:text="@{@string/exercise_difficulty(exercise.difficulty)}"
+                            android:textColor="@color/md_theme_onSurface"
                             android:textSize="16sp" />
 
                         <TextView
@@ -103,6 +106,7 @@
                             android:gravity="fill_horizontal"
                             android:padding="0dp"
                             android:text="@{@string/exercise_tool(exercise.equipment)}"
+                            android:textColor="@color/md_theme_onSurface"
                             android:textSize="16sp" />
 
                     </LinearLayout>
@@ -118,6 +122,7 @@
                 android:layout_marginTop="16dp"
                 android:padding="8dp"
                 android:text="@string/instructions"
+                android:textColor="@color/md_theme_onBackground"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/summaryContainer" />
@@ -130,6 +135,7 @@
                 android:maxLines="16"
                 android:padding="8dp"
                 android:text="@{exercise.instructions}"
+                android:textColor="@color/md_theme_onSurface"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
