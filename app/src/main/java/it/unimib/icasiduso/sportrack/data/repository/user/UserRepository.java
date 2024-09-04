@@ -1,5 +1,8 @@
 package it.unimib.icasiduso.sportrack.data.repository.user;
 
+import android.widget.Toast;
+
+import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.data.source.user.IUserDataSource;
 import it.unimib.icasiduso.sportrack.model.User;
 
@@ -18,10 +21,34 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void getUser(String email, String password, boolean isUserRegistered, UserAuthCallback callback) {
+
+        UserAuthCallback commonCallback = new UserAuthCallback() {
+            @Override
+            public void onAuthSuccess(User user) {
+                saveUser(user, new UserDatabaseCallback() {
+                    @Override
+                    public void onDatabaseSuccess(User user) {
+                        callback.onAuthSuccess(user);
+                    }
+
+                    @Override
+                    public void onDatabaseFailure(String message) {
+                        callback.onAuthSuccess(user);
+                        Toast.makeText(App.getInstance(), message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onAuthFailure(String message) {
+                callback.onAuthFailure(message);
+            }
+        };
+
         if (isUserRegistered) {
-            signIn(email, password, callback);
+            signIn(email, password, commonCallback);
         } else {
-            signUp(email, password, callback);
+            signUp(email, password, commonCallback);
         }
     }
 
