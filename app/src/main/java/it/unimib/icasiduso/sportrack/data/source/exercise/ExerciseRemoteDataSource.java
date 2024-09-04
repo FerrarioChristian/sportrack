@@ -1,13 +1,9 @@
 package it.unimib.icasiduso.sportrack.data.source.exercise;
 
 import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_DATABASE;
-import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_EXERCISES_COLLECTION;
-import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_USERS_COLLECTION;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,7 +32,7 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
     }
 
 
-    public void fetchExercisesByMuscle(String muscle, IExerciseRepository.ExercisesCallback callback) {
+    public void fetchExercisesByMuscle(String muscle, IExerciseRepository.GetExercisesCallback callback) {
         Call<List<Exercise>> exercisesResponseCall = exercisesApiService.getExercises(muscle, apiKey);
         exercisesResponseCall.enqueue(new Callback<List<Exercise>>() {
             @Override
@@ -50,14 +46,12 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
 
             @Override
             public void onFailure(@NonNull Call<List<Exercise>> call, @NonNull Throwable throwable) {
-                //TODO fix error message
                 callback.onFailure(new Exception(throwable.getMessage()));
             }
         });
     }
 
-    @Override
-    public void saveExercises(List<Exercise> exercises, IExerciseRepository.ExercisesCallback callback) {
+   /* public void saveExercises(List<Exercise> exercises, IExerciseRepository.ExercisesCallback callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             return;
@@ -70,5 +64,5 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
 
             callback.onSuccess(exercises);
         }).addOnFailureListener(callback::onFailure);
-    }
+    }*/
 }

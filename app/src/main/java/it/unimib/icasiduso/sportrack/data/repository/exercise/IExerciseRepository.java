@@ -6,13 +6,18 @@ import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
 public interface IExerciseRepository {
 
-    void getExercisesByMuscle(String muscle, ExercisesCallback callback);
+    void getExercisesByMuscle(String muscle, GetExercisesCallback callback);
 
     void getExerciseById(long id, ExercisesCallback callback);
 
-    void getExercisesByScheduleId(long scheduleId, ExercisesCallback callback);
+    void saveExercises(List<Exercise> exercises, GetExercisesCallback callback);
 
-    void saveExercises(List<Exercise> exercises, ExercisesCallback callback);
+    interface GetExercisesCallback {
+        void onSuccess(List<Exercise> exercises);
+        void onDataNotAvailable();
+        void onFailure(Exception exception);
+    }
+
 
     interface ExercisesCallback {
         void onSuccess(Exercise exercise);

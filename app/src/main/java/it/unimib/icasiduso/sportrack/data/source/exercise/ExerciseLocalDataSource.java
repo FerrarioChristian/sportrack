@@ -15,9 +15,15 @@ public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
     }
 
     @Override
-    public void getExercises(String muscle, IExerciseRepository.ExercisesCallback callback) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(exerciseDao.getExercisesByMuscle(muscle)));
-
+    public void getExercises(String muscle, IExerciseRepository.GetExercisesCallback callback) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<Exercise> exercises = exerciseDao.getExercisesByMuscle(muscle);
+            if (exercises == null || exercises.isEmpty()) {
+                callback.onDataNotAvailable();
+            } else {
+                callback.onSuccess(exercises);
+            }
+        });
     }
 
     @Override
@@ -26,7 +32,7 @@ public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
     }
 
     @Override
-    public void saveExercises(List<Exercise> exercises, IExerciseRepository.ExercisesCallback callback) {
+    public void saveExercises(List<Exercise> exercises, IExerciseRepository.GetExercisesCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Exercise> dbExercises = exerciseDao.getAll();
 
@@ -35,12 +41,10 @@ public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
                     exercises.set(exercises.indexOf(dbExercise), dbExercise);
                 }
             }
+            exerciseDao.insertExerciseList(exercises);
 
-            List<Long> insertedExerciseList = exerciseDao.insertExerciseList(exercises);
-            for (int i = 0; i < exercises.size(); i++) {
-                exercises.get(i).setExerciseId(insertedExerciseList.get(i));
-            }
-            callback.onSuccess(exercises);
+
+            callback.onSuccess(exerciseDao.getExercisesByMuscle(exercises.get(0).getMuscle()));
         });
     }
 }

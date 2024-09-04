@@ -28,9 +28,9 @@ public class ExerciseMockRepository implements IExerciseRepository {
             throw new RuntimeException(e);
         }
     }
-
     @Override
-    public void getExercisesByMuscle(String muscle, ExercisesCallback callback) {
+    public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {
+
     }
 
     @Override
@@ -39,12 +39,7 @@ public class ExerciseMockRepository implements IExerciseRepository {
     }
 
     @Override
-    public void getExercisesByScheduleId(long scheduleId, ExercisesCallback callback) {
-
-    }
-
-    @Override
-    public void saveExercises(List<Exercise> exercises, ExercisesCallback callback) {
+    public void saveExercises(List<Exercise> exercises, GetExercisesCallback callback) {
 
     }
 

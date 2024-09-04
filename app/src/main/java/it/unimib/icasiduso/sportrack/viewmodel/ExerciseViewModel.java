@@ -11,7 +11,7 @@ import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepositor
 import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 
-public class ExerciseViewModel extends ViewModel implements IExerciseRepository.ExercisesCallback {
+public class ExerciseViewModel extends ViewModel  {
     private static final String TAG = ExerciseViewModel.class.getSimpleName();
 
     private final MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
@@ -34,7 +34,22 @@ public class ExerciseViewModel extends ViewModel implements IExerciseRepository.
 
     public MutableLiveData<Result<List<Exercise>>> getExercisesByMuscle(String muscle) {
         setIsLoading(true);
-        exercisesRepository.getExercisesByMuscle(muscle, this);
+        exercisesRepository.getExercisesByMuscle(muscle, new IExerciseRepository.GetExercisesCallback() {
+            @Override
+            public void onSuccess(List<Exercise> exercises) {
+                setIsLoading(false);
+                exercisesLiveData.postValue(new Result.Success<>(exercises));
+            }
+
+            @Override
+            public void onDataNotAvailable() {}
+
+            @Override
+            public void onFailure(Exception exception) {
+                exercisesLiveData.postValue(new Result.Error<>(exception.getMessage(), exception));
+                setIsLoading(false);
+            }
+        });
         return exercisesLiveData;
     }
 
@@ -60,24 +75,6 @@ public class ExerciseViewModel extends ViewModel implements IExerciseRepository.
             }
         });
         return result;
-    }
-
-    @Override
-    public void onSuccess(Exercise exercise) {
-        setIsLoading(false);
-        exerciseLiveData.postValue(exercise);
-    }
-
-    @Override
-    public void onSuccess(List<Exercise> exercises) {
-        setIsLoading(false);
-        exercisesLiveData.postValue(new Result.Success<>(exercises));
-    }
-
-    @Override
-    public void onFailure(Exception exception) {
-        setIsLoading(false);
-        //TODO
     }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {

@@ -60,6 +60,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
             if (result.isSuccess()) {
                 exerciseRecyclerViewAdapter.setExercises(result.getSuccessData());
             } else {
+                exerciseRecyclerViewAdapter.setExercises(null);
                 Toast.makeText(getActivity(),getString(R.string.loading_error_check_internet),
                         Toast.LENGTH_SHORT).show();
             }
