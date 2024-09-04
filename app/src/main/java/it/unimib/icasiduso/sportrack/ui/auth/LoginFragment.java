@@ -77,6 +77,7 @@ public class LoginFragment extends Fragment {
     private void observeViewModel() {
         userViewModel.getUserMutableLiveData().observe(
                 getViewLifecycleOwner(), result -> {
+                    if (result == null) return;
                     if (result.isSuccess()) {
                         Intent intent = new Intent(requireContext(), MainActivityWithBottomNav.class);
                         startActivity(intent);
@@ -84,6 +85,7 @@ public class LoginFragment extends Fragment {
                     } else if (requireActivity().hasWindowFocus()) {
                         Toast.makeText(getActivity(), R.string.authentication_failed,
                                 Toast.LENGTH_SHORT).show();
+                        userViewModel.clearUserMutableLiveData();
                     }
                 });
     }

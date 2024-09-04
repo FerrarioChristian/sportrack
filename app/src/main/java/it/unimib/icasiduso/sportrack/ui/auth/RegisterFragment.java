@@ -75,6 +75,7 @@ public class RegisterFragment extends Fragment {
     private void observeViewModel() {
         userViewModel.getUserMutableLiveData().observe(
                 getViewLifecycleOwner(), result -> {
+                    if (result == null) return;
                     if (result.isSuccess()) {
                         Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
                         startActivity(intent);
@@ -82,6 +83,7 @@ public class RegisterFragment extends Fragment {
                     } else {
                         Toast.makeText(getActivity(), R.string.authentication_failed,
                                 Toast.LENGTH_SHORT).show();
+                        userViewModel.clearUserMutableLiveData();
                     }
                 });
 

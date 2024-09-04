@@ -76,12 +76,13 @@ public class ExerciseDetailsFragment extends Fragment {
             workoutExerciseViewModel.addWorkoutExerciseToSchedule(workoutExercise);
             Toast.makeText(getActivity(), R.string.saved_workout_exercise,
                     Toast.LENGTH_SHORT).show();
-            Navigation.findNavController(view).popBackStack(R.id.listWorkoutExercisesFragment,false);
+            Navigation.findNavController(view).popBackStack(R.id.listWorkoutExercisesFragment, false);
         });
     }
 
     private boolean isValidInput(String series, String reps) {
-        return !series.isEmpty() && !reps.isEmpty();
+        if (series.isEmpty() || reps.isEmpty()) return false;
+        return Integer.parseInt(series) > 0 && Integer.parseInt(reps) > 0;
     }
 
 

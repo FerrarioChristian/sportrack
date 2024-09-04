@@ -42,6 +42,10 @@ public class UserViewModel extends ViewModel {
         }
     }
 
+    public void clearUserMutableLiveData() {
+        userMutableLiveData.postValue(null);
+    }
+
     public MutableLiveData<Result<User>> logout() {
         userRepository.logout(() -> userMutableLiveData.postValue(null));
         return userMutableLiveData;
