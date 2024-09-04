@@ -18,8 +18,7 @@ public class ExercisesFragment extends Fragment {
 
     private FragmentExercisesBinding binding;
 
-    public ExercisesFragment() {
-    }
+    public ExercisesFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

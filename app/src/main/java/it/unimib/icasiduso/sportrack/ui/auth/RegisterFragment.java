@@ -31,8 +31,7 @@ public class RegisterFragment extends Fragment {
     private FragmentRegisterBinding binding;
 
 
-    public RegisterFragment() {
-    }
+    public RegisterFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

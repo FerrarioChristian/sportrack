@@ -30,9 +30,7 @@ public class ExerciseDetailsFragment extends Fragment {
     private FragmentExerciseDetailsBinding binding;
 
 
-    public ExerciseDetailsFragment() {
-        // Required empty public constructor
-    }
+    public ExerciseDetailsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

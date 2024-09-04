@@ -28,6 +28,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
     private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
     private FragmentListExercisesBinding binding;
 
+    public ListExercisesFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

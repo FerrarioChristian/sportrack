@@ -44,6 +44,8 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
     FragmentScheduleBinding binding;
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+    public ScheduleFragment() {}
+
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {

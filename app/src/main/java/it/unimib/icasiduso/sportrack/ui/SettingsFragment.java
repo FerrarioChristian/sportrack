@@ -39,6 +39,8 @@ public class SettingsFragment extends Fragment {
     private UserViewModel userViewModel;
     private FragmentSettingsBinding binding;
 
+    public SettingsFragment() {}
+
     @Override
 
     public void onCreate(Bundle savedInstanceState) {

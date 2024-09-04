@@ -31,8 +31,7 @@ public class LoginFragment extends Fragment {
     private UserViewModel userViewModel;
     private FragmentLoginBinding binding;
 
-    public LoginFragment() {
-    }
+    public LoginFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

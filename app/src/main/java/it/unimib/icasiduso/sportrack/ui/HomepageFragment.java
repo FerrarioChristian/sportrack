@@ -36,9 +36,7 @@ public class HomepageFragment extends Fragment {
     private double sumPeso;
     private LineGraphSeries<DataPoint> mediaSeries;
 
-    public HomepageFragment() {
-
-    }
+    public HomepageFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
