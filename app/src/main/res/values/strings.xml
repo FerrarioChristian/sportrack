@@ -8,7 +8,8 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="cancel">Cancel</string>
-    <string name="name">Nome</string>
+    <string name="name">Name</string>
+    <string name="confirm">Confirm</string>
     <!-- Strings used for login and register fragments -->
     <string name="login_label">Login</string>
     <string name="login_label_email">Email</string>
@@ -57,6 +58,9 @@
     <string name="logout">Logout</string>
     <string name="setItalianLanguage">Italian language</string>
     <string name="reset">Erase all your data</string>
+    <string name="confirm_reset">Confirm reset</string>
+    <string name="confirm_reset_message">Are you sure you want to reset your data? This action cannot be undone.</string>
+    <string name="data_reset_successfully">Data reset successfully</string>
 
     <!-- Strings used for errors -->
     <string name="invalid_email">Invalid email.</string>

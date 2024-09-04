@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Locale;
 
+import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.databinding.FragmentSettingsBinding;
@@ -93,9 +96,19 @@ public class SettingsFragment extends Fragment {
         binding.resetButton.setOnClickListener(v -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
-                scheduleViewModel.deleteUserSchedules(user.getUid());
+                new AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.confirm_reset)
+                        .setMessage(R.string.confirm_reset_message)
+                        .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                            scheduleViewModel.deleteUserSchedules(user.getUid());
+                            Toast.makeText(requireContext(), R.string.data_reset_successfully , Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                        })
+                        .show();
             }
         });
+
     }
 
     private void observeViewModel() {
