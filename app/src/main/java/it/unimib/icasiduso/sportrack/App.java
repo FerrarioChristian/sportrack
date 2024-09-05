@@ -3,6 +3,8 @@ package it.unimib.icasiduso.sportrack;
 import android.app.Application;
 import android.content.res.Resources;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class App extends Application {
     private static App INSTANCE;
     private static Resources res;
@@ -20,5 +22,6 @@ public class App extends Application {
         super.onCreate();
         INSTANCE = this;
         res = getResources();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 }

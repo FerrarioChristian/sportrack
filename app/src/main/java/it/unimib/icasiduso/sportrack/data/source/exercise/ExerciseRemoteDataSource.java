@@ -1,11 +1,8 @@
 package it.unimib.icasiduso.sportrack.data.source.exercise;
 
-import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_DATABASE;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -21,14 +18,10 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
     private static final String TAG = ExerciseRemoteDataSource.class.getSimpleName();
     private final ExercisesApiService exercisesApiService;
     private final String apiKey;
-    private final DatabaseReference databaseReference;
 
     public ExerciseRemoteDataSource(String apiKey) {
         this.exercisesApiService = ServiceLocator.getInstance().getExercisesApiService();
         this.apiKey = apiKey;
-
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(FIREBASE_DATABASE);
-        databaseReference = firebaseDatabase.getReference().getRef();
     }
 
 
@@ -51,18 +44,4 @@ public class ExerciseRemoteDataSource implements IExerciseDataSource.Remote {
         });
     }
 
-   /* public void saveExercises(List<Exercise> exercises, IExerciseRepository.ExercisesCallback callback) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            return;
-        }
-        DatabaseReference exercisesRef = databaseReference.child(FIREBASE_USERS_COLLECTION).child(user.getUid()).child(FIREBASE_EXERCISES_COLLECTION);
-        exercisesRef.setValue(exercises).addOnSuccessListener(aVoid -> {
-            //TODO Gestire meglio
-            //TODO Leggere dal database e far scrivere gli oggetti con l'ID sul remoto
-            //TODO Ora fa override, implementare append
-
-            callback.onSuccess(exercises);
-        }).addOnFailureListener(callback::onFailure);
-    }*/
 }

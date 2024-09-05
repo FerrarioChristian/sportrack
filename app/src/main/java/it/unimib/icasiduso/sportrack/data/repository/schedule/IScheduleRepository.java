@@ -7,19 +7,22 @@ import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
 public interface IScheduleRepository {
 
-    void getSchedules(String userId, ScheduleCallback callback);
+    void getSchedules(String userId, GetScheduleCallback callback);
 
-    void newSchedule(Schedule schedule, ScheduleCallback callback);
+    void newSchedule(Schedule schedule, SaveScheduleCallback callback);
 
-    void deleteSchedule(Schedule schedule, ScheduleCallback callback);
+    void deleteSchedule(Schedule schedule, SaveScheduleCallback callback);
 
-    void deleteUserSchedules(String userId, ScheduleCallback callback);
+    void deleteUserSchedules(String userId, SaveScheduleCallback callback);
 
-    interface ScheduleCallback {
+    interface SaveScheduleCallback {
         void onSuccess();
+        void onFailure(String errorMessage);
+    }
 
-        void onSuccess(List<Schedule> scheduleList);
-
+    interface GetScheduleCallback {
+        void onSchedulesLoaded(List<Schedule> scheduleList);
+        void onDataNotAvailable();
         void onFailure(String errorMessage);
     }
 }

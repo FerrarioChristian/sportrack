@@ -1,7 +1,6 @@
 package it.unimib.icasiduso.sportrack.data.source.user;
 
 import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_DATABASE;
-import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_USERS_COLLECTION;
 
 import androidx.annotation.NonNull;
 
@@ -19,19 +18,19 @@ public class UserRemoteDataSource implements IUserDataSource.Remote {
     private final DatabaseReference databaseReference;
 
     public UserRemoteDataSource() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(FIREBASE_DATABASE);
-        databaseReference = firebaseDatabase.getReference().getRef();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference(FIREBASE_DATABASE);
     }
 
     @Override
     public void saveUser(User user, IUserRepository.UserDatabaseCallback callback) {
-        databaseReference.child(FIREBASE_USERS_COLLECTION).child(user.getIdToken()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(user.getIdToken()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     callback.onDatabaseSuccess(user);
                 } else {
-                    databaseReference.child(FIREBASE_USERS_COLLECTION).child(user.getIdToken()).setValue(user)
+                    databaseReference.child(user.getIdToken()).setValue(user)
                             .addOnSuccessListener(aVoid -> callback.onDatabaseSuccess(user))
                             .addOnFailureListener(e -> callback.onDatabaseFailure(e.getLocalizedMessage()));
                 }
