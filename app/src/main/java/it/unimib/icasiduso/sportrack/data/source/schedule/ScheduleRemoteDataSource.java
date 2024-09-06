@@ -3,9 +3,13 @@ package it.unimib.icasiduso.sportrack.data.source.schedule;
 
 import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_DATABASE;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +44,31 @@ public class ScheduleRemoteDataSource implements IScheduleDataSource.Remote {
 
     @Override
     public void getSchedules(String userId, IScheduleRepository.GetScheduleCallback callback) {
-        databaseReference.child(userId).child("schedules").get().addOnSuccessListener(dataSnapshot -> {
-            if (!dataSnapshot.exists()) {
-                callback.onDataNotAvailable();
-                return;
+        ValueEventListener scheduleListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    List<Schedule> schedules = new ArrayList<>();
+                    for (DataSnapshot scheduleSnapshot : dataSnapshot.getChildren()) {
+                        Schedule schedule = scheduleSnapshot.getValue(Schedule.class);
+                        schedules.add(schedule);
+                    }
+                    callback.onSchedulesLoaded(schedules);
+
+                    // Remove listener if you only need the initial data
+                    databaseReference.child(userId).child("schedules").removeEventListener(this);
+                } else {
+                    callback.onDataNotAvailable();
+                }
             }
-            List<Schedule> schedules = new ArrayList<>();
-            for (DataSnapshot scheduleSnapshot : dataSnapshot.getChildren()) {
-                Schedule schedule = scheduleSnapshot.getValue(Schedule.class);
-                schedules.add(schedule);
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onFailure(error.getMessage());
             }
-            callback.onSchedulesLoaded(schedules);
-        }).addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+        };
+
+        databaseReference.child(userId).child("schedules").addValueEventListener(scheduleListener);
     }
 
     @Override

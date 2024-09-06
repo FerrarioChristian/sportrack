@@ -59,9 +59,6 @@ public class ScheduleLocalDataSource implements IScheduleDataSource.Local {
     @Override
     public void updateSchedules(List<Schedule> schedules) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            if (schedules != null && !schedules.isEmpty()) {
-                scheduleDao.deleteUserSchedules(schedules.get(0).getUserId());
-            }
             scheduleDao.insertScheduleList(schedules);
         });
     }

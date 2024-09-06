@@ -1,9 +1,8 @@
 package it.unimib.icasiduso.sportrack.data.repository.schedule;
 
-import android.util.Log;
-
 import java.util.List;
 
+import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepository.SaveScheduleCallback;
 import it.unimib.icasiduso.sportrack.data.source.schedule.IScheduleDataSource;
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
@@ -39,62 +38,64 @@ public class ScheduleRepository implements IScheduleRepository {
 
             }
         });
-
     }
 
-    @Override
-    public void newSchedule(Schedule schedule, SaveScheduleCallback callback) {
-        long scheduleId = System.currentTimeMillis();
-        schedule.setScheduleId(scheduleId);
-        scheduleRemoteDataSource.newSchedule(schedule, new SaveScheduleCallback() {
+        @Override
+        public void newSchedule (Schedule schedule, SaveScheduleCallback callback){
+            long scheduleId = System.currentTimeMillis();
+            schedule.setScheduleId(scheduleId);
 
-            @Override
-            public void onSuccess() {
-                scheduleLocalDataSource.newSchedule(schedule, callback);
-            }
+            scheduleLocalDataSource.newSchedule(schedule, callback);
+            scheduleRemoteDataSource.newSchedule(schedule, new SaveScheduleCallback() {
 
-            @Override
-            public void onFailure(String errorMessage) {
+                @Override
+                public void onSuccess() {
+                }
 
-            }
-        });
+                @Override
+                public void onFailure(String errorMessage) {
+
+                }
+            });
+        }
+
+        @Override
+        public void deleteSchedule (Schedule schedule, SaveScheduleCallback callback){
+            scheduleLocalDataSource.deleteSchedule(schedule, callback);
+            scheduleRemoteDataSource.deleteSchedule(schedule, new SaveScheduleCallback() {
+
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+
+                }
+            });
+        }
+
+        @Override
+        public void deleteUserSchedules (String userId, SaveScheduleCallback callback){
+
+            scheduleRemoteDataSource.deleteUserSchedules(userId, new SaveScheduleCallback() {
+
+                @Override
+                public void onSuccess() {
+                    scheduleLocalDataSource.deleteUserSchedules(userId, callback);
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+
+                }
+            });
+
+        }
+
+        private void updateSchedules (List < Schedule > scheduleList) {
+            scheduleLocalDataSource.updateSchedules(scheduleList);
+        }
+
     }
-
-    @Override
-    public void deleteSchedule(Schedule schedule, SaveScheduleCallback callback) {
-        scheduleRemoteDataSource.deleteSchedule(schedule, new SaveScheduleCallback() {
-
-            @Override
-            public void onSuccess() {
-                scheduleLocalDataSource.deleteSchedule(schedule, callback);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-
-            }
-        });
-    }
-
-    @Override
-    public void deleteUserSchedules(String userId, SaveScheduleCallback callback) {
-        scheduleRemoteDataSource.deleteUserSchedules(userId, new SaveScheduleCallback() {
-
-            @Override
-            public void onSuccess() {
-                scheduleLocalDataSource.deleteUserSchedules(userId, callback);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-
-            }
-        });
-
-    }
-
-    private void updateSchedules(List<Schedule> scheduleList) {
-        scheduleLocalDataSource.updateSchedules(scheduleList);
-    }
-
-}
