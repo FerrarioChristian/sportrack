@@ -27,9 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.databinding.FragmentHomepageBinding;
+import it.unimib.icasiduso.sportrack.databinding.FragmentScheduleBinding;
 
 public class HomepageFragment extends Fragment {
     private static final String TAG = HomepageFragment.class.getSimpleName();
+
+    private FragmentHomepageBinding binding;
 
     private List<DataPoint> weightDataList;
     private int i;
@@ -45,10 +49,10 @@ public class HomepageFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_homepage, container, false);
+        binding = FragmentHomepageBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -69,8 +73,7 @@ public class HomepageFragment extends Fragment {
         mediaSeries.setColor(Color.RED);
         mediaSeries.setTitle("Media"); // Imposta il titolo per la legenda
 
-        Button button = view.findViewById(R.id.btnSave);
-        button.setOnClickListener(new View.OnClickListener() {
+        binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 i++;
@@ -84,25 +87,24 @@ public class HomepageFragment extends Fragment {
 
 
                 //creazione del GraphView
-                GraphView graph = view.findViewById(R.id.graph);
-
+                GraphView graph = binding.graph;
                 // Imposta i limiti della vista del grafico
-                graph.getViewport().setXAxisBoundsManual(true);
+                graph.getViewport().setXAxisBoundsManual(false);
+                graph.setScaleX(1);
+                graph.getViewport().setMinY(0);
+                graph.getViewport().setMaxY(200);
                 graph.getViewport().setMinX(0);
-                graph.getViewport().setMaxX(i + 1); // i è il contatore dei dati
+                graph.getViewport().setMaxX(7); // i è il contatore dei dati
+
 
                 // Abilita lo scorrimento orizzontale
                 graph.getViewport().setScrollable(true);
-                graph.getViewport().setScrollableY(true); // Se vuoi anche lo scorrimento verticale
+                graph.getViewport().setScrollableY(false); // Se vuoi anche lo scorrimento verticale
 
-                // Imposta la larghezza della finestra di visualizzazione per mostrare solo 7 dati alla volta
-                graph.getViewport().setMinX(0);
-                graph.getViewport().setMaxX(7); // Imposta il numero desiderato di dati visualizzati contemporaneamente
-                graph.getViewport().setXAxisBoundsManual(true);
 
                 // Crea una serie di dati a barre per i pesi (giallo con bordo nero)
                 BarGraphSeries<DataPoint> pesiSeries = new BarGraphSeries<>(weightDataList.toArray(new DataPoint[0]));
-                pesiSeries.setColor(Color.YELLOW); // Imposta il colore interno
+                pesiSeries.setColor(Color.TRANSPARENT); // Imposta il colore interno
                 pesiSeries.setSpacing(50); // Imposta la larghezza dello spazio tra le barre
                 pesiSeries.setDrawValuesOnTop(true);
                 pesiSeries.setValuesOnTopColor(Color.BLACK); // Imposta il colore del testo sopra le barre

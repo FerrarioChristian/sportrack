@@ -20,6 +20,7 @@ import it.unimib.icasiduso.sportrack.data.source.exercise.ExerciseRemoteDataSour
 import it.unimib.icasiduso.sportrack.data.source.exercise.IExerciseDataSource;
 import it.unimib.icasiduso.sportrack.data.source.schedule.IScheduleDataSource;
 import it.unimib.icasiduso.sportrack.data.source.schedule.ScheduleLocalDataSource;
+import it.unimib.icasiduso.sportrack.data.source.schedule.ScheduleRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.AuthDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.IUserDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.UserRemoteDataSource;
@@ -86,8 +87,9 @@ public class ServiceLocator {
 
     public IScheduleRepository getScheduleRepository() {
         IScheduleDataSource.Local scheduleLocalDataSource = new ScheduleLocalDataSource(getExerciseDatabase());
+        IScheduleDataSource.Remote scheduleRemoteDataSource = new ScheduleRemoteDataSource();
 
-        return new ScheduleRepository(scheduleLocalDataSource);
+        return new ScheduleRepository(scheduleLocalDataSource, scheduleRemoteDataSource);
     }
 
 }

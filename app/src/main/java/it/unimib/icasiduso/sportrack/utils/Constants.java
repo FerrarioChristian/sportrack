@@ -16,9 +16,6 @@ public class Constants {
     public static final String WEAK_PASSWORD_ERROR = "passwordIsWeak";
 
 
-    public static final String FIREBASE_DATABASE = "https://sportrack-5fc02-default-rtdb.europe-west1.firebasedatabase.app/";
-
-    public static final String FIREBASE_USERS_COLLECTION = "users";
-    public static final String FIREBASE_EXERCISES_COLLECTION = "exercises";
+    public static final String FIREBASE_DATABASE = "users/";
 
 }

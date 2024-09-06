@@ -3,6 +3,7 @@ package it.unimib.icasiduso.sportrack.data.database;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Upsert;
 
@@ -18,13 +19,13 @@ public interface ScheduleDao {
     @Query("SELECT * FROM schedule WHERE userId IN (:userId)")
     List<Schedule> getSchedulesByUserId(String userId);
 
-    @Upsert
-    List<Long> insertScheduleList(List<Schedule> scheduleList);
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
+    void insertScheduleList(List<Schedule> scheduleList);
 
     @Query("DELETE FROM schedule WHERE userId = :userId")
     void deleteUserSchedules(String userId);
 
-    @Insert
+    @Insert (onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Schedule... schedules);
 
     @Delete
