@@ -13,12 +13,9 @@ public class ExerciseRepository implements IExerciseRepository {
     private final IExerciseDataSource.Local exerciseLocalDataSource;
     private final IExerciseDataSource.Remote exerciseRemoteDataSource;
 
-    public ExerciseRepository(
-            IExerciseDataSource.Remote exerciseRemoteDataSource,
-            IExerciseDataSource.Local exerciseLocalDataSource
-    ) {
-        this.exerciseRemoteDataSource = exerciseRemoteDataSource;
+    public ExerciseRepository(IExerciseDataSource.Local exerciseLocalDataSource, IExerciseDataSource.Remote exerciseRemoteDataSource) {
         this.exerciseLocalDataSource = exerciseLocalDataSource;
+        this.exerciseRemoteDataSource = exerciseRemoteDataSource;
     }
 
     @Override
@@ -28,12 +25,12 @@ public class ExerciseRepository implements IExerciseRepository {
         exerciseLocalDataSource.getExercises(muscle, new GetExercisesCallback() {
             @Override
             public void onSuccess(List<Exercise> exercises) {
-               callback.onSuccess(exercises);
+                callback.onSuccess(exercises);
             }
 
             @Override
             public void onDataNotAvailable() {
-               fetchExercisesByMuscle(muscle, callback);
+                fetchExercisesByMuscle(muscle, callback);
             }
 
             @Override
@@ -54,7 +51,8 @@ public class ExerciseRepository implements IExerciseRepository {
             }
 
             @Override
-            public void onDataNotAvailable() {}
+            public void onDataNotAvailable() {
+            }
 
             @Override
             public void onFailure(Exception exception) {

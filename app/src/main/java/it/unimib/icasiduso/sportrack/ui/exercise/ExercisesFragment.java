@@ -18,7 +18,8 @@ public class ExercisesFragment extends Fragment {
 
     private FragmentExercisesBinding binding;
 
-    public ExercisesFragment() {}
+    public ExercisesFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,8 +28,7 @@ public class ExercisesFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentExercisesBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -42,7 +42,9 @@ public class ExercisesFragment extends Fragment {
     public void setMuscleOnClickListener(View view, String muscle) {
         Long scheduleId = ExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
         view.setOnClickListener(v -> {
-            ExercisesFragmentDirections.ActionExercisesFragmentToListExercisesFragment action = ExercisesFragmentDirections.actionExercisesFragmentToListExercisesFragment(scheduleId, muscle);
+            ExercisesFragmentDirections.ActionExercisesFragmentToListExercisesFragment action = ExercisesFragmentDirections.actionExercisesFragmentToListExercisesFragment(
+                    scheduleId,
+                    muscle);
             Navigation.findNavController(v).navigate(action);
         });
     }

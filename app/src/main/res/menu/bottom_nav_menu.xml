@@ -9,15 +9,15 @@
         android:id="@+id/schedule"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_topic_24"
-        android:title="@string/schedule"/>
+        android:title="@string/schedule" />
     <item
         android:id="@+id/exercises"
         android:enabled="true"
         android:icon="@drawable/exercise_40"
-        android:title="@string/exercises"/>
+        android:title="@string/exercises" />
     <item
         android:id="@+id/settings"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_settings_24"
-        android:title="@string/settings"/>
+        android:title="@string/settings" />
 </menu>

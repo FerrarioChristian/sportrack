@@ -29,14 +29,12 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExerciseRecyclerViewAdapter.OnItemClickListener {
 
     private static final String TAG = ListWorkoutExercisesFragment.class.getSimpleName();
-
+    FragmentListWorkoutExercisesBinding binding;
     private WorkoutExerciseViewModel workoutExerciseViewModel;
     private WorkoutExerciseRecyclerViewAdapter workoutExerciseRecyclerViewAdapter;
-    FragmentListWorkoutExercisesBinding binding;
 
-    public ListWorkoutExercisesFragment() {}
-
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,
+            ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -45,35 +43,47 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getBindingAdapterPosition();
-            workoutExerciseViewModel.deleteWorkoutExerciseFromSchedule(position);
+            workoutExerciseViewModel.deleteWorkoutExercise(position);
             workoutExerciseRecyclerViewAdapter.notifyItemRemoved(position);
         }
 
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                    .addBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.md_theme_errorContainer_mediumContrast))
+            new RecyclerViewSwipeDecorator.Builder(c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive).addBackgroundColor(ContextCompat.getColor(requireActivity(),
+                            R.color.md_theme_errorContainer_mediumContrast))
                     .addActionIcon(R.drawable.ic_baseline_delete_24)
-                    .setActionIconTint(ContextCompat.getColor(requireActivity(), R.color.md_theme_onErrorContainer))
+                    .setActionIconTint(ContextCompat.getColor(requireActivity(),
+                            R.color.md_theme_onErrorContainer))
                     .create()
                     .decorate();
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
 
+    public ListWorkoutExercisesFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
-        WorkoutExerciseViewModel.Factory factory = new WorkoutExerciseViewModel.Factory(workoutExercisesRepository);
-        workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(WorkoutExerciseViewModel.class);
+        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance()
+                .getWorkoutExercisesRepository();
+        WorkoutExerciseViewModel.Factory factory = new WorkoutExerciseViewModel.Factory(
+                workoutExercisesRepository);
+        workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(
+                WorkoutExerciseViewModel.class);
 
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListWorkoutExercisesBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -82,11 +92,15 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        IExerciseRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
+        IExerciseRepository exercisesRepository = ServiceLocator.getInstance()
+                .getExercisesRepository();
         ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
-        ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
+        ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(
+                ExerciseViewModel.class);
 
-        workoutExerciseRecyclerViewAdapter = new WorkoutExerciseRecyclerViewAdapter(this,getViewLifecycleOwner(), exerciseViewModel);
+        workoutExerciseRecyclerViewAdapter = new WorkoutExerciseRecyclerViewAdapter(this,
+                getViewLifecycleOwner(),
+                exerciseViewModel);
         binding.recyclerviewWorkoutExerciseList.setAdapter(workoutExerciseRecyclerViewAdapter);
 
         setListeners();
@@ -97,19 +111,23 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     }
 
     private void setListeners() {
-        Long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        Long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments())
+                .getScheduleId();
         binding.addExerciseButton.setOnClickListener(v -> {
-            ListWorkoutExercisesFragmentDirections.ActionListWorkoutExercisesFragmentToExercises action = ListWorkoutExercisesFragmentDirections.actionListWorkoutExercisesFragmentToExercises(scheduleId);
+            ListWorkoutExercisesFragmentDirections.ActionListWorkoutExercisesFragmentToExercises action = ListWorkoutExercisesFragmentDirections.actionListWorkoutExercisesFragmentToExercises(
+                    scheduleId);
             Navigation.findNavController(requireView()).navigate(action);
         });
     }
 
     private void observeViewModel() {
-        long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
-        workoutExerciseViewModel.getWorkoutExercisesByScheduleId(scheduleId).observe(getViewLifecycleOwner(), result -> {
-            workoutExerciseRecyclerViewAdapter.setWorkoutExercises(result);
-            binding.noExercisesText.setVisibility(result.isEmpty() ? View.VISIBLE : View.GONE);
-        });
+        long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments())
+                .getScheduleId();
+        workoutExerciseViewModel.getWorkoutExercises(scheduleId)
+                .observe(getViewLifecycleOwner(), result -> {
+                    workoutExerciseRecyclerViewAdapter.setWorkoutExercises(result);
+                    binding.noExercisesText.setVisibility(result.isEmpty() ? View.VISIBLE : View.GONE);
+                });
 
         workoutExerciseViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), result -> {
             if (result) {
@@ -123,7 +141,9 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
 
     @Override
     public void onExerciseClick(WorkoutExercise workoutExercise) {
-       /* ListWorkoutExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId);
+       /* ListWorkoutExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails
+       action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails
+       (scheduleId);
         Navigation.findNavController(view).navigate(action);*/
     }
 

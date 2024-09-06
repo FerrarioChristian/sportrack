@@ -31,19 +31,20 @@ public class LoginFragment extends Fragment {
     private UserViewModel userViewModel;
     private FragmentLoginBinding binding;
 
-    public LoginFragment() {}
+    public LoginFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
-        userViewModel = new ViewModelProvider(requireActivity(), new UserViewModel.Factory(userRepository)).get(UserViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModel.Factory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -59,11 +60,16 @@ public class LoginFragment extends Fragment {
     }
 
     private void setListeners() {
-        binding.goToRegisterButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.registerFragment));
+        binding.goToRegisterButton.setOnClickListener(v -> Navigation.findNavController(requireView())
+                .navigate(R.id.registerFragment));
 
         binding.loginButton.setOnClickListener(v -> {
-            String email = binding.loginEmailEditText.getText() != null ? binding.loginEmailEditText.getText().toString().trim() : "";
-            String password = binding.loginPasswordEditText.getText() != null ? binding.loginPasswordEditText.getText().toString().trim() : "";
+            String email = binding.loginEmailEditText.getText() != null ? binding.loginEmailEditText.getText()
+                    .toString()
+                    .trim() : "";
+            String password = binding.loginPasswordEditText.getText() != null ? binding.loginPasswordEditText.getText()
+                    .toString()
+                    .trim() : "";
 
             if (isEmailOk(email) && isPasswordOk(password)) {
                 userViewModel.getUserData(email, password, true);
@@ -74,19 +80,18 @@ public class LoginFragment extends Fragment {
     }
 
     private void observeViewModel() {
-        userViewModel.getUserMutableLiveData().observe(
-                getViewLifecycleOwner(), result -> {
-                    if (result == null) return;
-                    if (result.isSuccess()) {
-                        Intent intent = new Intent(requireContext(), MainActivityWithBottomNav.class);
-                        startActivity(intent);
-                        requireActivity().finish();
-                    } else if (requireActivity().hasWindowFocus()) {
-                        Toast.makeText(getActivity(), R.string.authentication_failed,
-                                Toast.LENGTH_SHORT).show();
-                        userViewModel.clearUserMutableLiveData();
-                    }
-                });
+        userViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (result == null) return;
+            if (result.isSuccess()) {
+                Intent intent = new Intent(requireContext(), MainActivityWithBottomNav.class);
+                startActivity(intent);
+                requireActivity().finish();
+            } else if (requireActivity().hasWindowFocus()) {
+                Toast.makeText(getActivity(), R.string.authentication_failed, Toast.LENGTH_SHORT)
+                        .show();
+                userViewModel.clearUserMutableLiveData();
+            }
+        });
     }
 
 
@@ -96,7 +101,8 @@ public class LoginFragment extends Fragment {
     private boolean isPasswordOk(String password) {
 
         if (password == null || password.length() < 8) {
-            Toast.makeText(getActivity(), getString(R.string.invalid_password, MIN_PASSWORD_LENGTH),
+            Toast.makeText(getActivity(),
+                    getString(R.string.invalid_password, MIN_PASSWORD_LENGTH),
                     Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -105,8 +111,7 @@ public class LoginFragment extends Fragment {
 
     private boolean isEmailOk(String email) {
         if (!EmailValidator.getInstance().isValid((email))) {
-            Toast.makeText(getActivity(), R.string.invalid_email,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.invalid_email, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

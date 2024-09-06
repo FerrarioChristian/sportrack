@@ -30,20 +30,23 @@ public class ExerciseDetailsFragment extends Fragment {
     private FragmentExerciseDetailsBinding binding;
 
 
-    public ExerciseDetailsFragment() {}
+    public ExerciseDetailsFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
-        WorkoutExerciseViewModel.Factory workoutExerciseViewModelFactory = new WorkoutExerciseViewModel.Factory(workoutExercisesRepository);
-        workoutExerciseViewModel = new ViewModelProvider(requireActivity(), workoutExerciseViewModelFactory).get(WorkoutExerciseViewModel.class);
+        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance()
+                .getWorkoutExercisesRepository();
+        WorkoutExerciseViewModel.Factory workoutExerciseViewModelFactory = new WorkoutExerciseViewModel.Factory(
+                workoutExercisesRepository);
+        workoutExerciseViewModel = new ViewModelProvider(requireActivity(),
+                workoutExerciseViewModelFactory).get(WorkoutExerciseViewModel.class);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentExerciseDetailsBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -62,19 +65,32 @@ public class ExerciseDetailsFragment extends Fragment {
         binding.scheduleInputContainer.setVisibility(scheduleId != 0L ? View.VISIBLE : View.GONE);
 
         binding.addExerciseToSchedule.setOnClickListener(v -> {
-            String series = binding.textViewSeries.getEditText().getText() != null ? binding.textViewSeries.getEditText().getText().toString() : "";
-            String reps = binding.textViewReps.getEditText().getText() != null ? binding.textViewReps.getEditText().getText().toString() : "";
+            String series = binding.textViewSeries.getEditText()
+                    .getText() != null ? binding.textViewSeries.getEditText()
+                    .getText()
+                    .toString() : "";
+            String reps = binding.textViewReps.getEditText()
+                    .getText() != null ? binding.textViewReps.getEditText()
+                    .getText()
+                    .toString() : "";
             if (!isValidInput(series, reps)) {
-                Toast.makeText(requireContext(), getString(R.string.invalid_input), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(),
+                        getString(R.string.invalid_input),
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             assert user != null;
-            WorkoutExercise workoutExercise = new WorkoutExercise(series, reps, exercise.getExerciseId(), scheduleId, user.getUid());
-            workoutExerciseViewModel.addWorkoutExerciseToSchedule(workoutExercise);
-            Toast.makeText(getActivity(), R.string.saved_workout_exercise,
-                    Toast.LENGTH_SHORT).show();
-            Navigation.findNavController(view).popBackStack(R.id.listWorkoutExercisesFragment, false);
+            WorkoutExercise workoutExercise = new WorkoutExercise(series,
+                    reps,
+                    exercise.getExerciseId(),
+                    scheduleId,
+                    user.getUid());
+            workoutExerciseViewModel.addWorkoutExercise(workoutExercise);
+            Toast.makeText(getActivity(), R.string.saved_workout_exercise, Toast.LENGTH_SHORT)
+                    .show();
+            Navigation.findNavController(view)
+                    .popBackStack(R.id.listWorkoutExercisesFragment, false);
         });
     }
 

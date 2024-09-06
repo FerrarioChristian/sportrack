@@ -28,7 +28,8 @@ public class ExerciseLocalDataSource implements IExerciseDataSource.Local {
 
     @Override
     public void getExercise(long id, IExerciseRepository.ExercisesCallback callback) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(exerciseDao.getExerciseById(id)));
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(exerciseDao.getExerciseById(
+                id)));
     }
 
     @Override

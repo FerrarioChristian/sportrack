@@ -1,24 +1,22 @@
 package it.unimib.icasiduso.sportrack.viewmodel;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import it.unimib.icasiduso.sportrack.App;
-import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 
-public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExercisesRepository.WorkoutExerciseCallback {
+public class WorkoutExerciseViewModel extends ViewModel {
     private static final String TAG = WorkoutExerciseViewModel.class.getSimpleName();
 
     private final MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
+    //TODO Cambiare List<WorkoutExercise> con <Result> e gestire le eccezioni
     private final MutableLiveData<List<WorkoutExercise>> workoutExercisesLiveData = new MutableLiveData<>();
 
     private final IWorkoutExercisesRepository workoutExerciseRepository;
@@ -28,58 +26,75 @@ public class WorkoutExerciseViewModel extends ViewModel implements IWorkoutExerc
     }
 
     public void setIsLoading(boolean isLoading) {
-           isLoadingLiveData.postValue(isLoading);
+        isLoadingLiveData.postValue(isLoading);
     }
 
 
-    public MutableLiveData<List<WorkoutExercise>> getWorkoutExercisesByScheduleId(Long scheduleId) {
+    public MutableLiveData<List<WorkoutExercise>> getWorkoutExercises(Long scheduleId) {
         setIsLoading(true);
-        workoutExerciseRepository.getWorkoutExercisesByScheduleId(scheduleId, this);
+        workoutExerciseRepository.getWorkoutExercises(scheduleId,
+                new IWorkoutExercisesRepository.GetWorkoutExerciseCallback() {
+
+                    @Override
+                    public void onWorkoutExercisesLoaded(List<WorkoutExercise> workoutExerciseList) {
+                        setIsLoading(false);
+                        workoutExercisesLiveData.postValue(workoutExerciseList);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        setIsLoading(false);
+                        workoutExercisesLiveData.postValue(new ArrayList<>());
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        setIsLoading(false);
+                    }
+                });
         return workoutExercisesLiveData;
     }
 
-    public void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise) {
+    public void addWorkoutExercise(WorkoutExercise workoutExercise) {
         setIsLoading(true);
-        workoutExerciseRepository.addWorkoutExerciseToSchedule(workoutExercise, this);
+        workoutExerciseRepository.addWorkoutExercise(workoutExercise,
+                new IWorkoutExercisesRepository.SaveWorkoutExerciseCallback() {
+
+                    @Override
+                    public void onSuccess() {
+                        setIsLoading(false);
+                        getWorkoutExercises(workoutExercise.getScheduleId());
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        setIsLoading(false);
+                        //Toast.makeText(App.getInstance(), R.string.unexpected_error, Toast
+                        // .LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    public void deleteWorkoutExerciseFromSchedule(int position) {
+    public void deleteWorkoutExercise(int position) {
+        setIsLoading(true);
         List<WorkoutExercise> workoutExercises = workoutExercisesLiveData.getValue();
-        if (workoutExercises != null && position < workoutExercises.size()){
+        if (workoutExercises != null && position < workoutExercises.size()) {
             WorkoutExercise workoutExercise = workoutExercises.remove(position);
-            workoutExerciseRepository.deleteWorkoutExerciseFromSchedule(workoutExercise, new IWorkoutExercisesRepository.WorkoutExerciseCallback() {
-                @Override
-                public void onSuccess(List<WorkoutExercise> workoutExercises) {
-                }
+            workoutExerciseRepository.deleteWorkoutExercise(workoutExercise,
+                    new IWorkoutExercisesRepository.SaveWorkoutExerciseCallback() {
+                        @Override
+                        public void onSuccess() {
+                            setIsLoading(false);
+                            workoutExercisesLiveData.postValue(workoutExercises);
+                        }
 
-                @Override
-                public void onSuccess() {
-                    workoutExercisesLiveData.postValue(workoutExercises);
-                }
-
-                @Override
-                public void onFailure(Exception exception) {
-                }
-            });
+                        @Override
+                        public void onFailure(String errorMessage) {
+                        }
+                    });
         }
     }
 
-    @Override
-    public void onSuccess(List<WorkoutExercise> workoutExercises) {
-        setIsLoading(false);
-        workoutExercisesLiveData.postValue(workoutExercises);
-    }
-
-    @Override
-    public void onSuccess() {
-        setIsLoading(false);
-    }
-
-    @Override
-    public void onFailure(Exception exception) {
-        setIsLoading(false);
-        Toast.makeText(App.getInstance(), R.string.unexpected_error, Toast.LENGTH_SHORT).show();
-    }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {
         return isLoadingLiveData;

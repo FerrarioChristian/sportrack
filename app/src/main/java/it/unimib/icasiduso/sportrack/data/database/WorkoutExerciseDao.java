@@ -3,8 +3,8 @@ package it.unimib.icasiduso.sportrack.data.database;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Upsert;
 
 import java.util.List;
 
@@ -24,8 +24,8 @@ public interface WorkoutExerciseDao {
     @Delete
     void deleteWorkoutExercise(WorkoutExercise workoutExercise);
 
-    @Upsert
-    List<Long> insertWorkoutExercise(List<WorkoutExercise> workoutExercise);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertWorkoutExercises(List<WorkoutExercise> workoutExercise);
 
     @Query("DELETE FROM workoutexercise WHERE scheduleId = :scheduleId")
     void deleteWorkoutExercisesByScheduleId(long scheduleId);

@@ -18,8 +18,8 @@ import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 @Database(entities = {Exercise.class, WorkoutExercise.class, Schedule.class}, version = DATABASE_VERSION, exportSchema = false)
 public abstract class ExerciseRoomDatabase extends RoomDatabase {
     private static final int NUMBER_OF_THREADS = Runtime.getRuntime().availableProcessors();
-    public static final ExecutorService databaseWriteExecutor =
-            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(
+            NUMBER_OF_THREADS);
     private static volatile ExerciseRoomDatabase INSTANCE;
 
     public static ExerciseRoomDatabase getDatabase() {
@@ -27,7 +27,8 @@ public abstract class ExerciseRoomDatabase extends RoomDatabase {
             synchronized (ExerciseRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(App.getInstance(),
-                            ExerciseRoomDatabase.class, EXERCISE_DATABASE_NAME).build();
+                            ExerciseRoomDatabase.class,
+                            EXERCISE_DATABASE_NAME).build();
                 }
             }
         }

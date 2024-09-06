@@ -28,6 +28,7 @@ public class ExerciseMockRepository implements IExerciseRepository {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public void getExercisesByMuscle(String muscle, GetExercisesCallback callback) {
 

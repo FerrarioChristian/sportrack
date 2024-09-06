@@ -18,17 +18,25 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resValue("string", "api_key", gradleLocalProperties(rootDir, providers).getProperty("api_key"))
+        resValue(
+            "string",
+            "api_key",
+            gradleLocalProperties(rootDir, providers).getProperty("api_key")
+        )
 
-        resValue("bool", "debug_mode", gradleLocalProperties(rootDir, providers).getProperty("debug_mode"))
+        resValue(
+            "bool",
+            "debug_mode",
+            gradleLocalProperties(rootDir, providers).getProperty("debug_mode")
+        )
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }

@@ -61,9 +61,9 @@ public class AuthDataSource implements IUserDataSource.Auth {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 if (firebaseUser != null) {
-                    callback.onAuthSuccess(
-                            new User(firebaseUser.getDisplayName(), email, firebaseUser.getUid())
-                    );
+                    callback.onAuthSuccess(new User(firebaseUser.getDisplayName(),
+                            email,
+                            firebaseUser.getUid()));
                 } else {
                     callback.onAuthFailure(getErrorMessage(task.getException()));
                 }
@@ -80,9 +80,9 @@ public class AuthDataSource implements IUserDataSource.Auth {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 if (firebaseUser != null) {
-                    callback.onAuthSuccess(
-                            new User(firebaseUser.getDisplayName(), email, firebaseUser.getUid())
-                    );
+                    callback.onAuthSuccess(new User(firebaseUser.getDisplayName(),
+                            email,
+                            firebaseUser.getUid()));
                 } else {
                     callback.onAuthFailure(getErrorMessage(task.getException()));
                 }

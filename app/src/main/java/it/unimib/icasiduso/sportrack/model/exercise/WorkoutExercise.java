@@ -9,8 +9,7 @@ import androidx.room.PrimaryKey;
 
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
-@Entity(foreignKeys = @ForeignKey(entity = Schedule.class,parentColumns = {"userId", "scheduleId"},
-        childColumns = {"userId", "scheduleId"}, onDelete = ForeignKey.CASCADE), indices = {@Index({"userId", "scheduleId"})})
+@Entity(foreignKeys = @ForeignKey(entity = Schedule.class, parentColumns = {"userId", "scheduleId"}, childColumns = {"userId", "scheduleId"}, onDelete = ForeignKey.CASCADE), indices = {@Index({"userId", "scheduleId"})})
 public class WorkoutExercise {
     @PrimaryKey(autoGenerate = true)
     private long WorkoutExerciseId;

@@ -39,7 +39,8 @@ public class SettingsFragment extends Fragment {
     private UserViewModel userViewModel;
     private FragmentSettingsBinding binding;
 
-    public SettingsFragment() {}
+    public SettingsFragment() {
+    }
 
     @Override
 
@@ -47,16 +48,18 @@ public class SettingsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
-        userViewModel = new ViewModelProvider(requireActivity(), new UserViewModel.Factory(userRepository)).get(UserViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModel.Factory(userRepository)).get(UserViewModel.class);
 
-        IScheduleRepository scheduleRepository = ServiceLocator.getInstance().getScheduleRepository();
-        scheduleViewModel = new ViewModelProvider(requireActivity(), new ScheduleViewModel.Factory(scheduleRepository)).get(ScheduleViewModel.class);
+        IScheduleRepository scheduleRepository = ServiceLocator.getInstance()
+                .getScheduleRepository();
+        scheduleViewModel = new ViewModelProvider(requireActivity(),
+                new ScheduleViewModel.Factory(scheduleRepository)).get(ScheduleViewModel.class);
     }
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -78,14 +81,15 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setListeners() {
-        binding.logoutButton.setOnClickListener(v -> userViewModel.logout().observe(getViewLifecycleOwner(), result -> {
-            Intent intent = new Intent(requireContext(), MainActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
-        }));
+        binding.logoutButton.setOnClickListener(v -> userViewModel.logout()
+                .observe(getViewLifecycleOwner(), result -> {
+                    Intent intent = new Intent(requireContext(), MainActivity.class);
+                    startActivity(intent);
+                    requireActivity().finish();
+                }));
 
-        binding.darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
-                AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO));
+        binding.darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> AppCompatDelegate.setDefaultNightMode(
+                isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO));
 
         binding.languageSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             Locale newLocale = isChecked ? new Locale("it") : new Locale("en");
@@ -98,12 +102,13 @@ public class SettingsFragment extends Fragment {
         binding.resetButton.setOnClickListener(v -> {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
-                new MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(R.string.confirm_reset)
+                new MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.confirm_reset)
                         .setMessage(R.string.confirm_reset_message)
                         .setPositiveButton(R.string.confirm, (dialog, which) -> {
                             scheduleViewModel.deleteUserSchedules(user.getUid());
-                            Toast.makeText(requireContext(), R.string.data_reset_successfully , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(),
+                                    R.string.data_reset_successfully,
+                                    Toast.LENGTH_SHORT).show();
                         })
                         .setNegativeButton(R.string.cancel, (dialog, which) -> {
                         })

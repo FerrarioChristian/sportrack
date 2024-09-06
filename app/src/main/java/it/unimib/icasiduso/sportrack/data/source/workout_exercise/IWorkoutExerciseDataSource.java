@@ -1,27 +1,28 @@
 package it.unimib.icasiduso.sportrack.data.source.workout_exercise;
 
+import java.util.List;
+
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 public interface IWorkoutExerciseDataSource {
     interface Remote {
-        void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+        void addWorkoutExercise(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback);
 
-        void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+        void deleteWorkoutExercise(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback);
 
-        void getWorkoutExercisesByScheduleId(long scheduleId, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
-
-        void deleteWorkoutExercisesByScheduleId(long scheduleId, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
-
+        void getWorkoutExercises(long scheduleId, IWorkoutExercisesRepository.GetWorkoutExerciseCallback callback);
     }
 
     interface Local {
-        void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise);
+        void addWorkoutExercise(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback);
 
-        void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+        void deleteWorkoutExercise(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback);
 
-        void getWorkoutExercisesByScheduleId(long scheduleId, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+        void getWorkoutExercises(long scheduleId, IWorkoutExercisesRepository.GetWorkoutExerciseCallback callback);
 
-        void deleteWorkoutExercisesByScheduleId(long scheduleId, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+        void updateWorkoutExercises(List<WorkoutExercise> workoutExerciseList);
+
+        void deleteWorkoutExercises(long scheduleId);
     }
 }

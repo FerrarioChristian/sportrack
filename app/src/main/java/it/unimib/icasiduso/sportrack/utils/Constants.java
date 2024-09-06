@@ -15,6 +15,8 @@ public class Constants {
     public static final String USER_COLLISION_ERROR = "userCollisionError";
     public static final String WEAK_PASSWORD_ERROR = "passwordIsWeak";
 
+    public static final String[] MUSCLES = new String[]{"abdominals", "biceps", "chest", "glutes"
+            , "hamstrings", "lats", "quadriceps", "triceps", "middle_back", "lower_back"};
 
     public static final String FIREBASE_DATABASE = "users/";
 

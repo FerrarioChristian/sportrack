@@ -6,17 +6,24 @@ import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 public interface IWorkoutExercisesRepository {
 
-    void addWorkoutExerciseToSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+    void addWorkoutExercise(WorkoutExercise workoutExercise, SaveWorkoutExerciseCallback callback);
 
-    void deleteWorkoutExerciseFromSchedule(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+    void deleteWorkoutExercise(WorkoutExercise workoutExercise, SaveWorkoutExerciseCallback callback);
 
-    void getWorkoutExercisesByScheduleId(Long scheduleId, IWorkoutExercisesRepository.WorkoutExerciseCallback callback);
+    void getWorkoutExercises(Long scheduleId, GetWorkoutExerciseCallback callback);
 
-    interface WorkoutExerciseCallback {
-        void onSuccess(List<WorkoutExercise> workoutExercises);
-
+    interface SaveWorkoutExerciseCallback {
         void onSuccess();
 
-        void onFailure(Exception exception);
+        void onFailure(String errorMessage);
     }
+
+    interface GetWorkoutExerciseCallback {
+        void onWorkoutExercisesLoaded(List<WorkoutExercise> workoutExerciseList);
+
+        void onDataNotAvailable();
+
+        void onFailure(String errorMessage);
+    }
+
 }

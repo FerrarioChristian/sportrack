@@ -17,12 +17,15 @@ public interface IScheduleRepository {
 
     interface SaveScheduleCallback {
         void onSuccess();
+
         void onFailure(String errorMessage);
     }
 
     interface GetScheduleCallback {
         void onSchedulesLoaded(List<Schedule> scheduleList);
+
         void onDataNotAvailable();
+
         void onFailure(String errorMessage);
     }
 }

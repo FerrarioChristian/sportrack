@@ -31,7 +31,8 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     @NonNull
     @Override
     public ScheduleRecyclerViewAdapter.ScheduleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.schedule_item, parent, false);
         return new ScheduleRecyclerViewAdapter.ScheduleViewHolder(view);
     }
 
@@ -42,8 +43,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
     @Override
     public int getItemCount() {
-        if (scheduleList == null)
-            return 0;
+        if (scheduleList == null) return 0;
         return scheduleList.size();
     }
 
@@ -64,7 +64,8 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
         public void bind(Schedule schedule) {
             textViewExerciseName.setText(schedule.getName());
-            textViewExerciseDifficulty.setText(App.getRes().getString(R.string.difficulty, schedule.getDifficulty()));
+            textViewExerciseDifficulty.setText(App.getRes()
+                    .getString(R.string.difficulty, schedule.getDifficulty()));
         }
 
         @Override

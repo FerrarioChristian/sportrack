@@ -40,13 +40,7 @@ public class Exercise implements Parcelable {
 
     @Ignore
     @JsonCreator
-    public Exercise(
-            @JsonProperty("name") String name,
-            @JsonProperty("type") String type,
-            @JsonProperty("muscle") String muscle,
-            @JsonProperty("equipment") String equipment,
-            @JsonProperty("difficulty") String difficulty,
-            @JsonProperty("instructions") String instructions) {
+    public Exercise(@JsonProperty("name") String name, @JsonProperty("type") String type, @JsonProperty("muscle") String muscle, @JsonProperty("equipment") String equipment, @JsonProperty("difficulty") String difficulty, @JsonProperty("instructions") String instructions) {
         this.name = name;
         this.type = type;
         this.muscle = muscle;
@@ -140,7 +134,11 @@ public class Exercise implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Exercise exercise = (Exercise) o;
-        return Objects.equals(name, exercise.name) && Objects.equals(type, exercise.type) && Objects.equals(muscle, exercise.muscle) && Objects.equals(equipment, exercise.equipment) && Objects.equals(difficulty, exercise.difficulty) && Objects.equals(instructions, exercise.instructions);
+        return Objects.equals(name, exercise.name) && Objects.equals(type,
+                exercise.type) && Objects.equals(muscle, exercise.muscle) && Objects.equals(
+                equipment,
+                exercise.equipment) && Objects.equals(difficulty,
+                exercise.difficulty) && Objects.equals(instructions, exercise.instructions);
     }
 
     @Override
@@ -151,14 +149,7 @@ public class Exercise implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "Exercise{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", muscle='" + muscle + '\'' +
-                ", equipment='" + equipment + '\'' +
-                ", difficulty='" + difficulty + '\'' +
-                ", instructions='" + instructions + '\'' +
-                '}';
+        return "Exercise{" + "name='" + name + '\'' + ", type='" + type + '\'' + ", muscle='" + muscle + '\'' + ", equipment='" + equipment + '\'' + ", difficulty='" + difficulty + '\'' + ", instructions='" + instructions + '\'' + '}';
     }
 
     @Override

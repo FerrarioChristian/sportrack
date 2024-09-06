@@ -28,15 +28,18 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
     private ExerciseRecyclerViewAdapter exerciseRecyclerViewAdapter;
     private FragmentListExercisesBinding binding;
 
-    public ListExercisesFragment() {}
+    public ListExercisesFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IExerciseRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
+        IExerciseRepository exercisesRepository = ServiceLocator.getInstance()
+                .getExercisesRepository();
         ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
-        exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
+        exerciseViewModel = new ViewModelProvider(requireActivity(),
+                factory).get(ExerciseViewModel.class);
     }
 
     @Override
@@ -62,7 +65,8 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
                 exerciseRecyclerViewAdapter.setExercises(result.getSuccessData());
             } else {
                 exerciseRecyclerViewAdapter.setExercises(null);
-                Toast.makeText(getActivity(),getString(R.string.loading_error_check_internet),
+                Toast.makeText(getActivity(),
+                        getString(R.string.loading_error_check_internet),
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -81,13 +85,15 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
     @Override
     public void onExerciseClick(Exercise exercise) {
         Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
-        ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(scheduleId, exercise);
+        ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(
+                scheduleId,
+                exercise);
         Navigation.findNavController(requireView()).navigate(action);
     }
 
-   @Override
-   public void onDestroyView() {
-       super.onDestroyView();
-       binding = null;
-   }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

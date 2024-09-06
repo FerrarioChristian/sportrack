@@ -22,7 +22,7 @@ public class ScheduleRemoteDataSource implements IScheduleDataSource.Remote {
     private static final String TAG = ScheduleRemoteDataSource.class.getSimpleName();
 
     private final DatabaseReference databaseReference;
-    ;
+
 
     public ScheduleRemoteDataSource() {
         this.databaseReference = FirebaseDatabase.getInstance().getReference(FIREBASE_DATABASE);
@@ -30,14 +30,20 @@ public class ScheduleRemoteDataSource implements IScheduleDataSource.Remote {
 
     @Override
     public void newSchedule(Schedule schedule, IScheduleRepository.SaveScheduleCallback callback) {
-        databaseReference.child(schedule.getUserId()).child("schedules").child(String.valueOf(schedule.getScheduleId())).setValue(schedule)
+        databaseReference.child(schedule.getUserId())
+                .child("schedules")
+                .child(String.valueOf(schedule.getScheduleId()))
+                .setValue(schedule)
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
     @Override
     public void deleteSchedule(Schedule schedule, IScheduleRepository.SaveScheduleCallback callback) {
-        databaseReference.child(schedule.getUserId()).child("schedules").child(String.valueOf(schedule.getScheduleId())).removeValue()
+        databaseReference.child(schedule.getUserId())
+                .child("schedules")
+                .child(String.valueOf(schedule.getScheduleId()))
+                .removeValue()
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
@@ -47,6 +53,16 @@ public class ScheduleRemoteDataSource implements IScheduleDataSource.Remote {
         ValueEventListener scheduleListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                DatabaseReference onlineReference = FirebaseDatabase.getInstance()
+                        .getReference(".info/connected");
+                onlineReference.get().addOnSuccessListener(status -> {
+                    boolean connected = status.getValue(Boolean.class);
+                    if (!connected) {
+                        callback.onDataNotAvailable();
+                    }
+                });
+
                 if (dataSnapshot.exists()) {
                     List<Schedule> schedules = new ArrayList<>();
                     for (DataSnapshot scheduleSnapshot : dataSnapshot.getChildren()) {
@@ -54,11 +70,8 @@ public class ScheduleRemoteDataSource implements IScheduleDataSource.Remote {
                         schedules.add(schedule);
                     }
                     callback.onSchedulesLoaded(schedules);
-
-                    // Remove listener if you only need the initial data
-                    databaseReference.child(userId).child("schedules").removeEventListener(this);
                 } else {
-                    callback.onDataNotAvailable();
+                    callback.onSchedulesLoaded(new ArrayList<>());
                 }
             }
 

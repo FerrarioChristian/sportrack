@@ -31,17 +31,16 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:indeterminate="true"
         android:id="@+id/progress_bar"
-        app:trackCornerRadius="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminate="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recyclerview_exercise_list"
-        />
+        app:trackCornerRadius="5dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

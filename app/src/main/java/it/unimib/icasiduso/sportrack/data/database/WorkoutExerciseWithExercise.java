@@ -11,9 +11,6 @@ import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 public class WorkoutExerciseWithExercise {
     @Embedded
     public Exercise exercise;
-    @Relation(
-            parentColumn = "exerciseId",
-            entityColumn = "externalExerciseId"
-    )
+    @Relation(parentColumn = "exerciseId", entityColumn = "externalExerciseId")
     public List<WorkoutExercise> workoutExercises;
 }

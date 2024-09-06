@@ -2,9 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="muscle"
             type="java.lang.String" />
+
         <variable
             name="image"
             type="android.graphics.drawable.Drawable" />

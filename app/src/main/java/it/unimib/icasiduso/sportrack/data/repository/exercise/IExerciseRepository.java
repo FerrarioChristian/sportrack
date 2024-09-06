@@ -14,14 +14,18 @@ public interface IExerciseRepository {
 
     interface GetExercisesCallback {
         void onSuccess(List<Exercise> exercises);
+
         void onDataNotAvailable();
+
         void onFailure(Exception exception);
     }
 
 
     interface ExercisesCallback {
         void onSuccess(Exercise exercise);
+
         void onSuccess(List<Exercise> exercises);
+
         void onFailure(Exception exception);
     }
 }

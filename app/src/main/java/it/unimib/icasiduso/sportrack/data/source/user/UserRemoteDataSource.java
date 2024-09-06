@@ -24,23 +24,25 @@ public class UserRemoteDataSource implements IUserDataSource.Remote {
 
     @Override
     public void saveUser(User user, IUserRepository.UserDatabaseCallback callback) {
-        databaseReference.child(user.getIdToken()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    callback.onDatabaseSuccess(user);
-                } else {
-                    databaseReference.child(user.getIdToken()).setValue(user)
-                            .addOnSuccessListener(aVoid -> callback.onDatabaseSuccess(user))
-                            .addOnFailureListener(e -> callback.onDatabaseFailure(e.getLocalizedMessage()));
-                }
-            }
+        databaseReference.child(user.getIdToken())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            callback.onDatabaseSuccess(user);
+                        } else {
+                            databaseReference.child(user.getIdToken())
+                                    .setValue(user)
+                                    .addOnSuccessListener(aVoid -> callback.onDatabaseSuccess(user))
+                                    .addOnFailureListener(e -> callback.onDatabaseFailure(e.getLocalizedMessage()));
+                        }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                callback.onDatabaseFailure(error.getMessage());
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        callback.onDatabaseFailure(error.getMessage());
+                    }
+                });
     }
 
 }

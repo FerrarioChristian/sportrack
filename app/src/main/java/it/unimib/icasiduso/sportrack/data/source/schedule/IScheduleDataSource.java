@@ -26,5 +26,7 @@ public interface IScheduleDataSource {
         void deleteUserSchedules(String userId, IScheduleRepository.SaveScheduleCallback callback);
 
         void updateSchedules(List<Schedule> schedules);
+
+        void deleteUserSchedules(String userId);
     }
 }

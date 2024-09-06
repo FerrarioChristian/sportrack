@@ -14,12 +14,11 @@
         tools:context=".ui.auth.LoginFragment">
 
         <androidx.cardview.widget.CardView
+            style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
-            app:cardCornerRadius="30dp"
-            style="@style/Widget.Material3.CardView.Filled"
-            >
+            app:cardCornerRadius="30dp">
 
 
             <androidx.constraintlayout.widget.ConstraintLayout

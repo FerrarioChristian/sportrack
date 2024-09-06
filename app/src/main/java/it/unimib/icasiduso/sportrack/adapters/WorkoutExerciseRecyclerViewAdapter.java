@@ -18,10 +18,9 @@ import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
 
 public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<WorkoutExerciseRecyclerViewAdapter.WorkoutExerciseViewHolder> {
     private final OnItemClickListener onItemClickListener;
-    private List<WorkoutExercise> workoutExercises;
-
     private final ExerciseViewModel exerciseViewModel;
     private final LifecycleOwner lifecycleOwner;
+    private List<WorkoutExercise> workoutExercises;
 
 
     public WorkoutExerciseRecyclerViewAdapter(OnItemClickListener onItemClickListener, LifecycleOwner lifecycleOwner, ExerciseViewModel exerciseViewModel) {
@@ -38,7 +37,8 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
     @NonNull
     @Override
     public WorkoutExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.workout_exercise_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.workout_exercise_item, parent, false);
         return new WorkoutExerciseViewHolder(view);
     }
 
@@ -49,8 +49,7 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
 
     @Override
     public int getItemCount() {
-        if (workoutExercises == null)
-            return 0;
+        if (workoutExercises == null) return 0;
         return workoutExercises.size();
     }
 
@@ -73,10 +72,13 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
 
 
         public void bind(WorkoutExercise workoutExercise) {
-            exerciseViewModel.getExerciseById(workoutExercise.getExternalExerciseId()).observe(lifecycleOwner, exercise -> exerciseName.setText(exercise.getName()));
+            exerciseViewModel.getExerciseById(workoutExercise.getExternalExerciseId())
+                    .observe(lifecycleOwner, exercise -> exerciseName.setText(exercise.getName()));
 
-            exerciseSeries.setText(App.getRes().getString(R.string.series, workoutExercise.getSeries()));
-            exerciseRepetitions.setText(App.getRes().getString(R.string.repetitions, workoutExercise.getRepetitions()));
+            exerciseSeries.setText(App.getRes()
+                    .getString(R.string.series, workoutExercise.getSeries()));
+            exerciseRepetitions.setText(App.getRes()
+                    .getString(R.string.repetitions, workoutExercise.getRepetitions()));
 
         }
 

@@ -1,7 +1,5 @@
 package it.unimib.icasiduso.sportrack.viewmodel;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -27,11 +25,7 @@ public class ScheduleViewModel extends ViewModel {
     }
 
     public void setIsLoading(boolean isLoading) {
-        if (isLoading) {
-            isLoadingLiveData.postValue(true);
-        } else {
-            isLoadingLiveData.postValue(false);
-        }
+        isLoadingLiveData.postValue(isLoading);
     }
 
     public MutableLiveData<List<Schedule>> getSchedules(String userId) {
@@ -53,7 +47,6 @@ public class ScheduleViewModel extends ViewModel {
             @Override
             public void onFailure(String errorMessage) {
                 setIsLoading(false);
-
             }
         });
         return schedulesLiveData;
@@ -81,40 +74,42 @@ public class ScheduleViewModel extends ViewModel {
         List<Schedule> scheduleList = schedulesLiveData.getValue();
         if (scheduleList != null && position < scheduleList.size()) {
             Schedule schedule = scheduleList.remove(position);
-            scheduleRepository.deleteSchedule(schedule, new IScheduleRepository.SaveScheduleCallback() {
-                @Override
-                public void onSuccess() {
-                    setIsLoading(false);
-                    schedulesLiveData.postValue(scheduleList);
-                }
+            scheduleRepository.deleteSchedule(schedule,
+                    new IScheduleRepository.SaveScheduleCallback() {
+                        @Override
+                        public void onSuccess() {
+                            setIsLoading(false);
+                            schedulesLiveData.postValue(scheduleList);
+                        }
 
-                @Override
-                public void onFailure(String errorMessage) {
+                        @Override
+                        public void onFailure(String errorMessage) {
 
-                }
-            });
+                        }
+                    });
         }
     }
 
     public void deleteUserSchedules(String userId) {
         setIsLoading(true);
-        scheduleRepository.deleteUserSchedules(userId, new IScheduleRepository.SaveScheduleCallback() {
-            @Override
-            public void onSuccess() {
-                setIsLoading(false);
-                List<Schedule> currentSchedules = schedulesLiveData.getValue();
-                if (currentSchedules != null) {
-                    schedulesLiveData.getValue().clear();
-                }
-            }
+        scheduleRepository.deleteUserSchedules(userId,
+                new IScheduleRepository.SaveScheduleCallback() {
+                    @Override
+                    public void onSuccess() {
+                        setIsLoading(false);
+                        List<Schedule> currentSchedules = schedulesLiveData.getValue();
+                        if (currentSchedules != null) {
+                            schedulesLiveData.getValue().clear();
+                        }
+                    }
 
-            @Override
-            public void onFailure(String errorMessage) {
+                    @Override
+                    public void onFailure(String errorMessage) {
 
-            }
+                    }
 
 
-        });
+                });
     }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {

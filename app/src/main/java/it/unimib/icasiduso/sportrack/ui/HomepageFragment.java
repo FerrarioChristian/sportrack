@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +27,6 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.databinding.FragmentHomepageBinding;
-import it.unimib.icasiduso.sportrack.databinding.FragmentScheduleBinding;
 
 public class HomepageFragment extends Fragment {
     private static final String TAG = HomepageFragment.class.getSimpleName();
@@ -40,7 +38,8 @@ public class HomepageFragment extends Fragment {
     private double sumPeso;
     private LineGraphSeries<DataPoint> mediaSeries;
 
-    public HomepageFragment() {}
+    public HomepageFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,8 +48,7 @@ public class HomepageFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomepageBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -103,7 +101,8 @@ public class HomepageFragment extends Fragment {
 
 
                 // Crea una serie di dati a barre per i pesi (giallo con bordo nero)
-                BarGraphSeries<DataPoint> pesiSeries = new BarGraphSeries<>(weightDataList.toArray(new DataPoint[0]));
+                BarGraphSeries<DataPoint> pesiSeries = new BarGraphSeries<>(weightDataList.toArray(
+                        new DataPoint[0]));
                 pesiSeries.setColor(Color.TRANSPARENT); // Imposta il colore interno
                 pesiSeries.setSpacing(50); // Imposta la larghezza dello spazio tra le barre
                 pesiSeries.setDrawValuesOnTop(true);

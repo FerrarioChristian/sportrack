@@ -13,9 +13,6 @@ import retrofit2.http.Query;
 
 public interface ExercisesApiService {
     @GET(EXERCISES_ENDPOINT)
-    Call<List<Exercise>> getExercises(
-            @Query(EXERCISES_MUSCLE_PARAMETER) String muscle,
-            @Header("X-Api-Key") String apiKey
-    );
+    Call<List<Exercise>> getExercises(@Query(EXERCISES_MUSCLE_PARAMETER) String muscle, @Header("X-Api-Key") String apiKey);
 
 }

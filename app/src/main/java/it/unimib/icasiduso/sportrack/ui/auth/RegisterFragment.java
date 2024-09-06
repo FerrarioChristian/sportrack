@@ -31,18 +31,19 @@ public class RegisterFragment extends Fragment {
     private FragmentRegisterBinding binding;
 
 
-    public RegisterFragment() {}
+    public RegisterFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository();
-        userViewModel = new ViewModelProvider(requireActivity(), new UserViewModel.Factory(userRepository)).get(UserViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity(),
+                new UserViewModel.Factory(userRepository)).get(UserViewModel.class);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -57,12 +58,19 @@ public class RegisterFragment extends Fragment {
     }
 
     private void setListeners() {
-        binding.goToLoginButton.setOnClickListener(v -> Navigation.findNavController(requireView()).navigate(R.id.loginFragment));
+        binding.goToLoginButton.setOnClickListener(v -> Navigation.findNavController(requireView())
+                .navigate(R.id.loginFragment));
 
         binding.registerButton.setOnClickListener(v -> {
-            String email = binding.registerEmailEditText.getText() != null ? binding.registerEmailEditText.getText().toString().trim() : "";
-            String password = binding.registerPasswordEditText.getText() != null ? binding.registerPasswordEditText.getText().toString().trim() : "";
-            String confirmPassword = binding.registerConfirmPasswordEditText.getText() != null ? binding.registerConfirmPasswordEditText.getText().toString().trim() : "";
+            String email = binding.registerEmailEditText.getText() != null ? binding.registerEmailEditText.getText()
+                    .toString()
+                    .trim() : "";
+            String password = binding.registerPasswordEditText.getText() != null ? binding.registerPasswordEditText.getText()
+                    .toString()
+                    .trim() : "";
+            String confirmPassword = binding.registerConfirmPasswordEditText.getText() != null ? binding.registerConfirmPasswordEditText.getText()
+                    .toString()
+                    .trim() : "";
 
             if (isEmailOk(email) && isPasswordOk(password, confirmPassword)) {
                 userViewModel.getUserData(email, password, false);
@@ -72,19 +80,18 @@ public class RegisterFragment extends Fragment {
     }
 
     private void observeViewModel() {
-        userViewModel.getUserMutableLiveData().observe(
-                getViewLifecycleOwner(), result -> {
-                    if (result == null) return;
-                    if (result.isSuccess()) {
-                        Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
-                        startActivity(intent);
-                        requireActivity().finish();
-                    } else {
-                        Toast.makeText(getActivity(), R.string.authentication_failed,
-                                Toast.LENGTH_SHORT).show();
-                        userViewModel.clearUserMutableLiveData();
-                    }
-                });
+        userViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (result == null) return;
+            if (result.isSuccess()) {
+                Intent intent = new Intent(getActivity(), MainActivityWithBottomNav.class);
+                startActivity(intent);
+                requireActivity().finish();
+            } else {
+                Toast.makeText(getActivity(), R.string.authentication_failed, Toast.LENGTH_SHORT)
+                        .show();
+                userViewModel.clearUserMutableLiveData();
+            }
+        });
 
     }
 
@@ -93,13 +100,12 @@ public class RegisterFragment extends Fragment {
 
         if (password == null || password.length() < MIN_PASSWORD_LENGTH) {
             String pass_error = getString(R.string.invalid_password, MIN_PASSWORD_LENGTH);
-            Toast.makeText(getActivity(), pass_error,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), pass_error, Toast.LENGTH_SHORT).show();
             return false;
         }
         if (!password.equals(confirmPassword)) {
-            Toast.makeText(getActivity(), R.string.invalid_confirm_password,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.invalid_confirm_password, Toast.LENGTH_SHORT)
+                    .show();
             return false;
         }
         return true;
@@ -107,8 +113,7 @@ public class RegisterFragment extends Fragment {
 
     private boolean isEmailOk(String email) {
         if (!EmailValidator.getInstance().isValid((email))) {
-            Toast.makeText(getActivity(), R.string.invalid_email,
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.invalid_email, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

@@ -1,6 +1,5 @@
 package it.unimib.icasiduso.sportrack.data.source.schedule;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
@@ -20,15 +19,14 @@ public class ScheduleLocalDataSource implements IScheduleDataSource.Local {
     @Override
     public void newSchedule(Schedule schedule, IScheduleRepository.SaveScheduleCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<Schedule> scheduleList = new ArrayList<>();
-            scheduleList.add(schedule);
-            scheduleDao.insertScheduleList(scheduleList);
+            scheduleDao.insertAll(schedule);
             callback.onSuccess();
         });
     }
 
     @Override
-    public void deleteSchedule(Schedule schedule, IScheduleRepository.SaveScheduleCallback callback) {
+    public void deleteSchedule(Schedule schedule,
+                               IScheduleRepository.SaveScheduleCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             scheduleDao.deleteSchedule(schedule);
             callback.onSuccess();
@@ -49,7 +47,8 @@ public class ScheduleLocalDataSource implements IScheduleDataSource.Local {
     }
 
     @Override
-    public void deleteUserSchedules(String userId, IScheduleRepository.SaveScheduleCallback callback) {
+    public void deleteUserSchedules(String userId,
+                                    IScheduleRepository.SaveScheduleCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             scheduleDao.deleteUserSchedules(userId);
             callback.onSuccess();
@@ -60,6 +59,13 @@ public class ScheduleLocalDataSource implements IScheduleDataSource.Local {
     public void updateSchedules(List<Schedule> schedules) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             scheduleDao.insertScheduleList(schedules);
+        });
+    }
+
+    @Override
+    public void deleteUserSchedules(String userId) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
+            scheduleDao.deleteUserSchedules(userId);
         });
     }
 

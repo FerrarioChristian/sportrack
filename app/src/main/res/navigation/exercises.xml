@@ -7,8 +7,8 @@
     app:startDestination="@id/exercisesFragment">
     <argument
         android:name="scheduleId"
-        app:argType="long"
-        android:defaultValue="0L"/>
+        android:defaultValue="0L"
+        app:argType="long" />
 
     <fragment
         android:id="@+id/exercisesFragment"
@@ -17,8 +17,8 @@
         tools:layout="@layout/fragment_exercises">
         <argument
             android:name="scheduleId"
-            app:argType="long"
-            android:defaultValue="0L"/>
+            android:defaultValue="0L"
+            app:argType="long" />
         <action
             android:id="@+id/action_exercisesFragment_to_listExercisesFragment"
             app:destination="@id/listExercisesFragment" />
@@ -29,7 +29,7 @@
         android:label="ListExercisesFragment">
         <argument
             android:name="scheduleId"
-            app:argType="java.lang.Long"/>
+            app:argType="java.lang.Long" />
         <argument
             android:name="muscle"
             app:argType="java.lang.String" />
@@ -44,7 +44,7 @@
         android:label="ExerciseDetails">
         <argument
             android:name="scheduleId"
-            app:argType="java.lang.Long"/>
+            app:argType="java.lang.Long" />
         <argument
             android:name="exercise"
             app:argType="it.unimib.icasiduso.sportrack.model.exercise.Exercise" />

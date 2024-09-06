@@ -32,7 +32,8 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
     @NonNull
     @Override
     public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.exercise_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.exercise_item, parent, false);
         return new ExerciseViewHolder(view);
     }
 
@@ -43,8 +44,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
     @Override
     public int getItemCount() {
-        if (exercises == null)
-            return 0;
+        if (exercises == null) return 0;
         return exercises.size();
     }
 
@@ -65,7 +65,8 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
 
         public void bind(Exercise exercise) {
             textViewExerciseName.setText(exercise.getName());
-            textViewExerciseDifficulty.setText(App.getRes().getString(R.string.difficulty, exercise.getDifficulty()));
+            textViewExerciseDifficulty.setText(App.getRes()
+                    .getString(R.string.difficulty, exercise.getDifficulty()));
         }
 
         @Override

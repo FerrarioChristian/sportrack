@@ -27,18 +27,21 @@ public class UserViewModel extends ViewModel {
     public void getUserData(String email, String password, boolean isUserRegistered) {
         if (userMutableLiveData.getValue() instanceof Result.Error || userMutableLiveData.getValue() == null) {
 
-            userRepository.getUser(email, password, isUserRegistered, new IUserRepository.UserAuthCallback() {
+            userRepository.getUser(email,
+                    password,
+                    isUserRegistered,
+                    new IUserRepository.UserAuthCallback() {
 
-                @Override
-                public void onAuthSuccess(User user) {
-                    userMutableLiveData.postValue(new Result.Success<>(user));
-                }
+                        @Override
+                        public void onAuthSuccess(User user) {
+                            userMutableLiveData.postValue(new Result.Success<>(user));
+                        }
 
-                @Override
-                public void onAuthFailure(String message) {
-                    userMutableLiveData.postValue(new Result.Error<>(message, null));
-                }
-            });
+                        @Override
+                        public void onAuthFailure(String message) {
+                            userMutableLiveData.postValue(new Result.Error<>(message, null));
+                        }
+                    });
         }
     }
 

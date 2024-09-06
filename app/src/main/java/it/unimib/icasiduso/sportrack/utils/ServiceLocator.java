@@ -1,6 +1,12 @@
 package it.unimib.icasiduso.sportrack.utils;
 
 
+import static it.unimib.icasiduso.sportrack.utils.Constants.FIREBASE_DATABASE;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.GsonBuilder;
 
 import it.unimib.icasiduso.sportrack.App;
@@ -26,6 +32,7 @@ import it.unimib.icasiduso.sportrack.data.source.user.IUserDataSource;
 import it.unimib.icasiduso.sportrack.data.source.user.UserRemoteDataSource;
 import it.unimib.icasiduso.sportrack.data.source.workout_exercise.IWorkoutExerciseDataSource;
 import it.unimib.icasiduso.sportrack.data.source.workout_exercise.WorkoutExerciseLocalDataSource;
+import it.unimib.icasiduso.sportrack.data.source.workout_exercise.WorkoutExerciseRemoteDataSource;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -49,14 +56,24 @@ public class ServiceLocator {
 
     public ExercisesApiService getExercisesApiService() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(
-                        new GsonBuilder().registerTypeAdapter(Exercise.class, new ExerciseDeserializer()).create()))
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().registerTypeAdapter(
+                        Exercise.class,
+                        new ExerciseDeserializer()).create()))
                 .build();
         return retrofit.create(ExercisesApiService.class);
     }
 
     public ExerciseRoomDatabase getExerciseDatabase() {
         return ExerciseRoomDatabase.getDatabase();
+    }
+
+    public DatabaseReference getUserReference() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            return FirebaseDatabase.getInstance().getReference(FIREBASE_DATABASE + user.getUid());
+        } else {
+            return null;
+        }
     }
 
     public IUserRepository getUserRepository() {
@@ -69,24 +86,28 @@ public class ServiceLocator {
     }
 
     public IExerciseRepository getExercisesRepository() {
-        IExerciseDataSource.Remote exerciseRemoteDataSource;
         IExerciseDataSource.Local exerciseLocalDataSource;
+        IExerciseDataSource.Remote exerciseRemoteDataSource;
 
-        exerciseRemoteDataSource = new ExerciseRemoteDataSource(App.getRes().getString(R.string.api_key));
         exerciseLocalDataSource = new ExerciseLocalDataSource(getExerciseDatabase());
+        exerciseRemoteDataSource = new ExerciseRemoteDataSource(App.getRes()
+                .getString(R.string.api_key));
 
-        return new ExerciseRepository(exerciseRemoteDataSource, exerciseLocalDataSource);
+        return new ExerciseRepository(exerciseLocalDataSource, exerciseRemoteDataSource);
     }
 
     public IWorkoutExercisesRepository getWorkoutExercisesRepository() {
-        //IWorkoutExerciseDataSource.Remote workoutExerciseRemoteDataSource = new WorkoutExerciseRemoteDataSource();
-        IWorkoutExerciseDataSource.Local workoutExerciseLocalDataSource = new WorkoutExerciseLocalDataSource(getExerciseDatabase());
+        IWorkoutExerciseDataSource.Local workoutExerciseLocalDataSource = new WorkoutExerciseLocalDataSource(
+                getExerciseDatabase());
+        IWorkoutExerciseDataSource.Remote workoutExerciseRemoteDataSource = new WorkoutExerciseRemoteDataSource();
 
-        return new WorkoutExercisesRepository(workoutExerciseLocalDataSource);
+        return new WorkoutExercisesRepository(workoutExerciseLocalDataSource,
+                workoutExerciseRemoteDataSource);
     }
 
     public IScheduleRepository getScheduleRepository() {
-        IScheduleDataSource.Local scheduleLocalDataSource = new ScheduleLocalDataSource(getExerciseDatabase());
+        IScheduleDataSource.Local scheduleLocalDataSource = new ScheduleLocalDataSource(
+                getExerciseDatabase());
         IScheduleDataSource.Remote scheduleRemoteDataSource = new ScheduleRemoteDataSource();
 
         return new ScheduleRepository(scheduleLocalDataSource, scheduleRemoteDataSource);
