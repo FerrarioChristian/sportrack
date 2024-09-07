@@ -89,4 +89,6 @@ dependencies {
     implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("it.xabaras.android:recyclerview-swipedecorator:1.4")
+
+    implementation(files("/libs/timeit-release.aar"))
 }

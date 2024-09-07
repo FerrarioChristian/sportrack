@@ -33,8 +33,7 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     private WorkoutExerciseViewModel workoutExerciseViewModel;
     private WorkoutExerciseRecyclerViewAdapter workoutExerciseRecyclerViewAdapter;
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,
-            ItemTouchHelper.LEFT) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -49,12 +48,7 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
 
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            new RecyclerViewSwipeDecorator.Builder(c,
-                    recyclerView,
-                    viewHolder,
-                    dX,
-                    dY,
-                    actionState,
+            new RecyclerViewSwipeDecorator.Builder(c,recyclerView,viewHolder,dX,dY,actionState,
                     isCurrentlyActive).addBackgroundColor(ContextCompat.getColor(requireActivity(),
                             R.color.md_theme_errorContainer_mediumContrast))
                     .addActionIcon(R.drawable.ic_baseline_delete_24)
@@ -73,12 +67,9 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance()
-                .getWorkoutExercisesRepository();
-        WorkoutExerciseViewModel.Factory factory = new WorkoutExerciseViewModel.Factory(
-                workoutExercisesRepository);
-        workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(
-                WorkoutExerciseViewModel.class);
+        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
+        WorkoutExerciseViewModel.Factory factory = new WorkoutExerciseViewModel.Factory(workoutExercisesRepository);
+        workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(WorkoutExerciseViewModel.class);
 
     }
 
@@ -92,15 +83,11 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        IExerciseRepository exercisesRepository = ServiceLocator.getInstance()
-                .getExercisesRepository();
+        IExerciseRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
         ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
-        ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(
-                ExerciseViewModel.class);
+        ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
 
-        workoutExerciseRecyclerViewAdapter = new WorkoutExerciseRecyclerViewAdapter(this,
-                getViewLifecycleOwner(),
-                exerciseViewModel);
+        workoutExerciseRecyclerViewAdapter = new WorkoutExerciseRecyclerViewAdapter(this,getViewLifecycleOwner(),exerciseViewModel);
         binding.recyclerviewWorkoutExerciseList.setAdapter(workoutExerciseRecyclerViewAdapter);
 
         setListeners();
@@ -116,6 +103,12 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
         binding.addExerciseButton.setOnClickListener(v -> {
             ListWorkoutExercisesFragmentDirections.ActionListWorkoutExercisesFragmentToExercises action = ListWorkoutExercisesFragmentDirections.actionListWorkoutExercisesFragmentToExercises(
                     scheduleId);
+            Navigation.findNavController(requireView()).navigate(action);
+        });
+        //timer
+        // verificare se lista è diponibile o meno
+        binding.startScheduleButton.setOnClickListener(v -> {
+            ListWorkoutExercisesFragmentDirections.ActionListWorkoutExercisesFragmentToTimerFragment action = ListWorkoutExercisesFragmentDirections.actionListWorkoutExercisesFragmentToTimerFragment(scheduleId);
             Navigation.findNavController(requireView()).navigate(action);
         });
     }

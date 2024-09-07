@@ -23,6 +23,7 @@
     <string name="exercises">Esercizi</string>
     <string name="settings">Impostazioni</string>
     <!-- Strings used for muscles -->
+    <string name="timer">Timer</string>
     <string name="abdominals">addominali</string>
     <string name="biceps">bicipiti</string>
     <string name="chest">petto</string>

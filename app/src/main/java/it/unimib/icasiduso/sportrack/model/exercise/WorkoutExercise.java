@@ -2,10 +2,13 @@ package it.unimib.icasiduso.sportrack.model.exercise;
 
 import static java.lang.Integer.parseInt;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import java.util.List;
 
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
@@ -77,6 +80,5 @@ public class WorkoutExercise {
     public void setRepetitions(int repetitions) {
         this.repetitions = repetitions;
     }
-
 
 }

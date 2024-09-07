@@ -29,10 +29,27 @@
                 android:name="scheduleId"
                 app:argType="java.lang.Long" />
         </action>
+        <action
+            android:id="@+id/action_listWorkoutExercisesFragment_to_timerFragment"
+            app:destination="@id/timerFragment"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+            <argument
+                android:name="scheduleId"
+                app:argType="java.lang.Long" />
+        </action>
     </fragment>
 
     <include app:graph="@navigation/exercises" />
     <action
         android:id="@+id/action_global_scheduleFragment"
         app:destination="@id/scheduleFragment" />
+
+    <fragment
+        android:id="@+id/timerFragment"
+        android:name="it.unimib.icasiduso.sportrack.ui.schedule.TimerFragment"
+        tools:layout="@layout/fragment_timer"
+        android:label="TimerFragment">
+    </fragment>
+
 </navigation>
