@@ -86,7 +86,7 @@ public class HomepageFragment extends Fragment {
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = 50;
             params.height = 50;
-            params.setMargins(4, 4, 4, 4);
+            params.setMargins(8, 8, 8, 8);
 
             heatmapGrid.addView(view2, params);
         }
