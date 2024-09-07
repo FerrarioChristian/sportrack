@@ -4,7 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class ExerciseCompleted implements Parcelable {
@@ -31,6 +35,18 @@ public class ExerciseCompleted implements Parcelable {
         userId = in.readString();
         externalExerciseId = in.readLong();
         date = in.readString();
+    }
+
+    @Ignore
+    @JsonCreator
+    public ExerciseCompleted(@JsonProperty("userId") String userId, @JsonProperty("workoutExerciseId") long workoutExerciseId, @JsonProperty("exerciseId") long externalExerciseId, @JsonProperty("date") String date) {
+        this.userId = userId;
+        this.workoutExerciseId = workoutExerciseId;
+        this.externalExerciseId = externalExerciseId;
+        this.date = date;
+    }
+
+    public ExerciseCompleted() {
     }
 
     @Override

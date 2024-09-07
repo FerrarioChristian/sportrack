@@ -248,7 +248,9 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         long workoutExerciseId = workoutExercises.get(0).getWorkoutExerciseId();
         long externalExerciseId = TimerExercises.get(0).getExerciseId();
         Date date = new Date();
-        ExerciseCompleted newSave = new ExerciseCompleted(userId, externalExerciseId, workoutExerciseId, date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = dateFormat.format(date);
+        ExerciseCompleted newSave = new ExerciseCompleted(userId, externalExerciseId, workoutExerciseId, formattedDate);
 
         return newSave;
     }
