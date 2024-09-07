@@ -102,14 +102,22 @@ public class HomepageFragment extends Fragment {
 
                         int dayIndex = findDayWithMostExercises();
 
-                        String dayName = getDayNameFromIndex(dayIndex);
+                        String dayNameTemp = getDayNameFromIndex(dayIndex);
 
                         String finalDate = "";
 
                         if (!(dayIndex < 0)) finalDate = exerciseCompletedList.get(dayIndex).getDate();
 
-                        //makes app crash on second reload (Outofbound)
-                        binding.dayValue.setText(dayName + " " + finalDate);
+                        binding.dayName.setText(dayNameTemp);
+
+                        binding.dayDate.setText(finalDate);
+
+
+                        /*exerciseViewModel.getExerciseById(result.get(0).getExternalExerciseId()).observe(getViewLifecycleOwner(), exercise -> {
+                            if (exercise != null) Log.d(TAG, "activityData: " + exercise.getMuscle());
+                                });*/
+
+
 
                     }
                 });
@@ -157,9 +165,9 @@ public class HomepageFragment extends Fragment {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             endDate = LocalDate.now();
         }
-        LocalDate startDate = null; // 31 days in total including today
+        LocalDate startDate = null; // 35 days in total including today
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            startDate = endDate.minusDays(30);
+            startDate = endDate.minusDays(34);
         }
 
         // Create a Calendar instance for calculating the first day of the month
@@ -176,7 +184,7 @@ public class HomepageFragment extends Fragment {
 
         // Populate the grid from the start date to the end date
         LocalDate currentDate = startDate;
-        for (int i = 30; i >= 0; i--) {
+        for (int i = 34; i >= 0; i--) {
             int activityLevel = (i < activityData.length) ? activityData[i] : 0; // Use default value if index is out of bounds
 
             TextView dayView = new TextView(requireContext());
@@ -205,7 +213,6 @@ public class HomepageFragment extends Fragment {
             }
 
             dayView.setBackgroundColor(color);
-
             dayView.setTextColor(Color.BLACK);
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
