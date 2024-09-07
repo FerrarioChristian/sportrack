@@ -1,28 +1,51 @@
 package it.unimib.icasiduso.sportrack.model.exercise;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.ColumnInfo;
 
 import java.util.Date;
 
-@Entity(tableName = "exercise_completed")
-public class ExerciseCompleted {
+@Entity
+public class ExerciseCompleted implements Parcelable {
 
+    public static final Creator<ExerciseCompleted> CREATOR = new Creator<ExerciseCompleted>() {
+        @Override
+        public ExerciseCompleted createFromParcel(Parcel in) {
+            return new ExerciseCompleted(in);
+        }
+
+        @Override
+        public ExerciseCompleted[] newArray(int size) {
+            return new ExerciseCompleted[size];
+        }
+    };
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "workout_exercise_id")
     private long workoutExerciseId;
-
-    @ColumnInfo(name = "user_id")
     private String userId;
-
-    @ColumnInfo(name = "external_exercise_id")
     private long externalExerciseId;
+    private String date;
 
-    @ColumnInfo(name = "date")
-    private Date date;
+    protected ExerciseCompleted(Parcel in) {
+        workoutExerciseId = in.readLong();
+        userId = in.readString();
+        externalExerciseId = in.readLong();
+        date = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(workoutExerciseId);
+        dest.writeString(userId);
+        dest.writeLong(externalExerciseId);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
     // Getters and setters
     public long getWorkoutExerciseId() {
@@ -49,12 +72,15 @@ public class ExerciseCompleted {
         this.externalExerciseId = externalExerciseId;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
+}
+
+
 }
 
