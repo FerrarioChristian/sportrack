@@ -25,8 +25,9 @@ public class ExerciseCompleted implements Parcelable {
         }
     };
     @PrimaryKey(autoGenerate = true)
-    private long workoutExerciseId;
+    private long exerciseCompletedId;
     private String userId;
+    private long workoutExerciseId;
     private long externalExerciseId;
     private String date;
 
@@ -37,9 +38,22 @@ public class ExerciseCompleted implements Parcelable {
         date = in.readString();
     }
 
+    public ExerciseCompleted(String userId, long workoutExerciseId, long externalExerciseId,
+                             String date) {
+        this.workoutExerciseId = workoutExerciseId;
+        this.userId = userId;
+        this.externalExerciseId = externalExerciseId;
+        this.date = date;
+    }
+
     @Ignore
     @JsonCreator
-    public ExerciseCompleted(@JsonProperty("userId") String userId, @JsonProperty("workoutExerciseId") long workoutExerciseId, @JsonProperty("exerciseId") long externalExerciseId, @JsonProperty("date") String date) {
+    public ExerciseCompleted(@JsonProperty("exerciseCompletedId") long exerciseCompletedId,
+                             @JsonProperty("userId") String userId, @JsonProperty(
+                                     "workoutExerciseId") long workoutExerciseId, @JsonProperty(
+                                             "exerciseId") long externalExerciseId,
+                             @JsonProperty("date") String date) {
+        this.exerciseCompletedId = exerciseCompletedId;
         this.userId = userId;
         this.workoutExerciseId = workoutExerciseId;
         this.externalExerciseId = externalExerciseId;
@@ -51,6 +65,7 @@ public class ExerciseCompleted implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(exerciseCompletedId);
         dest.writeLong(workoutExerciseId);
         dest.writeString(userId);
         dest.writeLong(externalExerciseId);
@@ -92,6 +107,14 @@ public class ExerciseCompleted implements Parcelable {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public long getExerciseCompletedId() {
+        return exerciseCompletedId;
+    }
+
+    public void setExerciseCompletedId(long exerciseCompletedId) {
+        this.exerciseCompletedId = exerciseCompletedId;
     }
 }
 

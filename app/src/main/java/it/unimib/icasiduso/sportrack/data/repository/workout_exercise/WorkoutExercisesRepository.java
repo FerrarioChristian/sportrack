@@ -95,6 +95,8 @@ public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
 
     @Override
     public void saveExerciseCompleted(ExerciseCompleted exerciseCompleted) {
+        long exerciseCompletedId = System.currentTimeMillis();
+        exerciseCompleted.setExerciseCompletedId(exerciseCompletedId);
         workoutExerciseLocalDataSource.saveExerciseCompleted(exerciseCompleted);
     }
 
