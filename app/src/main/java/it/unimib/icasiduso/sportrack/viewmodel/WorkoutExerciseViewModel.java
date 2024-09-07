@@ -101,7 +101,7 @@ public class WorkoutExerciseViewModel extends ViewModel {
         workoutExerciseRepository.saveExerciseCompleted(exerciseCompleted);
     }
 
-    public void getExercisesCompleted(String userId) {
+    public MutableLiveData<List<ExerciseCompleted>> getExercisesCompleted(String userId) {
         workoutExerciseRepository.getExercisesCompleted(userId, new IWorkoutExercisesRepository.GetExercisesCompletedCallback(){
             @Override
             public void onSuccess(List<ExerciseCompleted> exercisesCompleted) {
@@ -114,6 +114,7 @@ public class WorkoutExerciseViewModel extends ViewModel {
             }
 
         });
+        return exercisesCompletedLiveData;
     }
 
 
