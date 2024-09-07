@@ -21,7 +21,8 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
     }
 
     @Override
-    public void addWorkoutExercise(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback) {
+    public void addWorkoutExercise(WorkoutExercise workoutExercise,
+                                   IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             workoutExerciseDao.insertAll(workoutExercise);
             callback.onSuccess();
@@ -29,7 +30,8 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
     }
 
     @Override
-    public void deleteWorkoutExercise(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback) {
+    public void deleteWorkoutExercise(WorkoutExercise workoutExercise,
+                                      IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             workoutExerciseDao.deleteWorkoutExercise(workoutExercise);
             callback.onSuccess();
@@ -37,9 +39,11 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
     }
 
     @Override
-    public void getWorkoutExercises(long scheduleId, IWorkoutExercisesRepository.GetWorkoutExerciseCallback callback) {
+    public void getWorkoutExercises(long scheduleId,
+                                    IWorkoutExercisesRepository.GetWorkoutExerciseCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<WorkoutExercise> workoutExerciseList = workoutExerciseDao.getWorkoutExercisesByScheduleId(
+            List<WorkoutExercise> workoutExerciseList =
+                    workoutExerciseDao.getWorkoutExercisesByScheduleId(
                     scheduleId);
             if (workoutExerciseList == null || workoutExerciseList.isEmpty()) {
                 callback.onDataNotAvailable();
@@ -52,7 +56,8 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
     @Override
     public void updateWorkoutExercises(List<WorkoutExercise> workoutExerciseList) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<WorkoutExercise> oldWorkoutExerciseList = workoutExerciseDao.getWorkoutExercisesByScheduleId(
+            List<WorkoutExercise> oldWorkoutExerciseList =
+                    workoutExerciseDao.getWorkoutExercisesByScheduleId(
                     workoutExerciseList.get(0).getScheduleId());
 
             List<WorkoutExercise> exercisesToDelete = new ArrayList<>(oldWorkoutExerciseList);
@@ -68,23 +73,18 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
 
     @Override
     public void deleteWorkoutExercises(long scheduleId) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            workoutExerciseDao.deleteWorkoutExercisesByScheduleId(scheduleId);
-        });
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> workoutExerciseDao.deleteWorkoutExercisesByScheduleId(scheduleId));
     }
 
     @Override
     public void saveExerciseCompleted(ExerciseCompleted exerciseCompleted) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            exerciseCompletedDao.insertExerciseCompleted(exerciseCompleted);
-        });
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> exerciseCompletedDao.insertExerciseCompleted(exerciseCompleted));
     }
 
     @Override
-    public void getExercisesCompleted(String userId, IWorkoutExercisesRepository.GetExercisesCompletedCallback callback) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            exerciseCompletedDao.getExercisesCompleted(userId);
-        });
+    public void getExercisesCompleted(String userId,
+                                      IWorkoutExercisesRepository.GetExercisesCompletedCallback callback) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(exerciseCompletedDao.getExercisesCompleted(userId)));
     }
 
 }
