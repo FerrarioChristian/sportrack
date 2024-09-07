@@ -2,6 +2,7 @@ package it.unimib.icasiduso.sportrack.model.schedule;
 
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -17,6 +18,7 @@ public class Schedule {
     public Schedule() {
     }
 
+    @Ignore
     public Schedule(String userId, String name, String difficulty) {
         this.name = name;
         this.difficulty = difficulty;
