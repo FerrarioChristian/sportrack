@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -63,6 +62,14 @@ public class HomepageFragment extends Fragment {
                 workoutExercisesRepository);
         workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(
                 WorkoutExerciseViewModel.class);
+
+        IExerciseRepository exercisesRepository = ServiceLocator.getInstance()
+                .getExercisesRepository();
+        ExerciseViewModel.Factory exerciseViewModelFactory = new ExerciseViewModel.Factory(
+                exercisesRepository);
+        exerciseViewModel = new ViewModelProvider(requireActivity(), exerciseViewModelFactory).get(
+                ExerciseViewModel.class);
+
     }
 
 
@@ -77,12 +84,6 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        IExerciseRepository exercisesRepository = ServiceLocator.getInstance()
-                .getExercisesRepository();
-        ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
-        ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(
-                ExerciseViewModel.class);
-
         setListeners();
         observeViewModel();
         initializeCarousel();
@@ -93,7 +94,7 @@ public class HomepageFragment extends Fragment {
         workoutExerciseViewModel.getExercisesCompleted(user.getUid())
                 .observe(getViewLifecycleOwner(), result -> {
                     exerciseCompletedList.clear();
-                    if (result != null) {
+                    if (result != null && !result.isEmpty()) {
                         exerciseCompletedList = result;
 
                         activityData = countExercisesPerDate(exerciseCompletedList);
@@ -106,24 +107,25 @@ public class HomepageFragment extends Fragment {
 
                         String finalDate = "";
 
-                        if (!(dayIndex < 0)) finalDate = exerciseCompletedList.get(dayIndex).getDate();
+                        if (!(dayIndex < 0))
+                            finalDate = exerciseCompletedList.get(dayIndex).getDate();
 
                         binding.dayName.setText(dayNameTemp);
 
                         binding.dayDate.setText(finalDate);
-
-
-                        /*exerciseViewModel.getExerciseById(result.get(0).getExternalExerciseId()).observe(getViewLifecycleOwner(), exercise -> {
-                            if (exercise != null) Log.d(TAG, "activityData: " + exercise.getMuscle());
-                                });*/
-
-
+                            exerciseViewModel.getExerciseById(result.get(0)
+                                    .getExternalExerciseId());
 
                     }
                 });
+
+        exerciseViewModel.getExerciseLiveData().observe(getViewLifecycleOwner(), exercise -> {
+            if (exercise != null) Log.d(TAG, "activityData: " + exercise.getMuscle());
+        });
     }
 
-    private int[] countExercisesPerDate(List<ExerciseCompleted> exerciseCompletedList){
+
+    private int[] countExercisesPerDate(List<ExerciseCompleted> exerciseCompletedList) {
         // Create a map to count occurrences of each date
         Map<LocalDate, Integer> dateCountMap = new HashMap<>();
         DateTimeFormatter formatter = null;
@@ -173,7 +175,8 @@ public class HomepageFragment extends Fragment {
         // Create a Calendar instance for calculating the first day of the month
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 0 for Sunday, 1 for Monday, etc.
+        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 0 for Sunday, 1 for
+        // Monday, etc.
 
         // Add empty views for days before the first day of the month
         for (int i = 0; i < firstDayOfWeek; i++) {
@@ -185,7 +188,8 @@ public class HomepageFragment extends Fragment {
         // Populate the grid from the start date to the end date
         LocalDate currentDate = startDate;
         for (int i = 34; i >= 0; i--) {
-            int activityLevel = (i < activityData.length) ? activityData[i] : 0; // Use default value if index is out of bounds
+            int activityLevel = (i < activityData.length) ? activityData[i] : 0; // Use default
+            // value if index is out of bounds
 
             TextView dayView = new TextView(requireContext());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
