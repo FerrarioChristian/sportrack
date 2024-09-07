@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,8 +19,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -32,12 +37,25 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.CarouselRecyclerViewAdapter;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
+import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.databinding.FragmentHomepageBinding;
+import it.unimib.icasiduso.sportrack.databinding.FragmentTimerBinding;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
+import it.unimib.icasiduso.sportrack.ui.schedule.TimerFragment;
+import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
+import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.WorkoutExerciseViewModel;
 
 public class HomepageFragment extends Fragment {
     private static final String TAG = HomepageFragment.class.getSimpleName();
 
     private FragmentHomepageBinding binding;
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private WorkoutExerciseViewModel workoutExerciseViewModel;
+    private ExerciseViewModel exerciseViewModel;
+    List<ExerciseCompleted> exerciseCompletedList = new ArrayList<>();
+    int[] activityData;
 
     public HomepageFragment() {
     }
@@ -45,6 +63,10 @@ public class HomepageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
+        WorkoutExerciseViewModel.Factory factory = new WorkoutExerciseViewModel.Factory(workoutExercisesRepository);
+        workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(WorkoutExerciseViewModel.class);
     }
 
 
@@ -58,10 +80,34 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        GridLayout heatmapGrid = view.findViewById(R.id.heatmapGrid);
+        IExerciseRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
+        ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
+        ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
+
+        setListeners();
+
+        observeViewModel();
+
+        initializeHeatmap();
+
+        initializeCarousel();
+    }
+
+    private void observeViewModel() {
+        workoutExerciseViewModel.getExercisesCompleted(user.getUid()).observe(getViewLifecycleOwner(), result -> {
+            Log.d(TAG, "observeViewModel: " + result.size());
+        });
+    }
+
+    private void setListeners() {
+
+    }
+
+    private void initializeHeatmap(){
+        GridLayout heatmapGrid = requireView().findViewById(R.id.heatmapGrid);
 
         // Example activity data for each day of the month (assume 30 days)
-        int[] activityData = {1, 5, 3, 7, 0, 2, 5, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3};
+        activityData = new int[]{1, 5, 3, 7, 0, 2, 5, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3};
 
         // Calendar to determine the first day of the month
         Calendar calendar = Calendar.getInstance();
@@ -110,8 +156,6 @@ public class HomepageFragment extends Fragment {
 
             heatmapGrid.addView(dayView, params);
         }
-
-        initializeCarousel();
     }
 
     private void initializeCarousel() {
