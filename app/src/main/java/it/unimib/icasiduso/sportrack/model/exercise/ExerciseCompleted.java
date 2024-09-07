@@ -6,8 +6,6 @@ import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
 @Entity
 public class ExerciseCompleted implements Parcelable {
 
@@ -79,8 +77,5 @@ public class ExerciseCompleted implements Parcelable {
     public void setDate(String date) {
         this.date = date;
     }
-}
-
-
 }
 
