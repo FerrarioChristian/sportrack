@@ -58,11 +58,13 @@ public class ExerciseViewModel extends ViewModel {
 
     public MutableLiveData<Exercise> getExerciseById(long id) {
         setIsLoading(true);
+        final MutableLiveData<Exercise> result = new MutableLiveData<>();
 
         exercisesRepository.getExerciseById(id, new IExerciseRepository.ExercisesCallback() {
             @Override
             public void onSuccess(Exercise exercise) {
                 setIsLoading(false);
+                result.postValue(exercise);
                 exerciseLiveData.postValue(exercise);
             }
 
@@ -76,7 +78,7 @@ public class ExerciseViewModel extends ViewModel {
                 setIsLoading(false);
             }
         });
-        return exerciseLiveData;
+        return result;
     }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {
