@@ -28,7 +28,9 @@ import com.yashovardhan99.timeit.Timer;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
@@ -36,6 +38,7 @@ import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepositor
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.databinding.FragmentTimerBinding;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
@@ -217,6 +220,9 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                 seriesTextView.setText("Serie rimanenti: " + (remainingSeries - 1));
             } else {
                 deleteChildren();
+                //creo oggetto ExerciseCompleted
+                ExerciseCompleted e = createObject();
+                //DATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASE
             }
             ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
             statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
@@ -235,6 +241,16 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                 }
             });
         }
+    }
+
+    private ExerciseCompleted createObject(){
+        String userId = workoutExercises.get(0).getUserId();
+        long workoutExerciseId = workoutExercises.get(0).getWorkoutExerciseId();
+        long externalExerciseId = TimerExercises.get(0).getExerciseId();
+        Date date = new Date();
+        ExerciseCompleted newSave = new ExerciseCompleted(userId, externalExerciseId, workoutExerciseId, date);
+
+        return newSave;
     }
 
     private View returnFirstChildren(){
