@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yashovardhan99.timeit.Stopwatch;
 import com.yashovardhan99.timeit.Timer;
@@ -136,17 +138,15 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                                 }
                             });
 
+                            returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
+
                         });
                     }
                 }
             }
         });
-
-
-
         // Initialize and start the total stopwatch
         initializeStopwatch(view);
-
 
     }
 
@@ -163,13 +163,6 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             }
         });
     }
-
-    /*
-    //SUS
-    exerciseViewModel.getExerciseById(result.get(x).getExternalExerciseId()).observe(getViewLifecycleOwner(), exercise -> {
-        TimerExercises.add(exercise);
-        Log.d(TAG, "Exercise: " + exercise.getName());
-    });*/
 
     public interface OnExercisesFetchedCallback {
         void onExercisesFetched(List<WorkoutExercise> exercises);
@@ -225,6 +218,8 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             } else {
                 deleteChildren();
             }
+            ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
+            statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
 
             pause_watch.setOnTickListener(new Timer.OnTickListener() {
                 @Override
@@ -236,18 +231,17 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                 public void onComplete(Timer timer) {
                     binding.nextButton.setClickable(true);
                     pause_timer.setVisibility(View.INVISIBLE);
+                    statIcon.setImageResource(R.drawable.baseline_directions_run_24);
                 }
             });
         }
-
-
-
-
-
-
-
-
     }
+
+    private View returnFirstChildren(){
+        LinearLayout parent = requireView().findViewById(R.id.dynamic_list);
+        return parent.getChildAt(0);
+    }
+
     private int childrenLeft(){
         LinearLayout parent = requireView().findViewById(R.id.dynamic_list);
         return parent.getChildCount();
@@ -262,7 +256,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             //ROOM
             Toast.makeText(requireContext(), "Workout finished!", Toast.LENGTH_SHORT).show();
             requireActivity().onBackPressed();
-        }
+        } else returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
     }
 
     private void initializeStopwatch(View rootView) {
