@@ -91,4 +91,7 @@ dependencies {
     implementation("it.xabaras.android:recyclerview-swipedecorator:1.4")
 
     implementation(files("/libs/timeit-release.aar"))
+
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

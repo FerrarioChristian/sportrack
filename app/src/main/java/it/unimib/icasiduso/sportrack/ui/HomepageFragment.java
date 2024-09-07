@@ -4,18 +4,21 @@ import static java.lang.Integer.parseInt;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
@@ -24,9 +27,11 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.adapters.CarouselRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.databinding.FragmentHomepageBinding;
 
 public class HomepageFragment extends Fragment {
@@ -53,14 +58,30 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        GridLayout heatmapGrid = binding.heatmapGrid;
+        GridLayout heatmapGrid = view.findViewById(R.id.heatmapGrid);
 
-        // Example data representing activity levels
-        int[] activityData = {1, 5, 3, 7, 0, 2, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3, 1, 5, 3, 7, 0, 2, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3, 1, 5, 3, 7, 0, 2, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3, 1, 5, 3, 7, 0, 2, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3};
+        // Example activity data for each day of the month (assume 30 days)
+        int[] activityData = {1, 5, 3, 7, 0, 2, 5, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3};
 
-        for (int activityLevel : activityData) {
+        // Calendar to determine the first day of the month
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 0 for Sunday, 1 for Monday, etc.
 
-            View view2 = new View(getContext());
+        // Add empty views for days before the first day of the month
+        for (int i = 0; i < firstDayOfWeek; i++) {
+            TextView emptyView = new TextView(requireContext());
+            emptyView.setLayoutParams(new ViewGroup.LayoutParams(50, 50));
+            heatmapGrid.addView(emptyView);
+        }
+
+        // Add the days of the month
+        for (int i = 0; i < activityData.length; i++) {
+            int activityLevel = activityData[i];
+
+            TextView dayView = new TextView(requireContext());
+            dayView.setText(String.valueOf(i + 1)); // Set the day number
+            dayView.setGravity(Gravity.CENTER);
 
             int color;
             switch (activityLevel) {
@@ -81,15 +102,40 @@ public class HomepageFragment extends Fragment {
                     break;
             }
 
-            view2.setBackgroundColor(color);
-
+            dayView.setBackgroundColor(color);
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = 50;
-            params.height = 50;
-            params.setMargins(4, 4, 4, 4);
+            params.width = 110;
+            params.height = 110;
+            params.setMargins(8, 8, 8, 8);
 
-            heatmapGrid.addView(view2, params);
+            heatmapGrid.addView(dayView, params);
         }
 
+        initializeCarousel();
+    }
+
+    private void initializeCarousel() {
+        // Inflate the layout for this fragment
+        RecyclerView recyclerView = requireView().findViewById(R.id.recycler);
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        //Add multiple images to arraylist.
+        arrayList.add("https://images.unsplash.com/photo-1692528131755-d4e366b2adf0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzNXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60");
+        arrayList.add("https://images.unsplash.com/photo-1692862582645-3b6fd47b7513?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0MXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60");
+        arrayList.add("https://images.unsplash.com/photo-1692584927805-d4096552a5ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60");
+        arrayList.add("https://images.unsplash.com/photo-1692854236272-cc49076a2629?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1MXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60");
+        arrayList.add("https://images.unsplash.com/photo-1681207751526-a091f2c6a538?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyODF8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60");
+        arrayList.add("https://images.unsplash.com/photo-1692610365998-c628604f5d9f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyODZ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60");
+
+
+        CarouselRecyclerViewAdapter adapter = new CarouselRecyclerViewAdapter(getContext(), arrayList);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new CarouselRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(ImageView imageView, String path) {
+                //Do something like opening the image in new activity or showing it in full screen or something else.
+            }
+        });
     }
 }
