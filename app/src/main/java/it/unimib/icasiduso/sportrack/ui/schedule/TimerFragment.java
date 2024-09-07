@@ -189,9 +189,6 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         nextButton.setOnClickListener(v -> {
             nextExercise(binding.getRoot());
         });
-        exitButton.setOnClickListener(v -> {
-            requireActivity().onBackPressed();
-        });
         binding.exitButton.setOnClickListener(v -> {
             TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action = TimerFragmentDirections.actionTimerFragmentToListWorkoutExercisesFragment(scheduleId);
             Navigation.findNavController(requireView()).navigate(action);
@@ -211,17 +208,18 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             TextView seriesTextView = firstChild.findViewById(R.id.exerciseSeries);
             String seriesText = seriesTextView.getText().toString();
             String[] parts = seriesText.split(": ");
+            ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
             int remainingSeries = Integer.parseInt(parts[1]);
             if (remainingSeries > 1) {
                 seriesTextView.setText("Serie rimanenti: " + (remainingSeries - 1));
+                statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
             } else {
+                statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
                 deleteChildren();
                 //creo oggetto ExerciseCompleted
                 ExerciseCompleted e = saveObject();
                 //DATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASE
             }
-            ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
-            statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
 
             pause_watch.setOnTickListener(new Timer.OnTickListener() {
                 @Override
@@ -246,7 +244,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = dateFormat.format(date);
-        ExerciseCompleted newSave = new ExerciseCompleted(userId, externalExerciseId, workoutExerciseId, formattedDate);
+        ExerciseCompleted newSave = new ExerciseCompleted(userId, workoutExerciseId, externalExerciseId, formattedDate);
 
         workoutExerciseViewModel.saveExerciseCompleted(newSave);
         exerciseNumber++;
