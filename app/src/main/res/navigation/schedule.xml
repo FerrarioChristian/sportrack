@@ -50,6 +50,9 @@
         android:name="it.unimib.icasiduso.sportrack.ui.schedule.TimerFragment"
         tools:layout="@layout/fragment_timer"
         android:label="TimerFragment">
+        <action
+            android:id="@+id/action_timerFragment_to_listWorkoutExercisesFragment"
+            app:destination="@id/listWorkoutExercisesFragment" />
     </fragment>
 
 </navigation>

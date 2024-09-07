@@ -3,7 +3,9 @@ package it.unimib.icasiduso.sportrack.ui;
 import static it.unimib.icasiduso.sportrack.utils.Constants.CAROUSEL_IMAGES;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +21,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import it.unimib.icasiduso.sportrack.adapters.CarouselRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
@@ -77,7 +85,6 @@ public class HomepageFragment extends Fragment {
 
         setListeners();
         observeViewModel();
-        initializeHeatmap();
         initializeCarousel();
     }
 
@@ -88,9 +95,54 @@ public class HomepageFragment extends Fragment {
                     exerciseCompletedList.clear();
                     if (result != null) {
                         exerciseCompletedList = result;
+
+                        activityData = countExercisesPerDate(exerciseCompletedList);
+
+                        initializeHeatmap();
+
+                        int dayIndex = findDayWithMostExercises();
+
+                        String dayName = getDayNameFromIndex(dayIndex);
+
+                        String finalDate = "";
+
+                        if (!(dayIndex < 0)) finalDate = exerciseCompletedList.get(dayIndex).getDate();
+
+                        //makes app crash on second reload (Outofbound)
+                        binding.dayValue.setText(dayName + " " + finalDate);
+
                     }
                 });
     }
+
+    private int[] countExercisesPerDate(List<ExerciseCompleted> exerciseCompletedList){
+        // Create a map to count occurrences of each date
+        Map<LocalDate, Integer> dateCountMap = new HashMap<>();
+        DateTimeFormatter formatter = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        }
+
+        for (ExerciseCompleted exercise : exerciseCompletedList) {
+            LocalDate date = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                date = LocalDate.parse(exercise.getDate(), formatter);
+            }
+            dateCountMap.put(date, dateCountMap.getOrDefault(date, 0) + 1);
+        }
+
+        // Convert the map to an array of counts
+        int numberOfDays = dateCountMap.size();
+        int[] countsArray = new int[numberOfDays];
+        Set<Map.Entry<LocalDate, Integer>> entries = dateCountMap.entrySet();
+        int index = 0;
+
+        for (Map.Entry<LocalDate, Integer> entry : entries) {
+            countsArray[index++] = entry.getValue();
+        }
+        return countsArray;
+    }
+
 
     private void setListeners() {
 
@@ -98,29 +150,39 @@ public class HomepageFragment extends Fragment {
 
     private void initializeHeatmap() {
 
-        // Example activity data for each day of the month (assume 30 days)
-        activityData = new int[]{1, 5, 3, 7, 0, 2, 5, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2
-                , 4, 6, 0, 8, 1, 3, 4, 9, 3};
+        binding.heatmapGrid.removeAllViews();
 
-        // Calendar to determine the first day of the month
+        // Initialize the end date as today
+        LocalDate endDate = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            endDate = LocalDate.now();
+        }
+        LocalDate startDate = null; // 31 days in total including today
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            startDate = endDate.minusDays(30);
+        }
+
+        // Create a Calendar instance for calculating the first day of the month
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 0 for Sunday, 1 for
-        // Monday, etc.
+        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 0 for Sunday, 1 for Monday, etc.
 
         // Add empty views for days before the first day of the month
         for (int i = 0; i < firstDayOfWeek; i++) {
             TextView emptyView = new TextView(requireContext());
-            emptyView.setLayoutParams(new ViewGroup.LayoutParams(50, 50));
+            emptyView.setLayoutParams(new ViewGroup.LayoutParams(110, 110));
             binding.heatmapGrid.addView(emptyView);
         }
 
-        // Add the days of the month
-        for (int i = 0; i < activityData.length; i++) {
-            int activityLevel = activityData[i];
+        // Populate the grid from the start date to the end date
+        LocalDate currentDate = startDate;
+        for (int i = 30; i >= 0; i--) {
+            int activityLevel = (i < activityData.length) ? activityData[i] : 0; // Use default value if index is out of bounds
 
             TextView dayView = new TextView(requireContext());
-            dayView.setText(String.valueOf(i + 1)); // Set the day number
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                dayView.setText(String.valueOf(currentDate.getDayOfMonth())); // Set the day number
+            }
             dayView.setGravity(Gravity.CENTER);
 
             int color;
@@ -143,14 +205,38 @@ public class HomepageFragment extends Fragment {
             }
 
             dayView.setBackgroundColor(color);
+
+            dayView.setTextColor(Color.BLACK);
+
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = 110;
             params.height = 110;
-            params.setMargins(8, 8, 8, 8);
+            params.setMargins(8, 8, 8, 8); // Adjust margins as needed
 
+            dayView.setLayoutParams(params);
             binding.heatmapGrid.addView(dayView, params);
+
+            // Move to the previous day
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                currentDate = currentDate.plusDays(1);
+            }
         }
     }
+
+    private int findDayWithMostExercises() {
+        int maxCount = 0;
+        int dayIndex = -1;
+
+        for (int i = 0; i < activityData.length; i++) {
+            if (activityData[i] > maxCount) {
+                maxCount = activityData[i];
+                dayIndex = i;
+            }
+        }
+
+        return dayIndex; // Index of the day with the most exercises
+    }
+
 
     private void initializeCarousel() {
         ArrayList<String> carouselImages = new ArrayList<>(Arrays.asList(CAROUSEL_IMAGES));
@@ -162,5 +248,31 @@ public class HomepageFragment extends Fragment {
         adapter.setOnItemClickListener((imageView, path) -> {
             //TODO probably remove
         });
+    }
+
+    public String getDayNameFromIndex(int dayIndex) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, dayIndex + 1); // dayIndex is zero-based, so add 1
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        // Convert the day of the week to a string
+        switch (dayOfWeek) {
+            case Calendar.SUNDAY:
+                return "Sunday";
+            case Calendar.MONDAY:
+                return "Monday";
+            case Calendar.TUESDAY:
+                return "Tuesday";
+            case Calendar.WEDNESDAY:
+                return "Wednesday";
+            case Calendar.THURSDAY:
+                return "Thursday";
+            case Calendar.FRIDAY:
+                return "Friday";
+            case Calendar.SATURDAY:
+                return "Saturday";
+            default:
+                return "Unknown";
+        }
     }
 }

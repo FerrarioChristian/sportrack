@@ -7,26 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yashovardhan99.timeit.Stopwatch;
 import com.yashovardhan99.timeit.Timer;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,11 +47,11 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     List<WorkoutExercise> workoutExercises;
     int counter = 0;
     int exerciseNumber = 0;
+    long scheduleId;
 
     private static final String TAG = TimerFragment.class.getSimpleName();
 
     private WorkoutExerciseViewModel workoutExerciseViewModel;
-    private ExerciseViewModel exerciseViewModel;
     FragmentTimerBinding binding;
 
     public TimerFragment() {}
@@ -68,8 +63,6 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance().getWorkoutExercisesRepository();
         WorkoutExerciseViewModel.Factory factory = new WorkoutExerciseViewModel.Factory(workoutExercisesRepository);
         workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(WorkoutExerciseViewModel.class);
-        exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
-
     }
 
     @Nullable
@@ -149,11 +142,10 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         });
         // Initialize and start the total stopwatch
         initializeStopwatch(view);
-
     }
 
     private void observeViewModel(OnExercisesFetchedCallback callback) {
-        long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
         workoutExerciseViewModel.getWorkoutExercises(scheduleId).observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
                 workoutExercises = result;
@@ -171,6 +163,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     }
 
     private void setListeners() {
+        scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
         MaterialButton playButton = binding.playButton;
         MaterialButton skipButton = binding.skipButton;
         MaterialButton nextButton = binding.nextButton;
@@ -199,6 +192,10 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         exitButton.setOnClickListener(v -> {
             requireActivity().onBackPressed();
         });
+        binding.exitButton.setOnClickListener(v -> {
+            TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action = TimerFragmentDirections.actionTimerFragmentToListWorkoutExercisesFragment(scheduleId);
+            Navigation.findNavController(requireView()).navigate(action);
+        });
     }
 
     private void nextExercise(View rootView){
@@ -220,7 +217,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             } else {
                 deleteChildren();
                 //creo oggetto ExerciseCompleted
-                ExerciseCompleted e = createObject();
+                ExerciseCompleted e = saveObject();
                 //DATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASE
             }
             ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
@@ -242,7 +239,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         }
     }
 
-    private ExerciseCompleted createObject(){
+    private ExerciseCompleted saveObject(){
         String userId = workoutExercises.get(exerciseNumber).getUserId();
         long workoutExerciseId = workoutExercises.get(exerciseNumber).getWorkoutExerciseId();
         long externalExerciseId = TimerExercises.get(exerciseNumber).getExerciseId();
@@ -274,7 +271,8 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         if (childrenLeft() == 0) {
             //ROOM
             Toast.makeText(requireContext(), "Workout finished!", Toast.LENGTH_SHORT).show();
-            requireActivity().onBackPressed();
+            TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action = TimerFragmentDirections.actionTimerFragmentToListWorkoutExercisesFragment(scheduleId);
+            Navigation.findNavController(requireView()).navigate(action);
         } else returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
     }
 
