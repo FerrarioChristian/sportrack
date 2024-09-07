@@ -103,7 +103,6 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                         int finalX1 = x;
                         exerciseViewModel.getExerciseById(workoutExercises.get(x).getExternalExerciseId()).observe(getViewLifecycleOwner(), exercise -> {
                             TimerExercises.add(exercise);
-                            exerciseNumber++;
                             // Inflate the child view
                             LayoutInflater inflater = requireActivity().getLayoutInflater();
                             LinearLayout parentView = requireView().findViewById(R.id.dynamic_list);
@@ -244,15 +243,16 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     }
 
     private ExerciseCompleted createObject(){
-        String userId = workoutExercises.get(0).getUserId();
-        long workoutExerciseId = workoutExercises.get(0).getWorkoutExerciseId();
-        long externalExerciseId = TimerExercises.get(0).getExerciseId();
+        String userId = workoutExercises.get(exerciseNumber).getUserId();
+        long workoutExerciseId = workoutExercises.get(exerciseNumber).getWorkoutExerciseId();
+        long externalExerciseId = TimerExercises.get(exerciseNumber).getExerciseId();
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = dateFormat.format(date);
         ExerciseCompleted newSave = new ExerciseCompleted(userId, externalExerciseId, workoutExerciseId, formattedDate);
 
         workoutExerciseViewModel.saveExerciseCompleted(newSave);
+        exerciseNumber++;
         return newSave;
     }
 

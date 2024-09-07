@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,11 +34,6 @@ public class HomepageFragment extends Fragment {
 
     private FragmentHomepageBinding binding;
 
-    private List<DataPoint> weightDataList;
-    private int i;
-    private double sumPeso;
-    private LineGraphSeries<DataPoint> mediaSeries;
-
     public HomepageFragment() {
     }
 
@@ -57,133 +53,43 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EditText inputPeso = view.findViewById(R.id.Weight);
-        TextView tvMediaPeso = view.findViewById(R.id.tvMediaPeso);
-        TextView tvFeedback = view.findViewById(R.id.tvFeedback);
+        GridLayout heatmapGrid = binding.heatmapGrid;
 
-        weightDataList = new ArrayList<>();
+        // Example data representing activity levels
+        int[] activityData = {1, 5, 3, 7, 0, 2, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3, 1, 5, 3, 7, 0, 2, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3, 1, 5, 3, 7, 0, 2, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3, 1, 5, 3, 7, 0, 2, 4, 8, 1, 3, 4, 6, 1, 9, 3, 0, 2, 5, 7, 3, 2, 4, 6, 0, 8, 1, 3, 4, 9, 3};
 
-        // Inizializza la lista dei dati
-        weightDataList = new ArrayList<>();
+        for (int activityLevel : activityData) {
 
-        // Inizializza la serie della media
-        mediaSeries = new LineGraphSeries<>();
-        mediaSeries.setColor(Color.RED);
-        mediaSeries.setTitle("Media"); // Imposta il titolo per la legenda
+            View view2 = new View(getContext());
 
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                i++;
-
-                // Aggiorna la lista dei dati con il nuovo punto
-                int nuovoPeso = parseInt(inputPeso.getText().toString());
-                weightDataList.add(new DataPoint(i, nuovoPeso));
-
-                // Aggiorna la somma dei pesi
-                sumPeso += nuovoPeso;
-
-
-                //creazione del GraphView
-                GraphView graph = binding.graph;
-                // Imposta i limiti della vista del grafico
-                graph.getViewport().setXAxisBoundsManual(false);
-                graph.setScaleX(1);
-                graph.getViewport().setMinY(0);
-                graph.getViewport().setMaxY(200);
-                graph.getViewport().setMinX(0);
-                graph.getViewport().setMaxX(7); // i è il contatore dei dati
-
-
-                // Abilita lo scorrimento orizzontale
-                graph.getViewport().setScrollable(true);
-                graph.getViewport().setScrollableY(false); // Se vuoi anche lo scorrimento verticale
-
-
-                // Crea una serie di dati a barre per i pesi (giallo con bordo nero)
-                BarGraphSeries<DataPoint> pesiSeries = new BarGraphSeries<>(weightDataList.toArray(
-                        new DataPoint[0]));
-                pesiSeries.setColor(Color.TRANSPARENT); // Imposta il colore interno
-                pesiSeries.setSpacing(50); // Imposta la larghezza dello spazio tra le barre
-                pesiSeries.setDrawValuesOnTop(true);
-                pesiSeries.setValuesOnTopColor(Color.BLACK); // Imposta il colore del testo sopra le barre
-                pesiSeries.setValuesOnTopSize(24); // Imposta la dimensione del testo sopra le barre
-
-
-                // Aggiorna la serie della media con l'ultimo valore
-                double media = sumPeso / i;
-                mediaSeries.appendData(new DataPoint(i, media), true, i);
-
-                //mostra la media del peso
-                tvMediaPeso.setText("Media Peso: " + String.format("%.2f", media));
-                // Fornisci feedback per ogni dato
-                if (i > 0) {
-                    DataPoint ultimoDato = weightDataList.get(i - 1);
-                    double pesoUltimoDato = ultimoDato.getY();
-
-                    if (pesoUltimoDato > media) {
-                        tvFeedback.setText("Coraggio, impegnati di più!");
-                    } else {
-                        tvFeedback.setText("Continua così!");
-                    }
-                } else {
-                    // Gestisci il caso in cui non ci sono dati inseriti
-                    tvFeedback.setText("");
-                }
-                // Cancella tutte le serie precedenti e aggiunge le nuove serie al grafico
-                graph.removeAllSeries();
-                graph.addSeries(pesiSeries);
-                graph.addSeries(mediaSeries);
-
-                // Aggiunge la legenda
-                graph.getLegendRenderer().setVisible(true);
-                graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
-
-                // Imposta lo sfondo arancio
-                graph.setBackgroundColor(Color.parseColor("#60FFA500")); // Arancio
-
-                // Aggiunge il cliccato listener per visualizzare i valori
-                graph.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        float touchX = motionEvent.getX();
-                        float touchY = motionEvent.getY();
-
-                        // Trasforma le coordinate dello schermo in coordinate del grafico
-                        double minX = graph.getViewport().getMinX(false);
-                        double maxX = graph.getViewport().getMaxX(false);
-                        double x = minX + (touchX / view.getWidth()) * (maxX - minX);
-
-                        double minY = graph.getViewport().getMinY(false);
-                        double maxY = graph.getViewport().getMaxY(false);
-                        double y = minY + (1 - touchY / view.getHeight()) * (maxY - minY);
-
-                        // Ora x e y contengono le coordinate del clic
-                        handleTouch(x, y);
-                        return false;
-                    }
-                });
+            int color;
+            switch (activityLevel) {
+                case 0:
+                    color = Color.parseColor("#ebedf0");
+                    break;
+                case 1:
+                    color = Color.parseColor("#c6e48b");
+                    break;
+                case 2:
+                    color = Color.parseColor("#7bc96f");
+                    break;
+                case 3:
+                    color = Color.parseColor("#239a3b");
+                    break;
+                default:
+                    color = Color.parseColor("#196127");
+                    break;
             }
-        });
 
-    }
+            view2.setBackgroundColor(color);
 
-    private void handleTouch(double x, double y) {
-        // Puoi utilizzare x e y per determinare il punto cliccato e visualizzare i dati corrispondenti
-        // Ad esempio, puoi trovare la barra più vicina a x e visualizzare il suo valore
-        // E puoi anche visualizzare il valore della media in quel punto
-        // Esempio:
-        double barWidth = 1.0; // Larghezza della barra
-        for (DataPoint dataPoint : weightDataList) {
-            double barCenter = dataPoint.getX();
-            if (Math.abs(x - barCenter) <= barWidth / 2) {
-                // Questo è il punto cliccato, mostra i valori
-                double pesoBarra = dataPoint.getY();
-                double media = sumPeso / i;
-                String message = "Valore della Barra: " + pesoBarra + "\nUltima Media: " + media;
-                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-                break;
-            }
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = 50;
+            params.height = 50;
+            params.setMargins(4, 4, 4, 4);
+
+            heatmapGrid.addView(view2, params);
         }
+
     }
 }
