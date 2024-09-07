@@ -15,6 +15,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.WorkoutExerciseRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
@@ -76,6 +78,8 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListWorkoutExercisesBinding.inflate(inflater, container, false);
+        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
         return binding.getRoot();
     }
 
@@ -120,6 +124,7 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
                 .observe(getViewLifecycleOwner(), result -> {
                     workoutExerciseRecyclerViewAdapter.setWorkoutExercises(result);
                     binding.noExercisesText.setVisibility(result.isEmpty() ? View.VISIBLE : View.GONE);
+                    binding.startScheduleButton.setVisibility(result.isEmpty() ? View.GONE : View.VISIBLE);
                 });
 
         workoutExerciseViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), result -> {

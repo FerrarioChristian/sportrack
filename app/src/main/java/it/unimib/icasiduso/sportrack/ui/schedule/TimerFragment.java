@@ -8,17 +8,23 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yashovardhan99.timeit.Stopwatch;
 import com.yashovardhan99.timeit.Timer;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +46,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     List<Exercise> TimerExercises = new ArrayList<>();
     List<WorkoutExercise> workoutExercises;
     int counter = 0;
+    int exerciseNumber = 0;
 
     private static final String TAG = TimerFragment.class.getSimpleName();
 
@@ -65,6 +72,9 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        binding = FragmentTimerBinding.inflate(inflater, container, false);
 
+        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setVisibility(View.GONE);
+
         return binding.getRoot();
     }
 
@@ -88,7 +98,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                         int finalX1 = x;
                         exerciseViewModel.getExerciseById(workoutExercises.get(x).getExternalExerciseId()).observe(getViewLifecycleOwner(), exercise -> {
                             TimerExercises.add(exercise);
-
+                            exerciseNumber++;
                             // Inflate the child view
                             LayoutInflater inflater = requireActivity().getLayoutInflater();
                             LinearLayout parentView = requireView().findViewById(R.id.dynamic_list);
@@ -96,19 +106,36 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
 
                             TextView seriesTextView = inflatedView.findViewById(R.id.exerciseSeries);
                             int series = workoutExercises.get(finalX1).getSeries();
-                            String seriesString = "Serie: " + String.valueOf(series);
+                            String seriesString = "Serie rimanenti: " + String.valueOf(series);
                             seriesTextView.setText(seriesString);
 
                             TextView repTextView = inflatedView.findViewById(R.id.exerciseRepetitions);
                             int reps = workoutExercises.get(finalX1).getRepetitions();
-                            String repsString = "Ripetizioni: " + String.valueOf(reps);
+                            String repsString = "da "+ String.valueOf(reps)+ " Ripetizioni";
                             repTextView.setText(repsString);
 
                             // Find the TextView in the inflated layout
                             TextView nameTextView = inflatedView.findViewById(R.id.exerciseName);
                             nameTextView.setText(exercise.getName());
 
+                            TextView additionalInfoTextView = inflatedView.findViewById(R.id.additionalInfo);
+                            String instrString = "\n\nFurther details: " + exercise.getInstructions();
+                            additionalInfoTextView.setText(instrString);
+
                             parentView.addView(inflatedView);
+
+                            inflatedView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ConstraintLayout additionalContent = inflatedView.findViewById(R.id.additionalContent);
+                                    if (additionalContent.getVisibility() == View.GONE) {
+                                        additionalContent.setVisibility(View.VISIBLE);
+                                    } else {
+                                        additionalContent.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
+
                         });
                     }
                 }
@@ -151,25 +178,91 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     private void setListeners() {
         MaterialButton playButton = binding.playButton;
         MaterialButton skipButton = binding.skipButton;
-        RecyclerView recyclerView = requireView().findViewById(R.id.recyclerview_workout_exercise_list);
+        MaterialButton nextButton = binding.nextButton;
+        FloatingActionButton exitButton = binding.exitButton;
         playButton.setOnClickListener(v -> {
             if(playButton.getText().equals("Pause")) {
                 if (stopwatch.isStarted()) {
                     stopwatch.pause();
                     playButton.setText("Play");
+                    binding.nextButton.setClickable(false);
                 }
             } else {
                 if (stopwatch.isPaused()) {
                     stopwatch.resume();
                     playButton.setText("Pause");
+                    binding.nextButton.setClickable(true);
                 }
             }
         });
         skipButton.setOnClickListener(v -> {
+            deleteChildren();
+        });
+        nextButton.setOnClickListener(v -> {
+            nextExercise(binding.getRoot());
+        });
+        exitButton.setOnClickListener(v -> {
+            requireActivity().onBackPressed();
+        });
+    }
+
+    private void nextExercise(View rootView){
+        if (childrenLeft() != 0) {
+            TextView pause_timer = binding.pauseTimerText;
+            Timer pause_watch = new Timer(5000);
+            binding.nextButton.setClickable(false);
+            pause_watch.setTextView(rootView.findViewById(R.id.pause_timer_text));
+            pause_timer.setVisibility(View.VISIBLE);
+            pause_watch.start();
             LinearLayout parent = requireView().findViewById(R.id.dynamic_list);
             View firstChild = parent.getChildAt(0);
-            parent.removeView(firstChild);
-        });
+            TextView seriesTextView = firstChild.findViewById(R.id.exerciseSeries);
+            String seriesText = seriesTextView.getText().toString();
+            String[] parts = seriesText.split(": ");
+            int remainingSeries = Integer.parseInt(parts[1]);
+            if (remainingSeries > 1) {
+                seriesTextView.setText("Serie rimanenti: " + (remainingSeries - 1));
+            } else {
+                deleteChildren();
+            }
+
+            pause_watch.setOnTickListener(new Timer.OnTickListener() {
+                @Override
+                public void onTick(Timer timer) {
+                    // Do nothing on each tick
+                }
+
+                @Override
+                public void onComplete(Timer timer) {
+                    binding.nextButton.setClickable(true);
+                    pause_timer.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+    }
+    private int childrenLeft(){
+        LinearLayout parent = requireView().findViewById(R.id.dynamic_list);
+        return parent.getChildCount();
+    }
+
+    private void deleteChildren(){
+        LinearLayout parent = requireView().findViewById(R.id.dynamic_list);
+        View firstChild = parent.getChildAt(0);
+        parent.removeView(firstChild);
+
+        if (childrenLeft() == 0) {
+            //ROOM
+            Toast.makeText(requireContext(), "Workout finished!", Toast.LENGTH_SHORT).show();
+            requireActivity().onBackPressed();
+        }
     }
 
     private void initializeStopwatch(View rootView) {
@@ -178,72 +271,6 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         stopwatch.setClockDelay(10);
         stopwatch.start();
     }
-/*
-    private void initializeRepetitionStopwatch(View rootView) {
-        stopwatchRep = new Stopwatch();
-        stopwatchRep.setTextView(rootView.findViewById(R.id.textTimerRep));
-        stopwatchRep.setClockDelay(10);
-        stopwatchRep.start();
-    }
-
-    private void setupButtonListeners(View rootView) {
-        rootView.findViewById(R.id.btnPlayP).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlayPause(rootView);
-            }
-        });
-
-        rootView.findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextExercise(rootView);
-            }
-        });
-    }
-    }
-
-    private void nextExercise(View rootView) {
-        if (ExNum < totNum) {
-            String n = (String) listReps[ExNum].getText();
-            if (Integer.parseInt(n) > 0) {
-                int n2 = Integer.parseInt(n) - 1;
-                listReps[ExNum].setText(String.valueOf(n2));
-                Timer timer = new Timer(3000); // 3 seconds rest timer
-                next.setClickable(false);
-                timer.setTextView(next);
-                timer.start();
-                next.setBackgroundColor(Color.rgb(255, 0, 0));
-
-                timer.setOnTickListener(new Timer.OnTickListener() {
-                    @Override
-                    public void onTick(Timer timer) {
-                        // Do nothing on each tick
-                    }
-
-                    @Override
-                    public void onComplete(Timer timer) {
-                        next.setClickable(true);
-                        next.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.md_theme_primary));
-                        next.setText("Next");
-                    }
-                });
-            } else {
-                // Highlight completed exercise
-                listTexts[ExNum].setTextColor(Color.rgb(0, 255, 0));
-                listReps[ExNum].setTextColor(Color.rgb(0, 255, 0));
-                long milliseconds = stopwatchRep.getElapsedTime();
-                long minutes = (milliseconds / 1000) / 60;
-                long seconds = (milliseconds / 1000) % 60;
-                listReps[ExNum].setText(minutes + ":" + seconds);
-                ExNum++;
-                stopwatchRep.stop();
-                stopwatchRep.start();
-            }
-        }
-    }
-
-    */
 
     @Override
     public void onDestroyView() {
