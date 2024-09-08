@@ -78,4 +78,12 @@
     <string name="wednesday">Mercoledì</string>
     <string name="thursday">Giovedì</string>
     <string name="saturday">Sabato</string>
+    <string name="pause">Pausa</string>
+    <string name="skipExercise">Salta Esercizio</string>
+    <string name="nextSeries">Prossima Serie</string>
+    <string name="further_details">Dettagli aggiuntivi:</string>
+    <string name="series_left">Serie rimanenti:</string>
+    <string name="of">da</string>
+    <string name="rep_left">Ripetizioni</string>
+    <string name="workout_end">Allenamento finito in</string>
 </resources>

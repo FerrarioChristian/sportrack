@@ -43,10 +43,12 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     private Stopwatch stopwatch;
 
     List<Exercise> TimerExercises = new ArrayList<>();
-    List<WorkoutExercise> workoutExercises;
-    int counter = 0;
+    List<WorkoutExercise> workoutExercises = new ArrayList<>();
+    boolean dataRetrieved = false;
     int exerciseNumber = 0;
     long scheduleId;
+    Timer pause_watch;
+    LinearLayout dynamicListParent;
 
     private static final String TAG = TimerFragment.class.getSimpleName();
 
@@ -79,94 +81,84 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        dynamicListParent = requireView().findViewById(R.id.dynamic_list);
+
+        setListeners();
+        observeViewModel();
+        initializeStopwatch(view);
+    }
+
+    private void observeViewModel() {
+        scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getId();
+
+        workoutExerciseViewModel.getWorkoutExercises(scheduleId).observe(getViewLifecycleOwner(), result -> {
+            if (result != null) {
+                if (!dataRetrieved) {
+                    workoutExercises = result;
+                    dataRetrieved = true;
+                    startCreation(result);
+                }
+            }
+        });
+    }
+
+    private void startCreation(List<WorkoutExercise> exercises) {
+
         IExerciseRepository exercisesRepository = ServiceLocator.getInstance().getExercisesRepository();
         ExerciseViewModel.Factory factory = new ExerciseViewModel.Factory(exercisesRepository);
         ExerciseViewModel exerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(ExerciseViewModel.class);
 
-        setListeners();
+        if (exercises != null && !exercises.isEmpty()) {
+            for (int x = 0; x < workoutExercises.size(); x++) {
+                int finalX = x;
+                exerciseViewModel.getExerciseById(workoutExercises.get(x).getExerciseId()).observe(getViewLifecycleOwner(), exercise -> {
+                    TimerExercises.add(exercise);
+                    createNewChildrens(exercise, finalX);
+                });
+            }
+        }
+    }
 
-        observeViewModel(new OnExercisesFetchedCallback() {
+    //possibile con recyclerview ma sus || ordine non rispecchia pagina precedente
+    private void createNewChildrens(Exercise exercise, int x){
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View inflatedView = inflater.inflate(R.layout.workout_exercise_timer_item, dynamicListParent, false);
+
+        TextView seriesTextView = inflatedView.findViewById(R.id.exerciseSeries);
+        String seriesString = requireContext().getString(R.string.series_left) + " " + workoutExercises.get(x).getSeries();
+        seriesTextView.setText(seriesString);
+
+        TextView repTextView = inflatedView.findViewById(R.id.exerciseRepetitions);
+        String repsString = requireContext().getString(R.string.of) + " "+ workoutExercises.get(x).getRepetitions() + " " + requireContext().getString(R.string.rep_left);
+        repTextView.setText(repsString);
+
+        TextView nameTextView = inflatedView.findViewById(R.id.exerciseName);
+        nameTextView.setText(exercise.getName());
+
+        TextView additionalInfoTextView = inflatedView.findViewById(R.id.additionalInfo);
+        String instrString = "\n\n" + requireContext().getString(R.string.further_details) + "\n" + exercise.getInstructions();
+        additionalInfoTextView.setText(instrString);
+
+        dynamicListParent.addView(inflatedView);
+
+        inflatedView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onExercisesFetched(List<WorkoutExercise> exercises) {
-                // Handle the fetched exercises here
-                if (exercises != null && !exercises.isEmpty()) {
-                    for (int x = 0; x < workoutExercises.size(); x++) {
-                        int finalX = x;
-                        int finalX1 = x;
-                        exerciseViewModel.getExerciseById(workoutExercises.get(x).getExerciseId()).observe(getViewLifecycleOwner(), exercise -> {
-                            TimerExercises.add(exercise);
-                            // Inflate the child view
-                            LayoutInflater inflater = requireActivity().getLayoutInflater();
-                            LinearLayout parentView = requireView().findViewById(R.id.dynamic_list);
-                            View inflatedView = inflater.inflate(R.layout.workout_exercise_timer_item, parentView, false);
-
-                            TextView seriesTextView = inflatedView.findViewById(R.id.exerciseSeries);
-                            int series = workoutExercises.get(finalX1).getSeries();
-                            String seriesString = "Serie rimanenti: " + String.valueOf(series);
-                            seriesTextView.setText(seriesString);
-
-                            TextView repTextView = inflatedView.findViewById(R.id.exerciseRepetitions);
-                            int reps = workoutExercises.get(finalX1).getRepetitions();
-                            String repsString = "da "+ String.valueOf(reps)+ " Ripetizioni";
-                            repTextView.setText(repsString);
-
-                            // Find the TextView in the inflated layout
-                            TextView nameTextView = inflatedView.findViewById(R.id.exerciseName);
-                            nameTextView.setText(exercise.getName());
-
-                            TextView additionalInfoTextView = inflatedView.findViewById(R.id.additionalInfo);
-                            String instrString = "\n\nFurther details: " + exercise.getInstructions();
-                            additionalInfoTextView.setText(instrString);
-
-                            parentView.addView(inflatedView);
-
-                            inflatedView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    ConstraintLayout additionalContent = inflatedView.findViewById(R.id.additionalContent);
-                                    if (additionalContent.getVisibility() == View.GONE) {
-                                        additionalContent.setVisibility(View.VISIBLE);
-                                    } else {
-                                        additionalContent.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
-
-                            returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
-
-                        });
-                    }
+            public void onClick(View v) {
+                ConstraintLayout additionalContent = inflatedView.findViewById(R.id.additionalContent);
+                if (additionalContent.getVisibility() == View.GONE) {
+                    additionalContent.setVisibility(View.VISIBLE);
+                } else {
+                    additionalContent.setVisibility(View.GONE);
                 }
             }
         });
-        // Initialize and start the total stopwatch
-        initializeStopwatch(view);
-    }
-
-    private void observeViewModel(OnExercisesFetchedCallback callback) {
-        scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getId();
-        workoutExerciseViewModel.getWorkoutExercises(scheduleId).observe(getViewLifecycleOwner(), result -> {
-            if (result != null) {
-                workoutExercises = result;
-                counter++;
-                // Notify that the exercises have been fetched
-                if (callback != null && counter == 1) {
-                    callback.onExercisesFetched(result);
-                }
-            }
-        });
-    }
-
-    public interface OnExercisesFetchedCallback {
-        void onExercisesFetched(List<WorkoutExercise> exercises);
+        returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
     }
 
     private void setListeners() {
         scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getId();
         MaterialButton playButton = binding.playButton;
-        MaterialButton skipButton = binding.skipButton;
-        MaterialButton nextButton = binding.nextButton;
-        FloatingActionButton exitButton = binding.exitButton;
+
         playButton.setOnClickListener(v -> {
             if(playButton.getText().equals("Pause")) {
                 if (stopwatch.isStarted()) {
@@ -182,10 +174,10 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                 }
             }
         });
-        skipButton.setOnClickListener(v -> {
+        binding.skipButton.setOnClickListener(v -> {
             deleteChildren();
         });
-        nextButton.setOnClickListener(v -> {
+        binding.nextButton.setOnClickListener(v -> {
             nextExercise(binding.getRoot());
         });
         binding.exitButton.setOnClickListener(v -> {
@@ -196,47 +188,49 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
 
     private void nextExercise(View rootView){
         if (childrenLeft() != 0) {
-            TextView pause_timer = binding.pauseTimerText;
-            Timer pause_watch = new Timer(5000);
             binding.nextButton.setClickable(false);
+
+            TextView pause_timer = binding.pauseTimerText;
+            pause_watch = new Timer(5000);
             pause_watch.setTextView(rootView.findViewById(R.id.pause_timer_text));
             pause_timer.setVisibility(View.VISIBLE);
             pause_watch.start();
-            LinearLayout parent = requireView().findViewById(R.id.dynamic_list);
-            View firstChild = parent.getChildAt(0);
+
+            View firstChild = returnFirstChildren();
             TextView seriesTextView = firstChild.findViewById(R.id.exerciseSeries);
             String seriesText = seriesTextView.getText().toString();
             String[] parts = seriesText.split(": ");
-            ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
             int remainingSeries = Integer.parseInt(parts[1]);
+
+            ImageView statIcon = firstChild.findViewById(R.id.statusIcon);
+
             if (remainingSeries > 1) {
-                seriesTextView.setText("Serie rimanenti: " + (remainingSeries - 1));
+                String seriesString = requireContext().getString(R.string.series_left) + " " + (remainingSeries - 1);
+                seriesTextView.setText(seriesString);
                 statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
             } else {
-                statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
                 deleteChildren();
-                //creo oggetto ExerciseCompleted
-                ExerciseCompleted e = saveObject();
-                //DATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASEDATABASE
+                saveObject();
             }
 
             pause_watch.setOnTickListener(new Timer.OnTickListener() {
                 @Override
                 public void onTick(Timer timer) {
-                    // Do nothing on each tick
                 }
 
                 @Override
                 public void onComplete(Timer timer) {
                     binding.nextButton.setClickable(true);
                     pause_timer.setVisibility(View.INVISIBLE);
+                    ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
                     statIcon.setImageResource(R.drawable.baseline_directions_run_24);
                 }
             });
         }
     }
 
-    private ExerciseCompleted saveObject(){
+    //Salva l'esercizio eseguito nella lista di esercizi eseguiti
+    private void saveObject(){
         String userId = workoutExercises.get(exerciseNumber).getUserId();
         long workoutExerciseId = workoutExercises.get(exerciseNumber).getId();
         long externalExerciseId = TimerExercises.get(exerciseNumber).getId();
@@ -247,32 +241,46 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
 
         workoutExerciseViewModel.saveExerciseCompleted(newSave);
         exerciseNumber++;
-        return newSave;
     }
 
+    //Ritorna la view del primo elemento nella lista dinamica
     private View returnFirstChildren(){
-        LinearLayout parent = requireView().findViewById(R.id.dynamic_list);
-        return parent.getChildAt(0);
+        return dynamicListParent.getChildAt(0);
     }
 
+    //Ritorna il numero di figli nella lista dinamica
     private int childrenLeft(){
-        LinearLayout parent = requireView().findViewById(R.id.dynamic_list);
-        return parent.getChildCount();
+        return dynamicListParent.getChildCount();
     }
 
+    //Elimina il primo figlio della lista
     private void deleteChildren(){
-        LinearLayout parent = requireView().findViewById(R.id.dynamic_list);
-        View firstChild = parent.getChildAt(0);
-        parent.removeView(firstChild);
+        View firstChild = dynamicListParent.getChildAt(0);
+        dynamicListParent.removeView(firstChild);
 
+        //In caso ci siano 0 figli rimasti il timer termina e viene mostrato il toast
         if (childrenLeft() == 0) {
-            //ROOM
-            Toast.makeText(requireContext(), "Workout finished!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(),requireContext().getString(R.string.workout_end) + " " + convertMsToTime(stopwatch.getElapsedTime()) + "!", Toast.LENGTH_SHORT).show();
+            pause_watch.pause();
             TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action = TimerFragmentDirections.actionTimerFragmentToListWorkoutExercisesFragment(scheduleId);
             Navigation.findNavController(requireView()).navigate(action);
-        } else returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
+        } else {
+            returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
+            ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
+            statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
+        }
     }
 
+    //Utility per convertire da ms a hh:mm:ss
+    public String convertMsToTime(long milliseconds) {
+        long seconds = (milliseconds / 1000) % 60;
+        long minutes = (milliseconds / (1000 * 60)) % 60;
+        long hours = (milliseconds / (1000 * 60 * 60)) % 24;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    //Avvia il cronometro una volta creata la view
     private void initializeStopwatch(View rootView) {
         stopwatch = new Stopwatch();
         stopwatch.setTextView(rootView.findViewById(R.id.timer_text));
@@ -283,20 +291,13 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        //handler.removeCallbacks(updateTimeTask);
-    }
-
-    private void backFragment() {
-        // Implement fragment back navigation logic
     }
 
     @Override
     public void onTick(Timer timer) {
-        // Handle timer tick
     }
 
     @Override
     public void onComplete(Timer timer) {
-        // Handle timer completion
     }
 }

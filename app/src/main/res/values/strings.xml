@@ -78,5 +78,13 @@
     <string name="wednesday">Wednesday</string>
     <string name="thursday">Thursday</string>
     <string name="saturday">Saturday</string>
+    <string name="pause">Pause</string>
+    <string name="skipExercise">Skip Exercise</string>
+    <string name="nextSeries">Next Series</string>
+    <string name="further_details">Further details:</string>
+    <string name="series_left">Remaining Sets:</string>
+    <string name="of">of</string>
+    <string name="rep_left">Reps</string>
+    <string name="workout_end">Workout finished in</string>
     <string name="banner" translatable="false">Banner</string>
 </resources>

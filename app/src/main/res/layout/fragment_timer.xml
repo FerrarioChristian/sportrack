@@ -137,7 +137,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Pause" />
+                    android:text="@string/pause" />
 
                 <Space
                     android:layout_width="0dp"
@@ -151,7 +151,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Skip" />
+                    android:text="@string/skipExercise" />
 
             </LinearLayout>
 
@@ -161,7 +161,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Next" />
+                android:text="@string/nextSeries" />
 
             <!-- Pause Button -->
 
