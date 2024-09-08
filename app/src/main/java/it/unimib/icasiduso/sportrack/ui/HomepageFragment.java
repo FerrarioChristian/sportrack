@@ -35,6 +35,7 @@ import it.unimib.icasiduso.sportrack.adapters.CarouselRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.databinding.FragmentHomepageBinding;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
@@ -48,6 +49,7 @@ public class HomepageFragment extends Fragment {
     private WorkoutExerciseViewModel workoutExerciseViewModel;
     private ExerciseViewModel exerciseViewModel;
     private List<ExerciseCompleted> exerciseCompletedList = new ArrayList<>();
+    private List<Exercise> exerciseList = new ArrayList<>();
 
     public HomepageFragment() {
     }
@@ -99,9 +101,9 @@ public class HomepageFragment extends Fragment {
 
                         activityData = countExercisesPerDate(exerciseCompletedList);
 
-                        initializeHeatmap();
-
                         int dayIndex = findDayWithMostExercises();
+
+                        initializeHeatmap(dayIndex);
 
                         String dayNameTemp = getDayNameFromIndex(dayIndex);
 
@@ -112,6 +114,8 @@ public class HomepageFragment extends Fragment {
 
                         binding.dayName.setText(dayNameTemp);
 
+
+
                         binding.dayDate.setText(finalDate);
                             exerciseViewModel.getExerciseById(result.get(0)
                                     .getExternalExerciseId());
@@ -120,8 +124,41 @@ public class HomepageFragment extends Fragment {
                 });
 
         exerciseViewModel.getExerciseLiveData().observe(getViewLifecycleOwner(), exercise -> {
-            if (exercise != null) Log.d(TAG, "activityData: " + exercise.getMuscle());
+            if (exercise != null) {
+                exerciseList.clear(); // Clear existing list
+                exerciseList.add(exercise); // Add new data
+
+                findMostUsedMuscle();
+            }
         });
+    }
+
+    private void findMostUsedMuscle() {
+        Map<String, Integer> muscleCountMap = new HashMap<>();
+
+        // Count the occurrences of each muscle
+        for (Exercise exercise : exerciseList) {
+            String muscle = exercise.getMuscle();
+            muscleCountMap.put(muscle, muscleCountMap.getOrDefault(muscle, 0) + 1);
+        }
+
+        // Find the most used muscle
+        String mostUsedMuscle = null;
+        int maxCount = 0;
+
+        for (Map.Entry<String, Integer> entry : muscleCountMap.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                mostUsedMuscle = entry.getKey();
+                maxCount = entry.getValue();
+            }
+        }
+
+        // Use or display the most used muscle
+        if (mostUsedMuscle != null) {
+            // For example, show it in a TextView or log it
+            binding.muscleName.setText(mostUsedMuscle);
+        }
+
     }
 
 
@@ -129,27 +166,43 @@ public class HomepageFragment extends Fragment {
         // Create a map to count occurrences of each date
         Map<LocalDate, Integer> dateCountMap = new HashMap<>();
         DateTimeFormatter formatter = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         }
 
         for (ExerciseCompleted exercise : exerciseCompletedList) {
             LocalDate date = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 date = LocalDate.parse(exercise.getDate(), formatter);
             }
             dateCountMap.put(date, dateCountMap.getOrDefault(date, 0) + 1);
         }
 
-        // Convert the map to an array of counts
-        int numberOfDays = dateCountMap.size();
-        int[] countsArray = new int[numberOfDays];
-        Set<Map.Entry<LocalDate, Integer>> entries = dateCountMap.entrySet();
+        // Initialize the date range
+        LocalDate endDate = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            endDate = LocalDate.now();
+        }
+        LocalDate startDate = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startDate = endDate.minusDays(34);
+        }
+
+        // Initialize counts array
+        int[] countsArray = new int[35];
+
+        // Populate the counts array with values from the dateCountMap
+        LocalDate currentDate = startDate;
         int index = 0;
 
-        for (Map.Entry<LocalDate, Integer> entry : entries) {
-            countsArray[index++] = entry.getValue();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            while (!currentDate.isAfter(endDate)) {
+                countsArray[index] = dateCountMap.getOrDefault(currentDate, 0);
+                currentDate = currentDate.plusDays(1);
+                index++;
+            }
         }
+
         return countsArray;
     }
 
@@ -158,7 +211,7 @@ public class HomepageFragment extends Fragment {
 
     }
 
-    private void initializeHeatmap() {
+    private void initializeHeatmap(int bestDay) {
 
         binding.heatmapGrid.removeAllViews();
 
@@ -167,29 +220,26 @@ public class HomepageFragment extends Fragment {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             endDate = LocalDate.now();
         }
-        LocalDate startDate = null; // 35 days in total including today
+        LocalDate startDate = null; // 35 days total including today
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             startDate = endDate.minusDays(34);
         }
 
-        // Create a Calendar instance for calculating the first day of the month
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // 0 for Sunday, 1 for
-        // Monday, etc.
-
-        // Add empty views for days before the first day of the month
-        for (int i = 0; i < firstDayOfWeek; i++) {
-            TextView emptyView = new TextView(requireContext());
-            emptyView.setLayoutParams(new ViewGroup.LayoutParams(110, 110));
-            binding.heatmapGrid.addView(emptyView);
+        // Map dates to their activity levels
+        Map<LocalDate, Integer> activityMap = new HashMap<>();
+        for (ExerciseCompleted exercise : exerciseCompletedList) {
+            LocalDate date = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                date = LocalDate.parse(exercise.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            }
+            int level = activityMap.getOrDefault(date, 0);
+            activityMap.put(date, Math.min(level + 1, 9)); // Limit to max level 9
         }
 
         // Populate the grid from the start date to the end date
         LocalDate currentDate = startDate;
-        for (int i = 34; i >= 0; i--) {
-            int activityLevel = (i < activityData.length) ? activityData[i] : 0; // Use default
-            // value if index is out of bounds
+        for (int i = 0; i < 35; i++) { // 35 days including today
+            int activityLevel = activityMap.getOrDefault(currentDate, 0); // Default to 0 if no data
 
             TextView dayView = new TextView(requireContext());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -197,27 +247,56 @@ public class HomepageFragment extends Fragment {
             }
             dayView.setGravity(Gravity.CENTER);
 
+            // Determine color based on activity level
             int color;
             switch (activityLevel) {
                 case 0:
-                    color = Color.parseColor("#ebedf0");
+                    color = Color.WHITE;
                     break;
                 case 1:
-                    color = Color.parseColor("#c6e48b");
+                    color = Color.parseColor("#aae4a5");
                     break;
                 case 2:
-                    color = Color.parseColor("#7bc96f");
+                    color = Color.parseColor("#aae4a5");
                     break;
                 case 3:
-                    color = Color.parseColor("#239a3b");
+                    color = Color.parseColor("#85d87d");
+                    break;
+                case 4:
+                    color = Color.parseColor("#85d87d");
+                    break;
+                case 5:
+                    color = Color.parseColor("#43bc38");
+                    break;
+                case 6:
+                    color = Color.parseColor("#43bc38");
+                    break;
+                case 7:
+                    color = Color.parseColor("#389d2f");
+                    break;
+                case 8:
+                    color = Color.parseColor("#389d2f");
+                    break;
+                case 9:
+                    color = Color.parseColor("#389d2f");
                     break;
                 default:
-                    color = Color.parseColor("#196127");
+                    color = Color.parseColor("#cc0000");
                     break;
             }
 
-            dayView.setBackgroundColor(color);
-            dayView.setTextColor(Color.BLACK);
+            if (i == bestDay) {
+                color = Color.parseColor("#FFD700");
+            }
+
+            // Highlight today's cell
+            if (i == 34) {
+                dayView.setBackgroundColor(Color.parseColor("#8591ff")); // Gold color for today
+                dayView.setTextColor(Color.BLACK);
+            } else {
+                dayView.setBackgroundColor(color);
+                dayView.setTextColor(Color.BLACK);
+            }
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = 110;

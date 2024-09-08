@@ -77,49 +77,7 @@
 
         <!-- Day Labels (Sun, Mon, etc.) -->
         <TextView
-            android:text="Sun"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="Mon"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="Tue"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="Wed"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="Thu"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="Fri"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="Sat"
+            android:text="Completa il tuo primo workout per visualizzare la mappa dell'attività!"
             android:gravity="center"
             android:textStyle="bold"
             android:layout_width="wrap_content"
@@ -175,6 +133,7 @@
                     android:layout_marginTop="8dp"
                     android:textStyle="bold"
                     android:text="muscle name"
+                    android:id="@+id/muscleName"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     android:textColor="?android:attr/textColorSecondary"/>
                 <TextView
@@ -182,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:textStyle="bold"
-                    android:text="times trained"
+                    android:text="Keep going!"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"/>
 
@@ -208,7 +167,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Best day:"
+                    android:text="Best day of the month:"
                     android:textAppearance="?attr/textAppearanceBodyMedium"/>
                 <TextView
                     android:layout_width="wrap_content"
