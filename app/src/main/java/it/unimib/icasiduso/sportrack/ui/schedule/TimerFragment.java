@@ -160,16 +160,16 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         MaterialButton playButton = binding.playButton;
 
         playButton.setOnClickListener(v -> {
-            if(playButton.getText().equals("Pause")) {
+            if(playButton.getText().equals(requireContext().getString(R.string.pause))) {
                 if (stopwatch.isStarted()) {
                     stopwatch.pause();
-                    playButton.setText("Play");
+                    playButton.setText(requireContext().getString(R.string.play));
                     binding.nextButton.setClickable(false);
                 }
             } else {
                 if (stopwatch.isPaused()) {
                     stopwatch.resume();
-                    playButton.setText("Pause");
+                    playButton.setText(requireContext().getString(R.string.pause));
                     binding.nextButton.setClickable(true);
                 }
             }

@@ -87,4 +87,5 @@
     <string name="rep_left">Reps</string>
     <string name="workout_end">Workout finished in</string>
     <string name="banner" translatable="false">Banner</string>
+    <string name="play">Play</string>
 </resources>
