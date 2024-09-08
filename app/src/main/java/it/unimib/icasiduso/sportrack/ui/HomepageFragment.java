@@ -101,7 +101,13 @@ public class HomepageFragment extends Fragment {
 
                         activityData = countExercisesPerDate(exerciseCompletedList);
 
+
+
+
                         int dayIndex = findDayWithMostExercises();
+
+
+                        Log.d(TAG,  dayIndex+ "activityData: " + exerciseCompletedList.size());
 
                         initializeHeatmap(dayIndex);
 
@@ -109,8 +115,7 @@ public class HomepageFragment extends Fragment {
 
                         String finalDate = "";
 
-                        if (!(dayIndex < 0))
-                            finalDate = exerciseCompletedList.get(dayIndex).getDate();
+                        if (!(dayIndex < 0)) finalDate = exerciseCompletedList.get(dayIndex).getDate();
 
                         binding.dayName.setText(dayNameTemp);
 
@@ -285,7 +290,7 @@ public class HomepageFragment extends Fragment {
                     break;
             }
 
-            if (i == bestDay) {
+            if (i == bestDay+1) {
                 color = Color.parseColor("#FFD700");
             }
 
@@ -317,15 +322,27 @@ public class HomepageFragment extends Fragment {
         int maxCount = 0;
         int dayIndex = -1;
 
-        for (int i = 0; i < activityData.length; i++) {
+        // Define the number of elements to consider
+        int numberOfDays = 34;
+        int startIndex = Math.max(activityData.length - numberOfDays, 0);
+
+        for (int i = startIndex; i < activityData.length; i++) {
             if (activityData[i] > maxCount) {
                 maxCount = activityData[i];
                 dayIndex = i;
             }
         }
 
-        return dayIndex; // Index of the day with the most exercises
+        // Adjust dayIndex relative to the last 34 elements
+        if (dayIndex >= startIndex) {
+            dayIndex = dayIndex - startIndex;
+        } else {
+            dayIndex = -1; // In case no valid day is found
+        }
+
+        return dayIndex; // Index of the day with the most exercises within the last 34 days
     }
+
 
 
     private void initializeCarousel() {
