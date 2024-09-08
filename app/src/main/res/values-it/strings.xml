@@ -71,4 +71,11 @@
     <string name="invalid_input">I valori inseriti non sono validi.</string>
     <string name="loading_error_check_internet">Errore nel caricamento, controlla la connessione e riprova</string>
     <string name="user_not_logged">Nessun utente loggato</string>
+    <string name="friday">Venerdì</string>
+    <string name="sunday">Domenica</string>
+    <string name="monday">Lunedì</string>
+    <string name="tuesday">Martedì</string>
+    <string name="wednesday">Mercoledì</string>
+    <string name="thursday">Giovedì</string>
+    <string name="saturday">Sabato</string>
 </resources>
