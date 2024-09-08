@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.adapters.CarouselRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
@@ -70,7 +71,6 @@ public class HomepageFragment extends Fragment {
                 exercisesRepository);
         exerciseViewModel = new ViewModelProvider(requireActivity(), exerciseViewModelFactory).get(
                 ExerciseViewModel.class);
-
     }
 
 
@@ -85,10 +85,11 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setListeners();
         observeViewModel();
         initializeCarousel();
     }
+
+
 
     private void observeViewModel() {
         assert user != null;
@@ -97,92 +98,66 @@ public class HomepageFragment extends Fragment {
                     exerciseCompletedList.clear();
                     if (result != null && !result.isEmpty()) {
                         exerciseCompletedList = result;
-
                         activityData = countExercisesPerDate(exerciseCompletedList);
-
-
-
-
                         int dayIndex = findDayWithMostExercises();
-
-
-                        Log.d(TAG,  dayIndex+ "activityData: " + exerciseCompletedList.size());
-
                         initializeHeatmap(dayIndex);
 
                         String dayNameTemp = getDayNameFromIndex(dayIndex);
-
                         String finalDate = calculateDate(dayIndex);
 
-                        if (!(dayIndex < 0 || dayIndex >= exerciseCompletedList.size())) finalDate = exerciseCompletedList.get(dayIndex).getDate();
-
                         binding.dayName.setText(dayNameTemp);
-
-
-
                         binding.dayDate.setText(finalDate);
-                            exerciseViewModel.getExerciseById(result.get(0)
-                                    .getExerciseId());
-
+                        exerciseViewModel.getExerciseById(result.get(0).getExerciseId());
                     }
                 });
 
         exerciseViewModel.getExerciseLiveData().observe(getViewLifecycleOwner(), exercise -> {
             if (exercise != null) {
-                exerciseList.clear(); // Clear existing list
-                exerciseList.add(exercise); // Add new data
-
+                exerciseList.clear();
+                exerciseList.add(exercise);
                 findMostUsedMuscle();
             }
         });
     }
 
+    //Prende come input l'indice del giorno con più esercizi e restituisce la data corrispondente
     public static String calculateDate(int additionalDays) {
-        // Define the date formatter
-        additionalDays++;
         DateTimeFormatter formatter = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         }
 
-        // Get the current date
         LocalDate today = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             today = LocalDate.now();
         }
 
-        // Calculate the start date (34 days ago)
         LocalDate startDate = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startDate = today.minusDays(34);
         }
 
-        // Add the additional days
         LocalDate resultDate = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             resultDate = startDate.plusDays(additionalDays);
         }
 
         String resultDateStr = null;
-
-        // Format the result date to "dd/MM/yyyy"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             resultDateStr = resultDate.format(formatter);
         }
-
         return resultDateStr;
     }
 
+    //Prende la lista di esercizi e restituisce il muscle più usato
     private void findMostUsedMuscle() {
         Map<String, Integer> muscleCountMap = new HashMap<>();
 
-        // Count the occurrences of each muscle
         for (Exercise exercise : exerciseList) {
             String muscle = exercise.getMuscle();
             muscleCountMap.put(muscle, muscleCountMap.getOrDefault(muscle, 0) + 1);
         }
 
-        // Find the most used muscle
         String mostUsedMuscle = null;
         int maxCount = 0;
 
@@ -193,15 +168,13 @@ public class HomepageFragment extends Fragment {
             }
         }
 
-        // Use or display the most used muscle
         if (mostUsedMuscle != null) {
-            // For example, show it in a TextView or log it
             binding.muscleName.setText(mostUsedMuscle);
         }
-
     }
 
 
+    //Restituisce un array contenente il numero di esercizi per data
     private int[] countExercisesPerDate(List<ExerciseCompleted> exerciseCompletedList) {
         // Create a map to count occurrences of each date
         Map<LocalDate, Integer> dateCountMap = new HashMap<>();
@@ -218,7 +191,6 @@ public class HomepageFragment extends Fragment {
             dateCountMap.put(date, dateCountMap.getOrDefault(date, 0) + 1);
         }
 
-        // Initialize the date range
         LocalDate endDate = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             endDate = LocalDate.now();
@@ -228,10 +200,8 @@ public class HomepageFragment extends Fragment {
             startDate = endDate.minusDays(34);
         }
 
-        // Initialize counts array
         int[] countsArray = new int[35];
 
-        // Populate the counts array with values from the dateCountMap
         LocalDate currentDate = startDate;
         int index = 0;
 
@@ -242,30 +212,21 @@ public class HomepageFragment extends Fragment {
                 index++;
             }
         }
-
         return countsArray;
     }
 
-
-    private void setListeners() {
-
-    }
-
     private void initializeHeatmap(int bestDay) {
-
         binding.heatmapGrid.removeAllViews();
 
-        // Initialize the end date as today
         LocalDate endDate = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             endDate = LocalDate.now();
         }
-        LocalDate startDate = null; // 35 days total including today
+        LocalDate startDate = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             startDate = endDate.minusDays(34);
         }
 
-        // Map dates to their activity levels
         Map<LocalDate, Integer> activityMap = new HashMap<>();
         for (ExerciseCompleted exercise : exerciseCompletedList) {
             LocalDate date = null;
@@ -273,25 +234,23 @@ public class HomepageFragment extends Fragment {
                 date = LocalDate.parse(exercise.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             }
             int level = activityMap.getOrDefault(date, 0);
-            activityMap.put(date, Math.min(level + 1, 9)); // Limit to max level 9
+            activityMap.put(date, Math.min(level + 1, 9));
         }
 
-        // Populate the grid from the start date to the end date
         LocalDate currentDate = startDate;
-        for (int i = 0; i < 35; i++) { // 35 days including today
-            int activityLevel = activityMap.getOrDefault(currentDate, 0); // Default to 0 if no data
+        for (int i = 0; i < 35; i++) {
+            int activityLevel = activityMap.getOrDefault(currentDate, 0);
 
             TextView dayView = new TextView(requireContext());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                dayView.setText(String.valueOf(currentDate.getDayOfMonth())); // Set the day number
+                dayView.setText(String.valueOf(currentDate.getDayOfMonth()));
             }
             dayView.setGravity(Gravity.CENTER);
 
-            // Determine color based on activity level
             int color;
             switch (activityLevel) {
                 case 0:
-                    color = Color.WHITE;
+                    color = Color.LTGRAY;
                     break;
                 case 1:
                     color = Color.parseColor("#aae4a5");
@@ -325,11 +284,12 @@ public class HomepageFragment extends Fragment {
                     break;
             }
 
-            if (i == bestDay+1) {
+            //Setta il colore oro per il giorno migliore
+            if (i == bestDay) {
                 color = Color.parseColor("#FFD700");
             }
 
-            // Highlight today's cell
+            //Setta il colore azzure se la data corrisponde ad oggi, altrimenti segue lo schema della heatmap
             if (i == 34) {
                 dayView.setBackgroundColor(Color.parseColor("#8591ff")); // Gold color for today
                 dayView.setTextColor(Color.BLACK);
@@ -346,18 +306,16 @@ public class HomepageFragment extends Fragment {
             dayView.setLayoutParams(params);
             binding.heatmapGrid.addView(dayView, params);
 
-            // Move to the previous day
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 currentDate = currentDate.plusDays(1);
             }
         }
     }
 
+    //Dall'array activityData restituisce l'indice del giorno con il maggior numero di esercizi
     private int findDayWithMostExercises() {
         int maxCount = 0;
         int dayIndex = -1;
-
-        // Define the number of elements to consider
         int numberOfDays = 34;
         int startIndex = Math.max(activityData.length - numberOfDays, 0);
 
@@ -368,20 +326,17 @@ public class HomepageFragment extends Fragment {
             }
         }
 
-        // Adjust dayIndex relative to the last 34 elements
         if (dayIndex >= startIndex) {
             dayIndex = dayIndex - startIndex;
         } else {
-            dayIndex = -1; // In case no valid day is found
+            dayIndex = -1;
         }
 
-        Log.d(TAG, "findDayWithMostExercises: " + dayIndex);
-
-        return dayIndex; // Index of the day with the most exercises within the last 34 days
+        return dayIndex+1;
     }
 
 
-
+    //Inizializza il Carousel usando recyclerView
     private void initializeCarousel() {
         ArrayList<String> carouselImages = new ArrayList<>(Arrays.asList(CAROUSEL_IMAGES));
 
@@ -390,33 +345,34 @@ public class HomepageFragment extends Fragment {
         binding.recycler.setAdapter(adapter);
 
         adapter.setOnItemClickListener((imageView, path) -> {
-            //TODO probably remove
         });
     }
 
+    //Prende indice del giorno e restituisce il nome del giorno corrispondente
+    //sostiture nomi con @String
     public String getDayNameFromIndex(int dayIndex) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, dayIndex + 1); // dayIndex is zero-based, so add 1
+        calendar.set(Calendar.DAY_OF_MONTH, dayIndex + 2); // dayIndex is zero-based, so add 1
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
         // Convert the day of the week to a string
         switch (dayOfWeek) {
             case Calendar.SUNDAY:
-                return "Sunday";
+                return requireContext().getString(R.string.sunday);
             case Calendar.MONDAY:
-                return "Monday";
+                return requireContext().getString(R.string.monday);
             case Calendar.TUESDAY:
-                return "Tuesday";
+                return requireContext().getString(R.string.tuesday);
             case Calendar.WEDNESDAY:
-                return "Wednesday";
+                return requireContext().getString(R.string.wednesday);
             case Calendar.THURSDAY:
-                return "Thursday";
+                return requireContext().getString(R.string.thursday);
             case Calendar.FRIDAY:
-                return "Friday";
+                return requireContext().getString(R.string.friday);
             case Calendar.SATURDAY:
-                return "Saturday";
+                return requireContext().getString(R.string.saturday);
             default:
-                return "Unknown";
+                return "Error";
         }
     }
 }
