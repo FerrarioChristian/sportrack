@@ -78,4 +78,5 @@
     <string name="wednesday">Wednesday</string>
     <string name="thursday">Thursday</string>
     <string name="saturday">Saturday</string>
+    <string name="banner" translatable="false">Banner</string>
 </resources>
