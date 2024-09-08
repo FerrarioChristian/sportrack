@@ -23,7 +23,9 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
     private List<WorkoutExercise> workoutExercises;
 
 
-    public WorkoutExerciseRecyclerViewAdapter(OnItemClickListener onItemClickListener, LifecycleOwner lifecycleOwner, ExerciseViewModel exerciseViewModel) {
+    public WorkoutExerciseRecyclerViewAdapter(OnItemClickListener onItemClickListener,
+                                              LifecycleOwner lifecycleOwner,
+                                              ExerciseViewModel exerciseViewModel) {
         this.onItemClickListener = onItemClickListener;
         this.lifecycleOwner = lifecycleOwner;
         this.exerciseViewModel = exerciseViewModel;
@@ -73,7 +75,10 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
 
         public void bind(WorkoutExercise workoutExercise) {
             exerciseViewModel.getExerciseById(workoutExercise.getExerciseId())
-                    .observe(lifecycleOwner, exercise -> exerciseName.setText(exercise.getName()));
+                    .observe(lifecycleOwner, exercise -> {
+                        //TODO Parsare nome esercizio
+                        exerciseName.setText(exercise.getName());
+                    });
 
             exerciseSeries.setText(App.getRes()
                     .getString(R.string.series, workoutExercise.getSeries()));

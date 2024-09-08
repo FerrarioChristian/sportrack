@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Locale;
 
+import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
@@ -96,6 +97,7 @@ public class SettingsFragment extends Fragment {
             Configuration config = new Configuration();
             config.setLocale(newLocale);
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            App.setRes(getResources());
             recreate(requireActivity());
         });
 
