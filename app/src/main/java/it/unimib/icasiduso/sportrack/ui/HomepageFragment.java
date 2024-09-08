@@ -113,7 +113,7 @@ public class HomepageFragment extends Fragment {
 
                         String dayNameTemp = getDayNameFromIndex(dayIndex);
 
-                        String finalDate = "";
+                        String finalDate = calculateDate(dayIndex);
 
                         if (!(dayIndex < 0 || dayIndex >= exerciseCompletedList.size())) finalDate = exerciseCompletedList.get(dayIndex).getDate();
 
@@ -136,6 +136,42 @@ public class HomepageFragment extends Fragment {
                 findMostUsedMuscle();
             }
         });
+    }
+
+    public static String calculateDate(int additionalDays) {
+        // Define the date formatter
+        additionalDays++;
+        DateTimeFormatter formatter = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        }
+
+        // Get the current date
+        LocalDate today = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            today = LocalDate.now();
+        }
+
+        // Calculate the start date (34 days ago)
+        LocalDate startDate = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startDate = today.minusDays(34);
+        }
+
+        // Add the additional days
+        LocalDate resultDate = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            resultDate = startDate.plusDays(additionalDays);
+        }
+
+        String resultDateStr = null;
+
+        // Format the result date to "dd/MM/yyyy"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            resultDateStr = resultDate.format(formatter);
+        }
+
+        return resultDateStr;
     }
 
     private void findMostUsedMuscle() {
@@ -339,6 +375,8 @@ public class HomepageFragment extends Fragment {
         } else {
             dayIndex = -1; // In case no valid day is found
         }
+
+        Log.d(TAG, "findDayWithMostExercises: " + dayIndex);
 
         return dayIndex; // Index of the day with the most exercises within the last 34 days
     }
