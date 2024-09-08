@@ -175,7 +175,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             }
         });
         binding.skipButton.setOnClickListener(v -> {
-            deleteChildren();
+            deleteChildren(0);
         });
         binding.nextButton.setOnClickListener(v -> {
             nextExercise(binding.getRoot());
@@ -194,7 +194,6 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             pause_watch = new Timer(5000);
             pause_watch.setTextView(rootView.findViewById(R.id.pause_timer_text));
             pause_timer.setVisibility(View.VISIBLE);
-            pause_watch.start();
 
             View firstChild = returnFirstChildren();
             TextView seriesTextView = firstChild.findViewById(R.id.exerciseSeries);
@@ -208,8 +207,9 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                 String seriesString = requireContext().getString(R.string.series_left) + " " + (remainingSeries - 1);
                 seriesTextView.setText(seriesString);
                 statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
+                pause_watch.start();
             } else {
-                deleteChildren();
+                deleteChildren(1);
                 saveObject();
             }
 
@@ -254,20 +254,20 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     }
 
     //Elimina il primo figlio della lista
-    private void deleteChildren(){
+    private void deleteChildren(int i){
         View firstChild = dynamicListParent.getChildAt(0);
         dynamicListParent.removeView(firstChild);
 
         //In caso ci siano 0 figli rimasti il timer termina e viene mostrato il toast
         if (childrenLeft() == 0) {
             Toast.makeText(requireContext(),requireContext().getString(R.string.workout_end) + " " + convertMsToTime(stopwatch.getElapsedTime()) + "!", Toast.LENGTH_SHORT).show();
-            pause_watch.pause();
             TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action = TimerFragmentDirections.actionTimerFragmentToListWorkoutExercisesFragment(scheduleId);
             Navigation.findNavController(requireView()).navigate(action);
         } else {
             returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
             ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
             statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
+            if (i == 1) pause_watch.start();
         }
     }
 
