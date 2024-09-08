@@ -105,7 +105,7 @@ public class HomepageFragment extends Fragment {
                         String dayNameTemp = getDayNameFromIndex(dayIndex);
                         String finalDate = calculateDate(dayIndex);
 
-                        binding.dayName.setText(dayNameTemp);
+                        binding.dayName.setText(dayNameTemp + "    con " + activityData[dayIndex] + " ex");
                         binding.dayDate.setText(finalDate);
                         exerciseViewModel.getExerciseById(result.get(0).getExerciseId());
                     }
