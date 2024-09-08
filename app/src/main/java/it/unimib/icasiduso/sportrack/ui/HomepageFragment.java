@@ -115,7 +115,7 @@ public class HomepageFragment extends Fragment {
 
                         String finalDate = "";
 
-                        if (!(dayIndex < 0)) finalDate = exerciseCompletedList.get(dayIndex).getDate();
+                        if (!(dayIndex < 0 || dayIndex >= exerciseCompletedList.size())) finalDate = exerciseCompletedList.get(dayIndex).getDate();
 
                         binding.dayName.setText(dayNameTemp);
 
