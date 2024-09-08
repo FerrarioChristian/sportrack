@@ -19,12 +19,11 @@ public class Constants {
             , "hamstrings", "lats", "quadriceps", "triceps", "middle_back", "lower_back"};
 
     public static final String[] CAROUSEL_IMAGES = {
-            "https://images.unsplash.com/photo-1692528131755-d4e366b2adf0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzNXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-            "https://images.unsplash.com/photo-1692862582645-3b6fd47b7513?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0MXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-            "https://images.unsplash.com/photo-1692584927805-d4096552a5ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-            "https://images.unsplash.com/photo-1692854236272-cc49076a2629?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1MXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-            "https://images.unsplash.com/photo-1681207751526-a091f2c6a538?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyODF8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
-            "https://images.unsplash.com/photo-1692610365998-c628604f5d9f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyODZ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
+            "https://img.freepik.com/free-psd/gym-fitness-horizontal-banner-template_23-2149084698.jpg?w=1060&t=st=1725810165~exp=1725810765~hmac=4fabb6a834bfd16816edb749bc2000507c89ead4f51e8ddccf20f24ca5eae547",
+            "https://img.freepik.com/free-psd/gradient-sport-banner-template-theme_23-2148531778.jpg?t=st=1725810266~exp=1725813866~hmac=ed6224e52f0a57f847ce9c0c88c8b871e92a2556569461c9af33d489b43ff538&w=996",
+            "https://img.freepik.com/free-psd/sport-banner-template_23-2148520659.jpg?t=st=1725810344~exp=1725813944~hmac=b4a077394273dcbfbc2e02fe565f7e8bd5d8815e52554967bedcfce175c617e9&w=996",
+            "https://img.freepik.com/premium-psd/gym-training-landing-page_23-2149053492.jpg?w=996",
+            "https://img.freepik.com/free-psd/gym-fitness-youtube-cover-template_23-2149584713.jpg?w=1060&t=st=1725810393~exp=1725810993~hmac=24eb9383236304cf550ee569c8bf66656348a232b3cf5a2773018a0d2dc0ce2a",
     };
 
     public static final String FIREBASE_DATABASE = "users/";
