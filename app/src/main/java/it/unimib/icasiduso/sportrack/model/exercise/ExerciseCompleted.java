@@ -25,38 +25,39 @@ public class ExerciseCompleted implements Parcelable {
         }
     };
     @PrimaryKey(autoGenerate = true)
-    private long exerciseCompletedId;
+    private long id;
     private String userId;
     private long workoutExerciseId;
-    private long externalExerciseId;
+    private long exerciseId;
     private String date;
 
     protected ExerciseCompleted(Parcel in) {
         workoutExerciseId = in.readLong();
         userId = in.readString();
-        externalExerciseId = in.readLong();
+        exerciseId = in.readLong();
         date = in.readString();
     }
 
-    public ExerciseCompleted(String userId, long workoutExerciseId, long externalExerciseId,
+    @Ignore
+    public ExerciseCompleted(String userId, long workoutExerciseId, long exerciseId,
                              String date) {
         this.workoutExerciseId = workoutExerciseId;
         this.userId = userId;
-        this.externalExerciseId = externalExerciseId;
+        this.exerciseId = exerciseId;
         this.date = date;
     }
 
     @Ignore
     @JsonCreator
-    public ExerciseCompleted(@JsonProperty("exerciseCompletedId") long exerciseCompletedId,
+    public ExerciseCompleted(@JsonProperty("id") long id,
                              @JsonProperty("userId") String userId, @JsonProperty(
-                                     "workoutExerciseId") long workoutExerciseId, @JsonProperty(
-                                             "exerciseId") long externalExerciseId,
+                                     "id") long workoutExerciseId, @JsonProperty(
+                                             "exerciseId") long exerciseId,
                              @JsonProperty("date") String date) {
-        this.exerciseCompletedId = exerciseCompletedId;
+        this.id = id;
         this.userId = userId;
         this.workoutExerciseId = workoutExerciseId;
-        this.externalExerciseId = externalExerciseId;
+        this.exerciseId = exerciseId;
         this.date = date;
     }
 
@@ -65,10 +66,10 @@ public class ExerciseCompleted implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(exerciseCompletedId);
+        dest.writeLong(id);
         dest.writeLong(workoutExerciseId);
         dest.writeString(userId);
-        dest.writeLong(externalExerciseId);
+        dest.writeLong(exerciseId);
     }
 
     @Override
@@ -93,12 +94,12 @@ public class ExerciseCompleted implements Parcelable {
         this.userId = userId;
     }
 
-    public long getExternalExerciseId() {
-        return externalExerciseId;
+    public long getExerciseId() {
+        return exerciseId;
     }
 
-    public void setExternalExerciseId(long externalExerciseId) {
-        this.externalExerciseId = externalExerciseId;
+    public void setExerciseId(long exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     public String getDate() {
@@ -109,12 +110,12 @@ public class ExerciseCompleted implements Parcelable {
         this.date = date;
     }
 
-    public long getExerciseCompletedId() {
-        return exerciseCompletedId;
+    public long getId() {
+        return id;
     }
 
-    public void setExerciseCompletedId(long exerciseCompletedId) {
-        this.exerciseCompletedId = exerciseCompletedId;
+    public void setId(long id) {
+        this.id = id;
     }
 }
 

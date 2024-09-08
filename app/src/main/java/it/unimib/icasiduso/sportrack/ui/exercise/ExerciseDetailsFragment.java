@@ -58,7 +58,7 @@ public class ExerciseDetailsFragment extends Fragment {
 
         ExerciseDetailsFragmentArgs args = ExerciseDetailsFragmentArgs.fromBundle(getArguments());
         Exercise exercise = args.getExercise();
-        long scheduleId = args.getScheduleId();
+        long scheduleId = args.getId();
 
         binding.setExercise(exercise);
 
@@ -83,7 +83,7 @@ public class ExerciseDetailsFragment extends Fragment {
             assert user != null;
             WorkoutExercise workoutExercise = new WorkoutExercise(series,
                     reps,
-                    exercise.getExerciseId(),
+                    exercise.getId(),
                     scheduleId,
                     user.getUid());
             workoutExerciseViewModel.addWorkoutExercise(workoutExercise);

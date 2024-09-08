@@ -26,7 +26,7 @@ public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
     public void addWorkoutExercise(WorkoutExercise workoutExercise,
                                    SaveWorkoutExerciseCallback callback) {
         long workoutExerciseId = System.currentTimeMillis();
-        workoutExercise.setWorkoutExerciseId(workoutExerciseId);
+        workoutExercise.setId(workoutExerciseId);
 
         workoutExerciseLocalDataSource.addWorkoutExercise(workoutExercise, callback);
         workoutExerciseRemoteDataSource.addWorkoutExercise(workoutExercise,
@@ -96,7 +96,7 @@ public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
     @Override
     public void saveExerciseCompleted(ExerciseCompleted exerciseCompleted) {
         long exerciseCompletedId = System.currentTimeMillis();
-        exerciseCompleted.setExerciseCompletedId(exerciseCompletedId);
+        exerciseCompleted.setId(exerciseCompletedId);
         workoutExerciseLocalDataSource.saveExerciseCompleted(exerciseCompleted);
     }
 

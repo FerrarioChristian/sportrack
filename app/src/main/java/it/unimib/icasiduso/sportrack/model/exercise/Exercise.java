@@ -30,7 +30,7 @@ public class Exercise implements Parcelable {
         }
     };
     @PrimaryKey
-    private long exerciseId;
+    private long id;
     private String name;
     private String type;
     private String muscle;
@@ -40,19 +40,24 @@ public class Exercise implements Parcelable {
 
     @Ignore
     @JsonCreator
-    public Exercise(@JsonProperty("name") String name, @JsonProperty("type") String type, @JsonProperty("muscle") String muscle, @JsonProperty("equipment") String equipment, @JsonProperty("difficulty") String difficulty, @JsonProperty("instructions") String instructions) {
+    public Exercise(@JsonProperty("name") String name, @JsonProperty("type") String type,
+                    @JsonProperty("muscle") String muscle,
+                    @JsonProperty("equipment") String equipment,
+                    @JsonProperty("difficulty") String difficulty,
+                    @JsonProperty("instructions") String instructions) {
         this.name = name;
         this.type = type;
         this.muscle = muscle;
         this.equipment = equipment;
         this.difficulty = difficulty;
         this.instructions = instructions;
-        this.exerciseId = generateExerciseId(name);
+        this.id = generateExerciseId(name);
     }
 
     public Exercise() {
     }
 
+    @Ignore
     protected Exercise(Parcel in) {
         name = in.readString();
         type = in.readString();
@@ -73,12 +78,12 @@ public class Exercise implements Parcelable {
         }
     }
 
-    public long getExerciseId() {
-        return exerciseId;
+    public long getId() {
+        return id;
     }
 
-    public void setExerciseId(long exerciseId) {
-        this.exerciseId = exerciseId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

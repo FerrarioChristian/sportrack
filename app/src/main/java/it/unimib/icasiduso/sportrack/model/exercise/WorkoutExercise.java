@@ -2,30 +2,32 @@ package it.unimib.icasiduso.sportrack.model.exercise;
 
 import static java.lang.Integer.parseInt;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
-
 import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 
-@Entity(foreignKeys = @ForeignKey(entity = Schedule.class, parentColumns = {"userId", "scheduleId"}, childColumns = {"userId", "scheduleId"}, onDelete = ForeignKey.CASCADE), indices = {@Index({"userId", "scheduleId"})})
+@Entity(foreignKeys = @ForeignKey(entity = Schedule.class, parentColumns = {"userId", "id"},
+        childColumns = {"userId", "scheduleId"}, onDelete = ForeignKey.CASCADE), indices =
+        {@Index({"userId", "scheduleId"})})
 public class WorkoutExercise {
     @PrimaryKey(autoGenerate = true)
-    private long WorkoutExerciseId;
+    private long id;
     private int series;
     private int repetitions;
-    private long externalExerciseId;
+    private long exerciseId;
     private String userId;
     private long scheduleId;
 
-    public WorkoutExercise(String series, String reps, long externalExerciseId, long externalScheduleId, String userId) {
+    @Ignore
+    public WorkoutExercise(String series, String reps, long externalExerciseId,
+                           long externalScheduleId, String userId) {
         this.series = parseInt(series);
         this.repetitions = parseInt(reps);
-        this.externalExerciseId = externalExerciseId;
+        this.exerciseId = externalExerciseId;
         this.scheduleId = externalScheduleId;
         this.userId = userId;
     }
@@ -49,20 +51,20 @@ public class WorkoutExercise {
         this.scheduleId = scheduleId;
     }
 
-    public long getWorkoutExerciseId() {
-        return WorkoutExerciseId;
+    public long getId() {
+        return id;
     }
 
-    public void setWorkoutExerciseId(long scheduledExerciseId) {
-        this.WorkoutExerciseId = scheduledExerciseId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public long getExternalExerciseId() {
-        return externalExerciseId;
+    public long getExerciseId() {
+        return exerciseId;
     }
 
-    public void setExternalExerciseId(long externalExerciseId) {
-        this.externalExerciseId = externalExerciseId;
+    public void setExerciseId(long exerciseId) {
+        this.exerciseId = exerciseId;
     }
 
     public int getSeries() {

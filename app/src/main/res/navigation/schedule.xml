@@ -20,13 +20,13 @@
         android:name="it.unimib.icasiduso.sportrack.ui.schedule.ListWorkoutExercisesFragment"
         android:label="ListWorkoutExercisesFragment">
         <argument
-            android:name="scheduleId"
+            android:name="id"
             app:argType="java.lang.Long" />
         <action
             android:id="@+id/action_listWorkoutExercisesFragment_to_exercises"
             app:destination="@id/exercises">
             <argument
-                android:name="scheduleId"
+                android:name="id"
                 app:argType="java.lang.Long" />
         </action>
         <action
@@ -35,7 +35,7 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim">
             <argument
-                android:name="scheduleId"
+                android:name="id"
                 app:argType="java.lang.Long" />
         </action>
     </fragment>

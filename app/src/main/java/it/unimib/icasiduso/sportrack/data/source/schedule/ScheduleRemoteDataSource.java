@@ -32,7 +32,7 @@ public class ScheduleRemoteDataSource implements IScheduleDataSource.Remote {
     public void newSchedule(Schedule schedule, IScheduleRepository.SaveScheduleCallback callback) {
         databaseReference.child(schedule.getUserId())
                 .child("schedules")
-                .child(String.valueOf(schedule.getScheduleId()))
+                .child(String.valueOf(schedule.getId()))
                 .setValue(schedule)
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
@@ -42,7 +42,7 @@ public class ScheduleRemoteDataSource implements IScheduleDataSource.Remote {
     public void deleteSchedule(Schedule schedule, IScheduleRepository.SaveScheduleCallback callback) {
         databaseReference.child(schedule.getUserId())
                 .child("schedules")
-                .child(String.valueOf(schedule.getScheduleId()))
+                .child(String.valueOf(schedule.getId()))
                 .removeValue()
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));

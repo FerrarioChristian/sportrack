@@ -32,7 +32,7 @@ public class WorkoutExerciseRemoteDataSource implements IWorkoutExerciseDataSour
         databaseReference.child("schedules")
                 .child(String.valueOf(workoutExercise.getScheduleId()))
                 .child("workoutExercises")
-                .child(String.valueOf(workoutExercise.getWorkoutExerciseId()))
+                .child(String.valueOf(workoutExercise.getId()))
                 .setValue(workoutExercise)
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
@@ -43,7 +43,7 @@ public class WorkoutExerciseRemoteDataSource implements IWorkoutExerciseDataSour
         databaseReference.child("schedules")
                 .child(String.valueOf(workoutExercise.getScheduleId()))
                 .child("workoutExercises")
-                .child(String.valueOf(workoutExercise.getWorkoutExerciseId()))
+                .child(String.valueOf(workoutExercise.getId()))
                 .removeValue()
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));

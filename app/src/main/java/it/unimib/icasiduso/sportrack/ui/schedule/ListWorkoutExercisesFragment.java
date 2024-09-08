@@ -102,24 +102,24 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     }
 
     private void setListeners() {
-        Long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments())
-                .getScheduleId();
+        Long id = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments())
+                .getId();
         binding.addExerciseButton.setOnClickListener(v -> {
             ListWorkoutExercisesFragmentDirections.ActionListWorkoutExercisesFragmentToExercises action = ListWorkoutExercisesFragmentDirections.actionListWorkoutExercisesFragmentToExercises(
-                    scheduleId);
+                    id);
             Navigation.findNavController(requireView()).navigate(action);
         });
         //timer
         // verificare se lista è diponibile o meno
         binding.startScheduleButton.setOnClickListener(v -> {
-            ListWorkoutExercisesFragmentDirections.ActionListWorkoutExercisesFragmentToTimerFragment action = ListWorkoutExercisesFragmentDirections.actionListWorkoutExercisesFragmentToTimerFragment(scheduleId);
+            ListWorkoutExercisesFragmentDirections.ActionListWorkoutExercisesFragmentToTimerFragment action = ListWorkoutExercisesFragmentDirections.actionListWorkoutExercisesFragmentToTimerFragment(id);
             Navigation.findNavController(requireView()).navigate(action);
         });
     }
 
     private void observeViewModel() {
         long scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments())
-                .getScheduleId();
+                .getId();
         workoutExerciseViewModel.getWorkoutExercises(scheduleId)
                 .observe(getViewLifecycleOwner(), result -> {
                     workoutExerciseRecyclerViewAdapter.setWorkoutExercises(result);
@@ -141,7 +141,7 @@ public class ListWorkoutExercisesFragment extends Fragment implements WorkoutExe
     public void onExerciseClick(WorkoutExercise workoutExercise) {
        /* ListWorkoutExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails
        action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails
-       (scheduleId);
+       (id);
         Navigation.findNavController(view).navigate(action);*/
     }
 

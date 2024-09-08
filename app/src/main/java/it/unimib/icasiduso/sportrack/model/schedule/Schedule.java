@@ -7,10 +7,10 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 
-@Entity(indices = {@Index(value = {"userId", "scheduleId"}, unique = true)})
+@Entity(indices = {@Index(value = {"userId", "id"}, unique = true)})
 public class Schedule {
     @PrimaryKey(autoGenerate = true)
-    private long scheduleId;
+    private long id;
     private String userId;
     private String name;
     private String difficulty;
@@ -25,12 +25,12 @@ public class Schedule {
         this.userId = userId;
     }
 
-    public long getScheduleId() {
-        return scheduleId;
+    public long getId() {
+        return id;
     }
 
-    public void setScheduleId(long scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

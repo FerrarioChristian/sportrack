@@ -19,10 +19,10 @@ public interface ExerciseDao {
     @Query("SELECT * FROM exercise WHERE muscle = :muscle")
     List<Exercise> getExercisesByMuscle(String muscle);
 
-    @Query("SELECT exerciseId FROM exercise WHERE name = :name")
+    @Query("SELECT id FROM exercise WHERE name = :name")
     long getExerciseIdByName(String name);
 
-    @Query("SELECT * FROM exercise WHERE exerciseId = :id")
+    @Query("SELECT * FROM exercise WHERE id = :id")
     Exercise getExerciseById(long id);
 
 
@@ -30,7 +30,7 @@ public interface ExerciseDao {
     void insertAll(Exercise... exercise);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insertExerciseList(List<Exercise> exerciseList);
+    void insertExerciseList(List<Exercise> exerciseList);
 
 
     @Transaction

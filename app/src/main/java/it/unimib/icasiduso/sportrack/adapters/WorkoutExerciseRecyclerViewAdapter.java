@@ -72,7 +72,7 @@ public class WorkoutExerciseRecyclerViewAdapter extends RecyclerView.Adapter<Wor
 
 
         public void bind(WorkoutExercise workoutExercise) {
-            exerciseViewModel.getExerciseById(workoutExercise.getExternalExerciseId())
+            exerciseViewModel.getExerciseById(workoutExercise.getExerciseId())
                     .observe(lifecycleOwner, exercise -> exerciseName.setText(exercise.getName()));
 
             exerciseSeries.setText(App.getRes()

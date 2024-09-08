@@ -47,7 +47,7 @@ public class ScheduleRepository implements IScheduleRepository {
     @Override
     public void newSchedule(Schedule schedule, SaveScheduleCallback callback) {
         long scheduleId = System.currentTimeMillis();
-        schedule.setScheduleId(scheduleId);
+        schedule.setId(scheduleId);
 
         scheduleLocalDataSource.newSchedule(schedule, callback);
         scheduleRemoteDataSource.newSchedule(schedule, new SaveScheduleCallback() {

@@ -29,7 +29,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import it.unimib.icasiduso.sportrack.adapters.CarouselRecyclerViewAdapter;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
@@ -123,7 +122,7 @@ public class HomepageFragment extends Fragment {
 
                         binding.dayDate.setText(finalDate);
                             exerciseViewModel.getExerciseById(result.get(0)
-                                    .getExternalExerciseId());
+                                    .getExerciseId());
 
                     }
                 });

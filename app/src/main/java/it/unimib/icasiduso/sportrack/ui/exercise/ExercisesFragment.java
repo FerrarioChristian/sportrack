@@ -40,10 +40,10 @@ public class ExercisesFragment extends Fragment {
     }
 
     public void setMuscleOnClickListener(View view, String muscle) {
-        Long scheduleId = ExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        Long id = ExercisesFragmentArgs.fromBundle(getArguments()).getId();
         view.setOnClickListener(v -> {
             ExercisesFragmentDirections.ActionExercisesFragmentToListExercisesFragment action = ExercisesFragmentDirections.actionExercisesFragmentToListExercisesFragment(
-                    scheduleId,
+                    id,
                     muscle);
             Navigation.findNavController(v).navigate(action);
         });

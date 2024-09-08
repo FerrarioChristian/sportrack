@@ -1,7 +1,6 @@
 package it.unimib.icasiduso.sportrack.ui.schedule;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +93,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                     for (int x = 0; x < workoutExercises.size(); x++) {
                         int finalX = x;
                         int finalX1 = x;
-                        exerciseViewModel.getExerciseById(workoutExercises.get(x).getExternalExerciseId()).observe(getViewLifecycleOwner(), exercise -> {
+                        exerciseViewModel.getExerciseById(workoutExercises.get(x).getExerciseId()).observe(getViewLifecycleOwner(), exercise -> {
                             TimerExercises.add(exercise);
                             // Inflate the child view
                             LayoutInflater inflater = requireActivity().getLayoutInflater();
@@ -145,7 +144,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     }
 
     private void observeViewModel(OnExercisesFetchedCallback callback) {
-        scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getId();
         workoutExerciseViewModel.getWorkoutExercises(scheduleId).observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
                 workoutExercises = result;
@@ -163,7 +162,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     }
 
     private void setListeners() {
-        scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getId();
         MaterialButton playButton = binding.playButton;
         MaterialButton skipButton = binding.skipButton;
         MaterialButton nextButton = binding.nextButton;
@@ -239,8 +238,8 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
 
     private ExerciseCompleted saveObject(){
         String userId = workoutExercises.get(exerciseNumber).getUserId();
-        long workoutExerciseId = workoutExercises.get(exerciseNumber).getWorkoutExerciseId();
-        long externalExerciseId = TimerExercises.get(exerciseNumber).getExerciseId();
+        long workoutExerciseId = workoutExercises.get(exerciseNumber).getId();
+        long externalExerciseId = TimerExercises.get(exerciseNumber).getId();
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = dateFormat.format(date);

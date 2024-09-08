@@ -1,5 +1,7 @@
 package it.unimib.icasiduso.sportrack.data.source.workout_exercise;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSource.Local {
+
+    public static final String TAG = WorkoutExerciseLocalDataSource.class.getSimpleName();
 
     private final WorkoutExerciseDao workoutExerciseDao;
     private final ExerciseCompletedDao exerciseCompletedDao;
@@ -67,6 +71,7 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
                 workoutExerciseDao.deleteWorkoutExercise(workoutExercise);
             }
 
+            Log.d(TAG, "updateWorkoutExercises:" + workoutExerciseList) ;
             workoutExerciseDao.insertWorkoutExercises(workoutExerciseList);
         });
     }
