@@ -192,7 +192,8 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             }
         });
         binding.skipButton.setOnClickListener(v -> {
-            deleteChildren(0);
+            if (pause_watch.isStarted()) Toast.makeText(getContext(), requireContext().getString(R.string.end_pause_before), Toast.LENGTH_SHORT).show();
+            else deleteChildren(0);
         });
         binding.nextButton.setOnClickListener(v -> {
             if (stopwatch.isPaused()) Toast.makeText(getContext(), requireContext().getString(R.string.start_timer_before), Toast.LENGTH_SHORT).show();
