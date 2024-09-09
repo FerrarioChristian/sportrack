@@ -189,8 +189,7 @@ public class HomepageFragment extends Fragment {
             activityMap.put(date, Math.min(level + 1, 30));
         }
 
-        int cellWidth = calculateCellWidth();
-        int cellHeight = calculateCellHeight();
+        int cellDims = calculateCellDims();
 
         LocalDate currentDate = startDate;
         for (int i = 0; i < 35; i++) {
@@ -239,8 +238,8 @@ public class HomepageFragment extends Fragment {
 
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = cellWidth;
-            params.height = cellWidth;
+            params.width = cellDims;
+            params.height = cellDims;
             params.setMargins(8, 8, 8, 8); // Adjust margins as needed
 
             float[] radii = new float[8];
@@ -260,26 +259,15 @@ public class HomepageFragment extends Fragment {
         }
     }
 
-    private int calculateCellWidth() {
+    private int calculateCellDims() {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         if (getActivity() != null) {
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         }
         int screenWidth = displayMetrics.widthPixels - Math.round(120 * (displayMetrics.densityDpi / 160f));
-        int cellWidth = screenWidth / 7;
-        return cellWidth;
-    }
-
-    private int calculateCellHeight() {
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        if (getActivity() != null) {
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        }
-        int screenWidth = displayMetrics.widthPixels - Math.round(120 * (displayMetrics.densityDpi / 160f));
-        int cellheight = screenWidth / 7;
-        return cellheight;
+        int cellDims = screenWidth / 7;
+        return cellDims;
     }
 
     //Dall'array activityData restituisce l'indice del giorno con il maggior numero di esercizi
