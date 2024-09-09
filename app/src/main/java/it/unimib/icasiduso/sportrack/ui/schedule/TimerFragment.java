@@ -46,7 +46,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     private boolean dataRetrieved = false;
     private int exerciseNumber = 0;
     private long scheduleId;
-    private Timer pause_watch;
+    private Timer pause_watch = new Timer(5000);
     private FragmentTimerBinding binding;
     private Stopwatch stopwatch;
 
@@ -210,7 +210,6 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         if (childrenLeft() != 0) {
             binding.nextButton.setClickable(false);
 
-            pause_watch = new Timer(5000);
             pause_watch.setTextView(binding.pauseTimerText);
             binding.pauseTimerText.setVisibility(View.VISIBLE);
 
