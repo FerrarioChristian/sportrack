@@ -88,7 +88,7 @@
     <string name="workout_end">Allenamento finito in</string>
     <string name="play">Avvia</string>
     <string name="activity_map">Heatmap delle Attività</string>
-    <string name="heatmap_first_description">Completa il tuo primo workout per visualizzare la mappa dell\'attività!</string>
+    <string name="heatmap_first_description">Completa il tuo primo workout per visualizzare la mappa dell\'attività e dati aggiungitivi!</string>
     <string name="most_trained_muscle">Muscolo più allenato</string>
     <string name="motivation_homapge">Continua così!</string>
     <string name="top_day">Giorno migliore</string>

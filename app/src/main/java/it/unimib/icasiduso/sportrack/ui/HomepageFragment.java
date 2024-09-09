@@ -103,6 +103,8 @@ public class HomepageFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), result -> {
                     exerciseCompletedList.clear();
                     if (result != null && !result.isEmpty()) {
+                        binding.muscleCard.setVisibility(View.VISIBLE);
+                        binding.dayCard.setVisibility(View.VISIBLE);
                         exerciseCompletedList = result;
                         activityData = countExercisesPerDate(exerciseCompletedList);
                         int dayIndex = findDayWithMostExercises();
