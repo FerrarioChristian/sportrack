@@ -93,7 +93,7 @@
     <string name="title_sport" translatable="false">SPORT</string>
     <string name="title_track" translatable="false">TRACK</string>
     <string name="activity_map">Activity Heatmap</string>
-    <string name="most_trained_muscle">Most trained Muscle</string>
+    <string name="most_trained_muscle">Most trained muscle</string>
     <string name="motivation_homapge">Keep going!</string>
     <string name="top_day">Best day</string>
     <string name="heatmap_first_description">Complete your first workout to see the heatmap and other stats!</string>

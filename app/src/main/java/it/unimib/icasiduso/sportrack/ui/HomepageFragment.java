@@ -233,19 +233,32 @@ public class HomepageFragment extends Fragment {
                     break;
                 case 1:
                 case 2:
-                    color = Color.parseColor("#aae4a5");
+                    color = Color.parseColor("#abef95");
                     break;
                 case 3:
                 case 4:
-                    color = Color.parseColor("#85d87d");
+                    color = Color.parseColor("#9dec83");
                     break;
                 case 5:
                 case 6:
-                    color = Color.parseColor("#43bc38");
+                    color = Color.parseColor("#88e868");
                     break;
                 case 7:
                 case 8:
+                    color = Color.parseColor("#6ce345");
+                    break;
                 case 9:
+                case 10:
+                    color = Color.parseColor("#50de21");
+                    break;
+                case 11:
+                case 12:
+                    color = Color.parseColor("#47c31d");
+                    break;
+                case 13:
+                case 14:
+                    color = Color.parseColor("#3fad1a");
+                    break;
                 default:
                     color = Color.parseColor("#389d2f");
                     break;
