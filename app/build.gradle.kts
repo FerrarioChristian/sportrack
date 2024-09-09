@@ -78,7 +78,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
 
-    implementation("com.jjoe64:graphview:4.2.2")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
@@ -90,8 +89,7 @@ dependencies {
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("it.xabaras.android:recyclerview-swipedecorator:1.4")
 
-    //noinspection GradlePath
-    implementation(files("/libs/timeit-release.aar"))
+    implementation("com.github.yashovardhan99:TimeIt:1.2.0")
 
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
