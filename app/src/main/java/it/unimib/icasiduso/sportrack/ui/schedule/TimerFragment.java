@@ -49,7 +49,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     private List<WorkoutExercise> workoutExercises = new ArrayList<>();
     private boolean dataRetrieved = false;
     private long scheduleId;
-    private Timer pause_watch = new Timer(1000);
+    private Timer pause_watch = new Timer(10000);
     private FragmentTimerBinding binding;
     private Stopwatch stopwatch;
 
