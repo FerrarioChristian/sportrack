@@ -15,6 +15,7 @@ public class UserViewModel extends ViewModel {
 
     private final IUserRepository userRepository;
     private final MutableLiveData<Result<User>> userMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Result<String>> changePasswordMutableLiveData = new MutableLiveData<>();
 
     public UserViewModel(IUserRepository userRepository) {
         this.userRepository = userRepository;
@@ -52,6 +53,23 @@ public class UserViewModel extends ViewModel {
     public MutableLiveData<Result<User>> logout() {
         userRepository.logout(() -> userMutableLiveData.postValue(null));
         return userMutableLiveData;
+    }
+
+    public MutableLiveData<Result<String>> changePassword(String newPassword) {
+
+        userRepository.changePassword(newPassword, new IUserRepository.ChangePasswordCallback() {
+
+            @Override
+            public void onSuccess() {
+                changePasswordMutableLiveData.postValue(new Result.Success<>(null));
+            }
+
+            @Override
+            public void onFailure(String message) {
+                changePasswordMutableLiveData.postValue(new Result.Error<>(message, null));
+            }
+        });
+        return changePasswordMutableLiveData;
     }
 
     public static class Factory implements ViewModelProvider.Factory {

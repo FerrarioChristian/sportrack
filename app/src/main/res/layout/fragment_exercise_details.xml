@@ -166,9 +166,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/series_input"
                             android:layout_width="match_parent"
                             android:layout_height="61dp"
-                            android:autofillHints="emailAddress"
                             android:importantForAutofill="no"
                             android:inputType="number"
                             android:longClickable="false"
@@ -198,9 +198,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/reps_input"
                             android:layout_width="match_parent"
                             android:layout_height="61dp"
-                            android:autofillHints="emailAddress"
                             android:importantForAutofill="no"
                             android:inputType="number"
                             android:longClickable="false"

@@ -95,4 +95,5 @@
     <string name="end_pause_before">Finisci la pause prima!</string>
     <string name="start_timer_before">Fai partire il timer prima!</string>
     <string name="exercise_done_toast">Esercizi svolti:</string>
+    <string name="password_changed">Password cambiata con successo</string>
 </resources>
