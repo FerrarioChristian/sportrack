@@ -97,38 +97,35 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         initializeStopwatch();
     }
 
+    // Osserva il viewmodel per prelevare i dati da inserire nella pagina
     private void observeViewModel() {
         scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getId();
 
         workoutExerciseViewModel.getWorkoutExercises(scheduleId)
                 .observe(getViewLifecycleOwner(), result -> {
                     if (result != null && !result.isEmpty() && !dataRetrieved) {
+                        // Salvo i risultati e avvia la creazione degli elementi nella pagina
                         workoutExercises = result;
                         dataRetrieved = true;
                         startCreation();
                     }
-
                 });
-
-        /*exerciseViewModel.getExerciseLiveData(workoutExercises.get(x).getExerciseId())
-                .observe(getViewLifecycleOwner(), exercise -> {
-                    timerExercises.add(exercise);
-                    createNewChildrens(exercise, finalX);
-                });*/
     }
 
+    // Inizializza la creazione degli elementi prelevando l'esercizio corrispondente dal viewmodel
     private void startCreation() {
         for (int x = 0; x < workoutExercises.size(); x++) {
             int finalX = x;
             exerciseViewModel.getExerciseById(workoutExercises.get(x).getExerciseId())
                     .observe(getViewLifecycleOwner(), exercise -> {
+                        // Prelevo i dati di ogni exercise preso dal workoutExercise e creo l'elemento
                         timerExercises.add(exercise);
                         createNewChildrens(exercise, finalX);
                     });
         }
     }
 
-    //possibile con recyclerview ma sus || ordine non rispecchia pagina precedente
+    // Crea l'elemento nella pagina settandone i dati e l'onclick
     private void createNewChildrens(Exercise exercise, int x) {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
@@ -166,9 +163,11 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                 additionalContent.setVisibility(View.GONE);
             }
         });
+
         returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
     }
 
+    // Imposta i listener dei vari button nella pagina con i relativi controlli
     private void setListeners() {
         scheduleId = ListWorkoutExercisesFragmentArgs.fromBundle(getArguments()).getId();
 
@@ -211,6 +210,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         });
     }
 
+    // Gestisce il next exercise, se ci sono esercizi rimasti avvio il timer, valuta quante serie sono rimaste ed in caso passa al figlio successivo eleminando quello terminato e salvandolo nel database
     private void nextExercise() {
         if (childrenLeft() != 0) {
             binding.nextButton.setClickable(false);
@@ -218,13 +218,10 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             pause_watch.setTextView(binding.pauseTimerText);
             binding.pauseTimerText.setVisibility(View.VISIBLE);
 
-            View firstChild = returnFirstChildren();
-            TextView seriesTextView = firstChild.findViewById(R.id.exerciseSeries);
-            String seriesText = seriesTextView.getText().toString();
-            String[] parts = seriesText.split(": ");
-            int remainingSeries = Integer.parseInt(parts[1]);
+            TextView seriesTextView = returnFirstChildren().findViewById(R.id.exerciseSeries);
+            int remainingSeries = Integer.parseInt(seriesTextView.getText().toString().split(": ")[1]);
 
-            ImageView statIcon = firstChild.findViewById(R.id.statusIcon);
+            ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
 
             if (remainingSeries > 1) {
                 String seriesString =
@@ -253,7 +250,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         }
     }
 
-    //Salva l'esercizio eseguito nella lista di esercizi eseguiti
+    // Salva l'esercizio eseguito nel database
     private void saveObject() {
         String userId = workoutExercises.get(exerciseNumber).getUserId();
         long workoutExerciseId = workoutExercises.get(exerciseNumber).getId();
@@ -285,7 +282,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         View firstChild = binding.dynamicList.getChildAt(0);
         binding.dynamicList.removeView(firstChild);
 
-        //In caso ci siano 0 figli rimasti il timer termina e viene mostrato il toast
+        //In caso ci siano 0 figli rimasti il timer termina, viene mostrato il toast con il tempo di esecuzione e ritorna al fragment precedente
         if (childrenLeft() == 0) {
             Toast.makeText(requireContext(),
                     requireContext().getString(R.string.workout_end) + " " + TimeUtils.convertMsToTime(

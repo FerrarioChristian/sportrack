@@ -4,7 +4,7 @@ import android.content.Context;
 
 public class TextParser {
 
-    public TextParser(Context context) {
+    public TextParser() {
     }
 
     public static String parseText(String input) {

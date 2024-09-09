@@ -39,6 +39,7 @@ import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutEx
 import it.unimib.icasiduso.sportrack.databinding.FragmentHomepageBinding;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
+import it.unimib.icasiduso.sportrack.utils.DeviceUtils;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.utils.TextParser;
 import it.unimib.icasiduso.sportrack.utils.TimeUtils;
@@ -87,20 +88,22 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Check the current night mode
+        // Imposto il logo in base al tema
         boolean isNightMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
         if (isNightMode) binding.imageViewUser.setColorFilter(requireContext().getColor(R.color.md_theme_onPrimary));
-
 
         observeViewModel();
         initializeCarousel();
     }
 
+    // Osservo il viewmodel per aggiornare la UI
     private void observeViewModel() {
         assert user != null;
         workoutExerciseViewModel.getExercisesCompleted(user.getUid())
                 .observe(getViewLifecycleOwner(), result -> {
                     exerciseCompletedList.clear();
+
+                    // Se ci sono dati presenti eseguo i vari calcoli e inizializzo la Heatmap e le relative card
                     if (result != null && !result.isEmpty()) {
                         binding.muscleCard.setVisibility(View.VISIBLE);
                         binding.dayCard.setVisibility(View.VISIBLE);
@@ -124,17 +127,21 @@ public class HomepageFragment extends Fragment {
             }
         });
     }
+
     @SuppressWarnings("ConstantConditions")
     //Prende la lista di esercizi e restituisce il muscle più usato
     private void findMostUsedMuscle(Exercise exercise) {
+        // Crea una mappa per contare le occorrenze dei muscoli
         Map<String, Integer> muscleCountMap = new HashMap<>();
 
+        // Ottiene il muscolo associato all'esercizio e aggiunge il muscolo alla mappa o incrementa il suo contatore se già presente
         String muscle = exercise.getMuscle();
         muscleCountMap.put(muscle, muscleCountMap.getOrDefault(muscle, 0) + 1);
 
         String mostUsedMuscle = null;
         int maxCount = 0;
 
+        // Itera su ogni entry della mappa per trovare il muscolo più usato
         for (Map.Entry<String, Integer> entry : muscleCountMap.entrySet()) {
             if (entry.getValue() > maxCount) {
                 mostUsedMuscle = entry.getKey();
@@ -142,6 +149,7 @@ public class HomepageFragment extends Fragment {
             }
         }
 
+        // Imposta il nome del muscolo nel TextView dopo averlo formattato
         if (mostUsedMuscle != null) {
             binding.muscleName.setText(TextParser.parseText(mostUsedMuscle));
         }
@@ -150,16 +158,19 @@ public class HomepageFragment extends Fragment {
     @SuppressWarnings("ConstantConditions")
     //Restituisce un array contenente il numero di esercizi per data
     private int[] countExercisesPerDate(List<ExerciseCompleted> exerciseCompletedList) {
-        // Create a map to count occurrences of each date
+        // Crea una mappa per contare le occorrenze di ogni data e imposta il formatter
         Map<LocalDate, Integer> dateCountMap = new HashMap<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+        // Itera su ogni esercizio completato e conta quante volte appare ogni data
         for (ExerciseCompleted exercise : exerciseCompletedList) {
             LocalDate date = LocalDate.parse(exercise.getDate(), formatter);
             dateCountMap.put(date, dateCountMap.getOrDefault(date, 0) + 1);
         }
 
+        // Ottieni la data di oggi come data finale
         LocalDate endDate = LocalDate.now();
+        // Calcola la data di inizio, 34 giorni prima di oggi
         LocalDate startDate = endDate.minusDays(34);
 
         int[] countsArray = new int[35];
@@ -167,34 +178,47 @@ public class HomepageFragment extends Fragment {
         LocalDate currentDate = startDate;
         int index = 0;
 
+        // Itera attraverso ogni giorno dal giorno di inizio fino a quello finale
         while (!currentDate.isAfter(endDate)) {
+            // Popola l'array con il conteggio degli esercizi per ogni data
             countsArray[index] = dateCountMap.getOrDefault(currentDate, 0);
             currentDate = currentDate.plusDays(1);
             index++;
         }
+
+        // Restituisce l'array con i conteggi degli esercizi per ciascun giorno
         return countsArray;
     }
 
     @SuppressWarnings("ConstantConditions")
     private void initializeHeatmap(int bestDay) {
+        // Rimuove tutte le viste esistenti nella griglia della heatmap
         binding.heatmapGrid.removeAllViews();
 
+        // Definisce la data finale e quella di inizio per l'intervallo di 35 giorni
         LocalDate endDate = LocalDate.now();
         LocalDate startDate = endDate.minusDays(34);
 
+        // Crea una mappa per memorizzare il livello di attività per ogni data
         Map<LocalDate, Integer> activityMap = new HashMap<>();
+        // Itera attraverso gli esercizi completati per popolare la mappa
         for (ExerciseCompleted exercise : exerciseCompletedList) {
             LocalDate date = LocalDate.parse(exercise.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             int level = activityMap.getOrDefault(date, 0);
             activityMap.put(date, Math.min(level + 1, 30));
         }
 
-        int cellDims = calculateCellDims();
+        // Calcola le dimensioni di ciascella nella griglia
+        int cellDims = DeviceUtils.getScreenWidthMinusPadding(requireActivity(), 130) / 7;
 
+
+        // Data corrente per la generazione della heatmap
         LocalDate currentDate = startDate;
         for (int i = 0; i < 35; i++) {
+            // Ottiene il livello di attività per la data corrente
             int activityLevel = activityMap.getOrDefault(currentDate, 0);
 
+            // Crea e configura una TextView per rappresentare un giorno nella griglia
             TextView dayView = new TextView(requireContext());
             dayView.setText(String.valueOf(currentDate.getDayOfMonth()));
             dayView.setGravity(Gravity.CENTER);
@@ -225,10 +249,7 @@ public class HomepageFragment extends Fragment {
                 default:
                     color = Color.parseColor("#389d2f");
                     break;
-
-
             }
-
 
             if (i == bestDay) color = Color.parseColor("#FFD700");  //Colore oro per il giorno migliore
             if (i == 34) {
@@ -236,12 +257,13 @@ public class HomepageFragment extends Fragment {
                 dayView.setTextColor(Color.BLACK);
             }
 
-
+            // Configura i parametri di layout per la TextView
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
             params.width = cellDims;
             params.height = cellDims;
             params.setMargins(8, 8, 8, 8); // Adjust margins as needed
 
+            // Crea un Drawable per la forma della cella
             float[] radii = new float[8];
             Arrays.fill(radii, 16);
             ShapeDrawable drawable = new ShapeDrawable(new RoundRectShape(radii, null, null));
@@ -251,19 +273,11 @@ public class HomepageFragment extends Fragment {
             dayView.setLayoutParams(params);
             binding.heatmapGrid.addView(dayView, params);
 
+            // Imposta un listener per visualizzare un Toast al clic della cella
             dayView.setOnClickListener(v -> Toast.makeText(requireContext(), getContext().getString(R.string.exercise_done_toast) + " " + activityLevel, Toast.LENGTH_SHORT).show());
 
             currentDate = currentDate.plusDays(1);
         }
-    }
-
-    private int calculateCellDims() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        if (getActivity() != null) {
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        }
-        int screenWidth = displayMetrics.widthPixels - Math.round(130 * (displayMetrics.densityDpi / 160f));
-        return screenWidth / 7;
     }
 
     //Dall'array activityData restituisce l'indice del giorno con il maggior numero di esercizi
@@ -271,30 +285,35 @@ public class HomepageFragment extends Fragment {
         int maxCount = 0;
         int dayIndex = -1;
         int numberOfDays = 34;
+        // Calcola l'indice di partenza, considerando solo gli ultimi 35 giorni
         int startIndex = Math.max(activityData.length - numberOfDays, 0);
 
+        // Itera sugli ultimi giorni dell'array per trovare il giorno con il massimo numero di esercizi
         for (int i = startIndex; i < activityData.length; i++) {
             if (activityData[i] > maxCount) {
+                // Aggiorna il conteggio massimo e l'indice del giorno corrispondente
                 maxCount = activityData[i];
                 dayIndex = i;
             }
         }
+
+        // Calcola l'indice relativo all'interno dei 35 giorni considerati
         if (dayIndex >= startIndex) {
             dayIndex = dayIndex - startIndex;
         }
 
+        // Restituisce l'indice del giorno con il maggior numero di esercizi (basato su 1 come primo giorno)
         return dayIndex + 1;
     }
 
 
-    //Inizializza il Carousel usando recyclerView
+    //Inizializza il Carousel usando una recyclerView
     private void initializeCarousel() {
         ArrayList<String> carouselImages = new ArrayList<>(Arrays.asList(CAROUSEL_IMAGES));
 
         CarouselRecyclerViewAdapter adapter = new CarouselRecyclerViewAdapter(getContext(),
                 carouselImages);
         binding.recycler.setAdapter(adapter);
-
     }
 
 
