@@ -84,7 +84,7 @@ public class ListExercisesFragment extends Fragment implements ExerciseRecyclerV
 
     @Override
     public void onExerciseClick(Exercise exercise) {
-        Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getScheduleId();
+        Long scheduleId = ListExercisesFragmentArgs.fromBundle(getArguments()).getId();
         ListExercisesFragmentDirections.ActionListExercisesFragmentToExerciseDetails action = ListExercisesFragmentDirections.actionListExercisesFragmentToExerciseDetails(
                 scheduleId,
                 exercise);

@@ -12,11 +12,18 @@ public interface IUserRepository {
 
     void signIn(String email, String password, UserAuthCallback callback);
 
+    void changePassword(String newPassword, ChangePasswordCallback changePasswordCallback);
+
     interface UserAuthCallback {
         void onAuthSuccess(User user);
 
         void onAuthFailure(String message);
 
+    }
+
+    interface ChangePasswordCallback {
+        void onSuccess();
+        void onFailure(String message);
     }
 
     interface UserLogoutCallback {

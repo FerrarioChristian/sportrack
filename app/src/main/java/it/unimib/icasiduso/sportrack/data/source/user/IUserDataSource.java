@@ -17,5 +17,7 @@ public interface IUserDataSource {
         void signUp(String email, String password, IUserRepository.UserAuthCallback callback);
 
         void signIn(String email, String password, IUserRepository.UserAuthCallback callback);
+
+        void changePassword(String newPassword, IUserRepository.ChangePasswordCallback changePasswordCallback);
     }
 }

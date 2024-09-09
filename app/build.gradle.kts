@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "it.unimib.icasiduso.sportrack"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -89,4 +89,10 @@ dependencies {
     implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("it.xabaras.android:recyclerview-swipedecorator:1.4")
+
+    //noinspection GradlePath
+    implementation(files("/libs/timeit-release.aar"))
+
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

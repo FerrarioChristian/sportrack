@@ -23,6 +23,7 @@
     <string name="exercises">Esercizi</string>
     <string name="settings">Impostazioni</string>
     <!-- Strings used for muscles -->
+    <string name="timer">Timer</string>
     <string name="abdominals">addominali</string>
     <string name="biceps">bicipiti</string>
     <string name="chest">petto</string>
@@ -70,4 +71,29 @@
     <string name="invalid_input">I valori inseriti non sono validi.</string>
     <string name="loading_error_check_internet">Errore nel caricamento, controlla la connessione e riprova</string>
     <string name="user_not_logged">Nessun utente loggato</string>
+    <string name="friday">Venerdì</string>
+    <string name="sunday">Domenica</string>
+    <string name="monday">Lunedì</string>
+    <string name="tuesday">Martedì</string>
+    <string name="wednesday">Mercoledì</string>
+    <string name="thursday">Giovedì</string>
+    <string name="saturday">Sabato</string>
+    <string name="pause">Pausa</string>
+    <string name="skipExercise">Salta Esercizio</string>
+    <string name="nextSeries">Prossima Serie</string>
+    <string name="further_details">Dettagli aggiuntivi:</string>
+    <string name="series_left">Serie rimanenti:</string>
+    <string name="of">da</string>
+    <string name="rep_left">Ripetizioni</string>
+    <string name="workout_end">Allenamento finito in</string>
+    <string name="play">Avvia</string>
+    <string name="activity_map">Heatmap delle Attività</string>
+    <string name="heatmap_first_description">Completa il tuo primo workout per visualizzare la mappa dell\'attività e dati aggiungitivi!</string>
+    <string name="most_trained_muscle">Muscolo più allenato</string>
+    <string name="motivation_homapge">Continua così!</string>
+    <string name="top_day">Giorno migliore</string>
+    <string name="end_pause_before">Finisci la pause prima!</string>
+    <string name="start_timer_before">Fai partire il timer prima!</string>
+    <string name="exercise_done_toast">Esercizi svolti:</string>
+    <string name="password_changed">Password cambiata con successo</string>
 </resources>

@@ -19,6 +19,8 @@ import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.model.User;
 
+
+
 public class AuthDataSource implements IUserDataSource.Auth {
 
     private static final String TAG = AuthDataSource.class.getSimpleName();
@@ -91,6 +93,20 @@ public class AuthDataSource implements IUserDataSource.Auth {
             }
         });
     }
+
+    @Override
+    public void changePassword(String newPassword,
+                               IUserRepository.ChangePasswordCallback changePasswordCallback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            changePasswordCallback.onFailure(App.getRes().getString(R.string.user_not_logged));
+            return;
+        }
+        user.updatePassword(newPassword)
+                .addOnSuccessListener(aVoid -> changePasswordCallback.onSuccess())
+                .addOnFailureListener(e -> changePasswordCallback.onFailure(e.getMessage()));
+    }
+
 
     //TODO sistemare i messaggi d'errore
     private String getErrorMessage(Exception exception) {

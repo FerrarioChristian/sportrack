@@ -20,13 +20,22 @@
         android:name="it.unimib.icasiduso.sportrack.ui.schedule.ListWorkoutExercisesFragment"
         android:label="ListWorkoutExercisesFragment">
         <argument
-            android:name="scheduleId"
+            android:name="id"
             app:argType="java.lang.Long" />
         <action
             android:id="@+id/action_listWorkoutExercisesFragment_to_exercises"
             app:destination="@id/exercises">
             <argument
-                android:name="scheduleId"
+                android:name="id"
+                app:argType="java.lang.Long" />
+        </action>
+        <action
+            android:id="@+id/action_listWorkoutExercisesFragment_to_timerFragment"
+            app:destination="@id/timerFragment"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+            <argument
+                android:name="id"
                 app:argType="java.lang.Long" />
         </action>
     </fragment>
@@ -35,4 +44,15 @@
     <action
         android:id="@+id/action_global_scheduleFragment"
         app:destination="@id/scheduleFragment" />
+
+    <fragment
+        android:id="@+id/timerFragment"
+        android:name="it.unimib.icasiduso.sportrack.ui.schedule.TimerFragment"
+        tools:layout="@layout/fragment_timer"
+        android:label="TimerFragment">
+        <action
+            android:id="@+id/action_timerFragment_to_listWorkoutExercisesFragment"
+            app:destination="@id/listWorkoutExercisesFragment" />
+    </fragment>
+
 </navigation>

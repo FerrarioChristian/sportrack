@@ -161,7 +161,7 @@ public class ScheduleFragment extends Fragment implements ScheduleRecyclerViewAd
     @Override
     public void onScheduleClick(Schedule schedule) {
         ScheduleFragmentDirections.ActionScheduleFragmentToListWorkoutExercisesFragment action = ScheduleFragmentDirections.actionScheduleFragmentToListWorkoutExercisesFragment(
-                schedule.getScheduleId());
+                schedule.getId());
 
         Navigation.findNavController(requireView()).navigate(action);
     }

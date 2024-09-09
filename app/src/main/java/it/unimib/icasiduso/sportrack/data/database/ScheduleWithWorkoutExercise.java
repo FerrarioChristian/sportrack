@@ -10,6 +10,6 @@ import it.unimib.icasiduso.sportrack.model.schedule.Schedule;
 public class ScheduleWithWorkoutExercise {
     @Embedded
     public Schedule schedule;
-    @Relation(parentColumn = "scheduleId", entityColumn = "externalScheduleId")
+    @Relation(parentColumn = "id", entityColumn = "scheduleId")
     public List<Schedule> schedules;
 }

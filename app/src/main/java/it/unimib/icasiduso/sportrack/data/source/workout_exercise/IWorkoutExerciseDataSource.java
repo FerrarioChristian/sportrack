@@ -3,6 +3,7 @@ package it.unimib.icasiduso.sportrack.data.source.workout_exercise;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 public interface IWorkoutExerciseDataSource {
@@ -24,5 +25,9 @@ public interface IWorkoutExerciseDataSource {
         void updateWorkoutExercises(List<WorkoutExercise> workoutExerciseList);
 
         void deleteWorkoutExercises(long scheduleId);
+
+        void saveExerciseCompleted(ExerciseCompleted exerciseCompleted);
+
+        void getExercisesCompleted(String userId, IWorkoutExercisesRepository.GetExercisesCompletedCallback callback);
     }
 }

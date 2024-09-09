@@ -76,7 +76,6 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        binding.loginWithGoogle.setOnClickListener(v -> googleLogin());
     }
 
     private void observeViewModel() {
@@ -92,10 +91,6 @@ public class LoginFragment extends Fragment {
                 userViewModel.clearUserMutableLiveData();
             }
         });
-    }
-
-
-    private void googleLogin() {
     }
 
     private boolean isPasswordOk(String password) {

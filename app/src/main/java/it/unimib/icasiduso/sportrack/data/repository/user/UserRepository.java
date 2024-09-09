@@ -67,6 +67,11 @@ public class UserRepository implements IUserRepository {
         authDataSource.signIn(email, password, callback);
     }
 
+    @Override
+    public void changePassword(String newPassword, ChangePasswordCallback callback) {
+        authDataSource.changePassword(newPassword, callback);
+    }
+
 
     public void saveUser(User user, UserDatabaseCallback callback) {
         userRemoteDataSource.saveUser(user, callback);

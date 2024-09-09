@@ -16,6 +16,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
+import it.unimib.icasiduso.sportrack.utils.TextParser;
+
 @Entity
 public class Exercise implements Parcelable {
     public static final Creator<Exercise> CREATOR = new Creator<Exercise>() {
@@ -30,7 +32,7 @@ public class Exercise implements Parcelable {
         }
     };
     @PrimaryKey
-    private long exerciseId;
+    private long id;
     private String name;
     private String type;
     private String muscle;
@@ -40,19 +42,24 @@ public class Exercise implements Parcelable {
 
     @Ignore
     @JsonCreator
-    public Exercise(@JsonProperty("name") String name, @JsonProperty("type") String type, @JsonProperty("muscle") String muscle, @JsonProperty("equipment") String equipment, @JsonProperty("difficulty") String difficulty, @JsonProperty("instructions") String instructions) {
+    public Exercise(@JsonProperty("name") String name, @JsonProperty("type") String type,
+                    @JsonProperty("muscle") String muscle,
+                    @JsonProperty("equipment") String equipment,
+                    @JsonProperty("difficulty") String difficulty,
+                    @JsonProperty("instructions") String instructions) {
         this.name = name;
         this.type = type;
         this.muscle = muscle;
         this.equipment = equipment;
         this.difficulty = difficulty;
         this.instructions = instructions;
-        this.exerciseId = generateExerciseId(name);
+        this.id = generateExerciseId(name);
     }
 
     public Exercise() {
     }
 
+    @Ignore
     protected Exercise(Parcel in) {
         name = in.readString();
         type = in.readString();
@@ -73,16 +80,20 @@ public class Exercise implements Parcelable {
         }
     }
 
-    public long getExerciseId() {
-        return exerciseId;
+    public long getId() {
+        return id;
     }
 
-    public void setExerciseId(long exerciseId) {
-        this.exerciseId = exerciseId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getParsedName() {
+        return TextParser.parseText(this.name);
     }
 
     public void setName(String name) {
@@ -93,12 +104,20 @@ public class Exercise implements Parcelable {
         return type;
     }
 
+    public String getParsedType() {
+        return TextParser.parseText(this.type);
+    }
+
     public void setType(String type) {
         this.type = type;
     }
 
     public String getMuscle() {
         return muscle;
+    }
+
+    public String getParsedMuscle() {
+        return TextParser.parseText(this.muscle);
     }
 
     public void setMuscle(String muscle) {
@@ -109,12 +128,20 @@ public class Exercise implements Parcelable {
         return equipment;
     }
 
+    public String getParsedEquipment() {
+        return TextParser.parseText(this.equipment);
+    }
+
     public void setEquipment(String equipment) {
         this.equipment = equipment;
     }
 
     public String getDifficulty() {
         return difficulty;
+    }
+
+    public String getParsedDifficulty() {
+        return TextParser.parseText(this.difficulty);
     }
 
     public void setDifficulty(String difficulty) {

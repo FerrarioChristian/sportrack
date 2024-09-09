@@ -2,6 +2,8 @@ package it.unimib.icasiduso.sportrack.ui;
 
 import static androidx.core.app.ActivityCompat.recreate;
 
+import static it.unimib.icasiduso.sportrack.utils.Constants.MIN_PASSWORD_LENGTH;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -22,11 +24,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Locale;
 
+import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.schedule.IScheduleRepository;
 import it.unimib.icasiduso.sportrack.data.repository.user.IUserRepository;
 import it.unimib.icasiduso.sportrack.databinding.FragmentSettingsBinding;
 import it.unimib.icasiduso.sportrack.main.MainActivity;
+import it.unimib.icasiduso.sportrack.model.Result;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
 import it.unimib.icasiduso.sportrack.viewmodel.ScheduleViewModel;
 import it.unimib.icasiduso.sportrack.viewmodel.UserViewModel;
@@ -59,7 +63,8 @@ public class SettingsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -69,7 +74,8 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.darkModeSwitch.post(() -> {
-            int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            int currentNightMode =
+                    getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             binding.darkModeSwitch.setChecked(currentNightMode == Configuration.UI_MODE_NIGHT_YES);
         });
 
@@ -96,6 +102,7 @@ public class SettingsFragment extends Fragment {
             Configuration config = new Configuration();
             config.setLocale(newLocale);
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            App.setRes(getResources());
             recreate(requireActivity());
         });
 
@@ -116,7 +123,30 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        binding.buttonSave.setOnClickListener(v1 -> {
+            String newPassword = binding.changePasswordEditText.getText() != null ?
+                    binding.changePasswordEditText.getText()
+                    .toString() : "";
+
+            if (newPassword.isEmpty() || newPassword.length() < 8) {
+                Toast.makeText(requireContext(), App.getRes().getString(R.string.invalid_password, MIN_PASSWORD_LENGTH ), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            userViewModel.changePassword(newPassword).observe(getViewLifecycleOwner(), result -> {
+                if (result.isSuccess()) {
+                    Toast.makeText(requireContext(), R.string.password_changed, Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(requireContext(),((Result.Error<String>) result).getMessage(), Toast.LENGTH_LONG)
+                            .show();
+                }
+
+            });
+        });
+
     }
+
 
     private void observeViewModel() {
     }

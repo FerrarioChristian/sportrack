@@ -17,6 +17,10 @@ public class App extends Application {
         return res;
     }
 
+    public static void setRes(Resources res) {
+        App.res = res;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

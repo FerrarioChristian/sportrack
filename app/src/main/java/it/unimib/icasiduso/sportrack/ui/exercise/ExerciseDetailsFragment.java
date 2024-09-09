@@ -58,19 +58,18 @@ public class ExerciseDetailsFragment extends Fragment {
 
         ExerciseDetailsFragmentArgs args = ExerciseDetailsFragmentArgs.fromBundle(getArguments());
         Exercise exercise = args.getExercise();
-        long scheduleId = args.getScheduleId();
+        long scheduleId = args.getId();
 
         binding.setExercise(exercise);
 
         binding.scheduleInputContainer.setVisibility(scheduleId != 0L ? View.VISIBLE : View.GONE);
 
         binding.addExerciseToSchedule.setOnClickListener(v -> {
-            String series = binding.textViewSeries.getEditText()
-                    .getText() != null ? binding.textViewSeries.getEditText()
+            String series = binding.seriesInput.getText() != null ? binding.seriesInput
                     .getText()
                     .toString() : "";
-            String reps = binding.textViewReps.getEditText()
-                    .getText() != null ? binding.textViewReps.getEditText()
+            String reps = binding.repsInput
+                    .getText() != null ? binding.repsInput
                     .getText()
                     .toString() : "";
             if (!isValidInput(series, reps)) {
@@ -83,7 +82,7 @@ public class ExerciseDetailsFragment extends Fragment {
             assert user != null;
             WorkoutExercise workoutExercise = new WorkoutExercise(series,
                     reps,
-                    exercise.getExerciseId(),
+                    exercise.getId(),
                     scheduleId,
                     user.getUid());
             workoutExerciseViewModel.addWorkoutExercise(workoutExercise);

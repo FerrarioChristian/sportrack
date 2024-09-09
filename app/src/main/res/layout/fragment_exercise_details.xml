@@ -63,7 +63,7 @@
                             android:layout_weight="1"
                             android:gravity="fill_horizontal"
                             android:padding="1dp"
-                            android:text="@{@string/exercise_muscle(exercise.muscle)}"
+                            android:text="@{@string/exercise_muscle(exercise.parsedMuscle)}"
                             android:textColor="@color/md_theme_onSurface"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -75,7 +75,7 @@
                             android:layout_weight="1"
                             android:gravity="fill_horizontal"
                             android:padding="1dp"
-                            android:text="@{@string/exercise_type(exercise.type)}"
+                            android:text="@{@string/exercise_type(exercise.parsedType)}"
                             android:textColor="@color/md_theme_onSurface"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -94,7 +94,7 @@
                             android:layout_weight="1"
                             android:gravity="fill_horizontal"
                             android:padding="0dp"
-                            android:text="@{@string/exercise_difficulty(exercise.difficulty)}"
+                            android:text="@{@string/exercise_difficulty(exercise.parsedDifficulty)}"
                             android:textColor="@color/md_theme_onSurface"
                             android:textSize="16sp" />
 
@@ -105,7 +105,7 @@
                             android:layout_weight="1"
                             android:gravity="fill_horizontal"
                             android:padding="0dp"
-                            android:text="@{@string/exercise_tool(exercise.equipment)}"
+                            android:text="@{@string/exercise_tool(exercise.parsedEquipment)}"
                             android:textColor="@color/md_theme_onSurface"
                             android:textSize="16sp" />
 
@@ -166,9 +166,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/series_input"
                             android:layout_width="match_parent"
                             android:layout_height="61dp"
-                            android:autofillHints="emailAddress"
                             android:importantForAutofill="no"
                             android:inputType="number"
                             android:longClickable="false"
@@ -198,9 +198,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/reps_input"
                             android:layout_width="match_parent"
                             android:layout_height="61dp"
-                            android:autofillHints="emailAddress"
                             android:importantForAutofill="no"
                             android:inputType="number"
                             android:longClickable="false"

@@ -6,6 +6,7 @@ import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.repository.exercise.ExerciseRepository;
 import it.unimib.icasiduso.sportrack.data.source.workout_exercise.IWorkoutExerciseDataSource;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
@@ -25,7 +26,7 @@ public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
     public void addWorkoutExercise(WorkoutExercise workoutExercise,
                                    SaveWorkoutExerciseCallback callback) {
         long workoutExerciseId = System.currentTimeMillis();
-        workoutExercise.setWorkoutExerciseId(workoutExerciseId);
+        workoutExercise.setId(workoutExerciseId);
 
         workoutExerciseLocalDataSource.addWorkoutExercise(workoutExercise, callback);
         workoutExerciseRemoteDataSource.addWorkoutExercise(workoutExercise,
@@ -90,6 +91,19 @@ public class WorkoutExercisesRepository implements IWorkoutExercisesRepository {
 
                     }
                 });
+    }
+
+    @Override
+    public void saveExerciseCompleted(ExerciseCompleted exerciseCompleted) {
+        long exerciseCompletedId = System.currentTimeMillis();
+        exerciseCompleted.setId(exerciseCompletedId);
+        workoutExerciseLocalDataSource.saveExerciseCompleted(exerciseCompleted);
+    }
+
+    @Override
+    public void getExercisesCompleted(String userId, GetExercisesCompletedCallback callback) {
+        workoutExerciseLocalDataSource.getExercisesCompleted(userId, callback);
+
     }
 
 

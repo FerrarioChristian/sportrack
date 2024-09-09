@@ -1,42 +1,59 @@
 package it.unimib.icasiduso.sportrack.ui;
 
-import static java.lang.Integer.parseInt;
+import static it.unimib.icasiduso.sportrack.utils.Constants.CAROUSEL_IMAGES;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LegendRenderer;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.unimib.icasiduso.sportrack.R;
+import it.unimib.icasiduso.sportrack.adapters.CarouselRecyclerViewAdapter;
+import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
+import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
 import it.unimib.icasiduso.sportrack.databinding.FragmentHomepageBinding;
+import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
+import it.unimib.icasiduso.sportrack.utils.DeviceUtils;
+import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
+import it.unimib.icasiduso.sportrack.utils.TextParser;
+import it.unimib.icasiduso.sportrack.utils.TimeUtils;
+import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
+import it.unimib.icasiduso.sportrack.viewmodel.WorkoutExerciseViewModel;
 
 public class HomepageFragment extends Fragment {
     private static final String TAG = HomepageFragment.class.getSimpleName();
-
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    int[] activityData;
     private FragmentHomepageBinding binding;
-
-    private List<DataPoint> weightDataList;
-    private int i;
-    private double sumPeso;
-    private LineGraphSeries<DataPoint> mediaSeries;
+    private WorkoutExerciseViewModel workoutExerciseViewModel;
+    private ExerciseViewModel exerciseViewModel;
+    private List<ExerciseCompleted> exerciseCompletedList = new ArrayList<>();
 
     public HomepageFragment() {
     }
@@ -44,11 +61,25 @@ public class HomepageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        IWorkoutExercisesRepository workoutExercisesRepository = ServiceLocator.getInstance()
+                .getWorkoutExercisesRepository();
+        WorkoutExerciseViewModel.Factory factory = new WorkoutExerciseViewModel.Factory(
+                workoutExercisesRepository);
+        workoutExerciseViewModel = new ViewModelProvider(requireActivity(), factory).get(
+                WorkoutExerciseViewModel.class);
+
+        IExerciseRepository exercisesRepository = ServiceLocator.getInstance()
+                .getExercisesRepository();
+        ExerciseViewModel.Factory exerciseViewModelFactory = new ExerciseViewModel.Factory(
+                exercisesRepository);
+        exerciseViewModel = new ViewModelProvider(requireActivity(), exerciseViewModelFactory).get(
+                ExerciseViewModel.class);
     }
 
-
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentHomepageBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -57,133 +88,246 @@ public class HomepageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EditText inputPeso = view.findViewById(R.id.Weight);
-        TextView tvMediaPeso = view.findViewById(R.id.tvMediaPeso);
-        TextView tvFeedback = view.findViewById(R.id.tvFeedback);
+        // Imposto il logo in base al tema
+        boolean isNightMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        if (isNightMode) binding.imageViewUser.setColorFilter(requireContext().getColor(R.color.md_theme_onPrimary));
 
-        weightDataList = new ArrayList<>();
+        observeViewModel();
+        initializeCarousel();
+    }
 
-        // Inizializza la lista dei dati
-        weightDataList = new ArrayList<>();
+    // Osservo il viewmodel per aggiornare la UI
+    private void observeViewModel() {
+        assert user != null;
+        workoutExerciseViewModel.getExercisesCompleted(user.getUid())
+                .observe(getViewLifecycleOwner(), result -> {
+                    exerciseCompletedList.clear();
 
-        // Inizializza la serie della media
-        mediaSeries = new LineGraphSeries<>();
-        mediaSeries.setColor(Color.RED);
-        mediaSeries.setTitle("Media"); // Imposta il titolo per la legenda
+                    // Se ci sono dati presenti eseguo i vari calcoli e inizializzo la Heatmap e le relative card
+                    if (result != null && !result.isEmpty()) {
+                        binding.muscleCard.setVisibility(View.VISIBLE);
+                        binding.dayCard.setVisibility(View.VISIBLE);
+                        exerciseCompletedList = result;
+                        activityData = countExercisesPerDate(exerciseCompletedList);
+                        int dayIndex = findDayWithMostExercises();
+                        initializeHeatmap(dayIndex);
 
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                i++;
+                        String finalDate = TimeUtils.getDateFromDayIndex(dayIndex, 34);
+                        String dayNameTemp = TimeUtils.getDayNameFromDate(finalDate);
 
-                // Aggiorna la lista dei dati con il nuovo punto
-                int nuovoPeso = parseInt(inputPeso.getText().toString());
-                weightDataList.add(new DataPoint(i, nuovoPeso));
-
-                // Aggiorna la somma dei pesi
-                sumPeso += nuovoPeso;
-
-
-                //creazione del GraphView
-                GraphView graph = binding.graph;
-                // Imposta i limiti della vista del grafico
-                graph.getViewport().setXAxisBoundsManual(false);
-                graph.setScaleX(1);
-                graph.getViewport().setMinY(0);
-                graph.getViewport().setMaxY(200);
-                graph.getViewport().setMinX(0);
-                graph.getViewport().setMaxX(7); // i è il contatore dei dati
-
-
-                // Abilita lo scorrimento orizzontale
-                graph.getViewport().setScrollable(true);
-                graph.getViewport().setScrollableY(false); // Se vuoi anche lo scorrimento verticale
-
-
-                // Crea una serie di dati a barre per i pesi (giallo con bordo nero)
-                BarGraphSeries<DataPoint> pesiSeries = new BarGraphSeries<>(weightDataList.toArray(
-                        new DataPoint[0]));
-                pesiSeries.setColor(Color.TRANSPARENT); // Imposta il colore interno
-                pesiSeries.setSpacing(50); // Imposta la larghezza dello spazio tra le barre
-                pesiSeries.setDrawValuesOnTop(true);
-                pesiSeries.setValuesOnTopColor(Color.BLACK); // Imposta il colore del testo sopra le barre
-                pesiSeries.setValuesOnTopSize(24); // Imposta la dimensione del testo sopra le barre
-
-
-                // Aggiorna la serie della media con l'ultimo valore
-                double media = sumPeso / i;
-                mediaSeries.appendData(new DataPoint(i, media), true, i);
-
-                //mostra la media del peso
-                tvMediaPeso.setText("Media Peso: " + String.format("%.2f", media));
-                // Fornisci feedback per ogni dato
-                if (i > 0) {
-                    DataPoint ultimoDato = weightDataList.get(i - 1);
-                    double pesoUltimoDato = ultimoDato.getY();
-
-                    if (pesoUltimoDato > media) {
-                        tvFeedback.setText("Coraggio, impegnati di più!");
-                    } else {
-                        tvFeedback.setText("Continua così!");
-                    }
-                } else {
-                    // Gestisci il caso in cui non ci sono dati inseriti
-                    tvFeedback.setText("");
-                }
-                // Cancella tutte le serie precedenti e aggiunge le nuove serie al grafico
-                graph.removeAllSeries();
-                graph.addSeries(pesiSeries);
-                graph.addSeries(mediaSeries);
-
-                // Aggiunge la legenda
-                graph.getLegendRenderer().setVisible(true);
-                graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
-
-                // Imposta lo sfondo arancio
-                graph.setBackgroundColor(Color.parseColor("#60FFA500")); // Arancio
-
-                // Aggiunge il cliccato listener per visualizzare i valori
-                graph.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        float touchX = motionEvent.getX();
-                        float touchY = motionEvent.getY();
-
-                        // Trasforma le coordinate dello schermo in coordinate del grafico
-                        double minX = graph.getViewport().getMinX(false);
-                        double maxX = graph.getViewport().getMaxX(false);
-                        double x = minX + (touchX / view.getWidth()) * (maxX - minX);
-
-                        double minY = graph.getViewport().getMinY(false);
-                        double maxY = graph.getViewport().getMaxY(false);
-                        double y = minY + (1 - touchY / view.getHeight()) * (maxY - minY);
-
-                        // Ora x e y contengono le coordinate del clic
-                        handleTouch(x, y);
-                        return false;
+                        binding.dayName.setText(dayNameTemp);
+                        binding.dayDate.setText(finalDate);
+                        exerciseViewModel.getExerciseById(result.get(0).getExerciseId());
                     }
                 });
+
+        exerciseViewModel.getExerciseLiveData().observe(getViewLifecycleOwner(), exercise -> {
+            if (exercise != null) {
+                findMostUsedMuscle(exercise);
             }
         });
-
     }
 
-    private void handleTouch(double x, double y) {
-        // Puoi utilizzare x e y per determinare il punto cliccato e visualizzare i dati corrispondenti
-        // Ad esempio, puoi trovare la barra più vicina a x e visualizzare il suo valore
-        // E puoi anche visualizzare il valore della media in quel punto
-        // Esempio:
-        double barWidth = 1.0; // Larghezza della barra
-        for (DataPoint dataPoint : weightDataList) {
-            double barCenter = dataPoint.getX();
-            if (Math.abs(x - barCenter) <= barWidth / 2) {
-                // Questo è il punto cliccato, mostra i valori
-                double pesoBarra = dataPoint.getY();
-                double media = sumPeso / i;
-                String message = "Valore della Barra: " + pesoBarra + "\nUltima Media: " + media;
-                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
-                break;
+    @SuppressWarnings("ConstantConditions")
+    //Prende la lista di esercizi e restituisce il muscle più usato
+    private void findMostUsedMuscle(Exercise exercise) {
+        // Crea una mappa per contare le occorrenze dei muscoli
+        Map<String, Integer> muscleCountMap = new HashMap<>();
+
+        // Ottiene il muscolo associato all'esercizio e aggiunge il muscolo alla mappa o incrementa il suo contatore se già presente
+        String muscle = exercise.getMuscle();
+        muscleCountMap.put(muscle, muscleCountMap.getOrDefault(muscle, 0) + 1);
+
+        String mostUsedMuscle = null;
+        int maxCount = 0;
+
+        // Itera su ogni entry della mappa per trovare il muscolo più usato
+        for (Map.Entry<String, Integer> entry : muscleCountMap.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                mostUsedMuscle = entry.getKey();
+                maxCount = entry.getValue();
             }
         }
+
+        // Imposta il nome del muscolo nel TextView dopo averlo formattato
+        if (mostUsedMuscle != null) {
+            binding.muscleName.setText(TextParser.parseText(mostUsedMuscle));
+        }
     }
+
+    @SuppressWarnings("ConstantConditions")
+    //Restituisce un array contenente il numero di esercizi per data
+    private int[] countExercisesPerDate(List<ExerciseCompleted> exerciseCompletedList) {
+        // Crea una mappa per contare le occorrenze di ogni data e imposta il formatter
+        Map<LocalDate, Integer> dateCountMap = new HashMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Itera su ogni esercizio completato e conta quante volte appare ogni data
+        for (ExerciseCompleted exercise : exerciseCompletedList) {
+            LocalDate date = LocalDate.parse(exercise.getDate(), formatter);
+            dateCountMap.put(date, dateCountMap.getOrDefault(date, 0) + 1);
+        }
+
+        // Ottieni la data di oggi come data finale
+        LocalDate endDate = LocalDate.now();
+        // Calcola la data di inizio, 34 giorni prima di oggi
+        LocalDate startDate = endDate.minusDays(34);
+
+        int[] countsArray = new int[35];
+
+        LocalDate currentDate = startDate;
+        int index = 0;
+
+        // Itera attraverso ogni giorno dal giorno di inizio fino a quello finale
+        while (!currentDate.isAfter(endDate)) {
+            // Popola l'array con il conteggio degli esercizi per ogni data
+            countsArray[index] = dateCountMap.getOrDefault(currentDate, 0);
+            currentDate = currentDate.plusDays(1);
+            index++;
+        }
+
+        // Restituisce l'array con i conteggi degli esercizi per ciascun giorno
+        return countsArray;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void initializeHeatmap(int bestDay) {
+        // Rimuove tutte le viste esistenti nella griglia della heatmap
+        binding.heatmapGrid.removeAllViews();
+
+        // Definisce la data finale e quella di inizio per l'intervallo di 35 giorni
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(34);
+
+        // Crea una mappa per memorizzare il livello di attività per ogni data
+        Map<LocalDate, Integer> activityMap = new HashMap<>();
+        // Itera attraverso gli esercizi completati per popolare la mappa
+        for (ExerciseCompleted exercise : exerciseCompletedList) {
+            LocalDate date = LocalDate.parse(exercise.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            int level = activityMap.getOrDefault(date, 0);
+            activityMap.put(date, Math.min(level + 1, 30));
+        }
+
+        // Calcola le dimensioni di ciascella nella griglia
+        int cellDims = DeviceUtils.getScreenWidthMinusPadding(requireActivity(), 130) / 7;
+
+
+        // Data corrente per la generazione della heatmap
+        LocalDate currentDate = startDate;
+        for (int i = 0; i < 35; i++) {
+            // Ottiene il livello di attività per la data corrente
+            int activityLevel = activityMap.getOrDefault(currentDate, 0);
+
+            // Crea e configura una TextView per rappresentare un giorno nella griglia
+            TextView dayView = new TextView(requireContext());
+            dayView.setText(String.valueOf(currentDate.getDayOfMonth()));
+            dayView.setGravity(Gravity.CENTER);
+
+            dayView.setTextColor(Color.BLACK);
+
+            int color;
+            switch (activityLevel) {
+                case 0:
+                    color = requireContext().getColor(R.color.md_theme_surfaceContainer);
+                    dayView.setTextColor(requireContext().getColor(R.color.md_theme_onSurface));
+                    break;
+                case 1:
+                case 2:
+                    color = Color.parseColor("#abef95");
+                    break;
+                case 3:
+                case 4:
+                    color = Color.parseColor("#9dec83");
+                    break;
+                case 5:
+                case 6:
+                    color = Color.parseColor("#88e868");
+                    break;
+                case 7:
+                case 8:
+                    color = Color.parseColor("#6ce345");
+                    break;
+                case 9:
+                case 10:
+                    color = Color.parseColor("#50de21");
+                    break;
+                case 11:
+                case 12:
+                    color = Color.parseColor("#47c31d");
+                    break;
+                case 13:
+                case 14:
+                    color = Color.parseColor("#3fad1a");
+                    break;
+                default:
+                    color = Color.parseColor("#389d2f");
+                    break;
+            }
+
+            if (i == bestDay) color = Color.parseColor("#FFD700");  //Colore oro per il giorno migliore
+            if (i == 34) {
+                color = Color.parseColor("#8591ff"); // Colore azzurro per la data odierna
+                dayView.setTextColor(Color.BLACK);
+            }
+
+            // Configura i parametri di layout per la TextView
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = cellDims;
+            params.height = cellDims;
+            params.setMargins(8, 8, 8, 8); // Adjust margins as needed
+
+            // Crea un Drawable per la forma della cella
+            float[] radii = new float[8];
+            Arrays.fill(radii, 16);
+            ShapeDrawable drawable = new ShapeDrawable(new RoundRectShape(radii, null, null));
+            drawable.getPaint().setColor(color);
+            dayView.setBackground(drawable);
+
+            dayView.setLayoutParams(params);
+            binding.heatmapGrid.addView(dayView, params);
+
+            // Imposta un listener per visualizzare un Toast al clic della cella
+            dayView.setOnClickListener(v -> Toast.makeText(requireContext(), getContext().getString(R.string.exercise_done_toast) + " " + activityLevel, Toast.LENGTH_SHORT).show());
+
+            currentDate = currentDate.plusDays(1);
+        }
+    }
+
+    //Dall'array activityData restituisce l'indice del giorno con il maggior numero di esercizi
+    private int findDayWithMostExercises() {
+        int maxCount = 0;
+        int dayIndex = -1;
+        int numberOfDays = 34;
+        // Calcola l'indice di partenza, considerando solo gli ultimi 35 giorni
+        int startIndex = Math.max(activityData.length - numberOfDays, 0);
+
+        // Itera sugli ultimi giorni dell'array per trovare il giorno con il massimo numero di esercizi
+        for (int i = startIndex; i < activityData.length; i++) {
+            if (activityData[i] > maxCount) {
+                // Aggiorna il conteggio massimo e l'indice del giorno corrispondente
+                maxCount = activityData[i];
+                dayIndex = i;
+            }
+        }
+
+        // Calcola l'indice relativo all'interno dei 35 giorni considerati
+        if (dayIndex >= startIndex) {
+            dayIndex = dayIndex - startIndex;
+        }
+
+        // Restituisce l'indice del giorno con il maggior numero di esercizi (basato su 1 come primo giorno)
+        return dayIndex + 1;
+    }
+
+
+    //Inizializza il Carousel usando una recyclerView
+    private void initializeCarousel() {
+        ArrayList<String> carouselImages = new ArrayList<>(Arrays.asList(CAROUSEL_IMAGES));
+
+        CarouselRecyclerViewAdapter adapter = new CarouselRecyclerViewAdapter(getContext(),
+                carouselImages);
+        binding.recycler.setAdapter(adapter);
+    }
+
+
 }

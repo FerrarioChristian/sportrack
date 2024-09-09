@@ -22,6 +22,7 @@
     <string name="schedule">Schedule</string>
     <string name="exercises">Exercises</string>
     <string name="settings">Settings</string>
+    <string name="timer">Timer</string>
     <!-- Strings used for muscles -->
     <string name="abdominals">abdominals</string>
     <string name="biceps">biceps</string>
@@ -70,4 +71,34 @@
     <string name="invalid_input">Inserted values not valid.</string>
     <string name="loading_error_check_internet">Loading error, check your network and try again</string>
     <string name="user_not_logged">User not logged</string>
+    <string name="friday">Friday</string>
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="saturday">Saturday</string>
+    <string name="pause">Pause</string>
+    <string name="skipExercise">Skip Exercise</string>
+    <string name="nextSeries">Next Series</string>
+    <string name="further_details">Further details:</string>
+    <string name="series_left">Remaining Sets:</string>
+    <string name="of">of</string>
+    <string name="rep_left">Reps</string>
+    <string name="workout_end">Workout finished in</string>
+    <string name="banner" translatable="false">Banner</string>
+    <string name="play">Play</string>
+    <string name="exercise_activity_status" translatable="false">exercise_activity_status</string>
+    <string name="info_icon" translatable="false">info_icon</string>
+    <string name="title_sport" translatable="false">SPORT</string>
+    <string name="title_track" translatable="false">TRACK</string>
+    <string name="activity_map">Activity Heatmap</string>
+    <string name="most_trained_muscle">Most trained muscle</string>
+    <string name="motivation_homapge">Keep going!</string>
+    <string name="top_day">Best day</string>
+    <string name="heatmap_first_description">Complete your first workout to see the heatmap and other stats!</string>
+    <string name="end_pause_before">Finish your pause first!</string>
+    <string name="start_timer_before">Start the timer before!</string>
+    <string name="exercise_done_toast">Exercises done:</string>
+    <string name="password_changed">Password changed</string>
 </resources>

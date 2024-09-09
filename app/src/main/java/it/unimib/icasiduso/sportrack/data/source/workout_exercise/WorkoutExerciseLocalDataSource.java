@@ -1,23 +1,32 @@
 package it.unimib.icasiduso.sportrack.data.source.workout_exercise;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unimib.icasiduso.sportrack.data.database.ExerciseCompletedDao;
 import it.unimib.icasiduso.sportrack.data.database.ExerciseRoomDatabase;
 import it.unimib.icasiduso.sportrack.data.database.WorkoutExerciseDao;
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSource.Local {
 
+    public static final String TAG = WorkoutExerciseLocalDataSource.class.getSimpleName();
+
     private final WorkoutExerciseDao workoutExerciseDao;
+    private final ExerciseCompletedDao exerciseCompletedDao;
 
     public WorkoutExerciseLocalDataSource(ExerciseRoomDatabase exerciseRoomDatabase) {
         this.workoutExerciseDao = exerciseRoomDatabase.workoutExerciseDao();
+        this.exerciseCompletedDao = exerciseRoomDatabase.exerciseCompletedDao();
     }
 
     @Override
-    public void addWorkoutExercise(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback) {
+    public void addWorkoutExercise(WorkoutExercise workoutExercise,
+                                   IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             workoutExerciseDao.insertAll(workoutExercise);
             callback.onSuccess();
@@ -25,7 +34,8 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
     }
 
     @Override
-    public void deleteWorkoutExercise(WorkoutExercise workoutExercise, IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback) {
+    public void deleteWorkoutExercise(WorkoutExercise workoutExercise,
+                                      IWorkoutExercisesRepository.SaveWorkoutExerciseCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
             workoutExerciseDao.deleteWorkoutExercise(workoutExercise);
             callback.onSuccess();
@@ -33,9 +43,11 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
     }
 
     @Override
-    public void getWorkoutExercises(long scheduleId, IWorkoutExercisesRepository.GetWorkoutExerciseCallback callback) {
+    public void getWorkoutExercises(long scheduleId,
+                                    IWorkoutExercisesRepository.GetWorkoutExerciseCallback callback) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<WorkoutExercise> workoutExerciseList = workoutExerciseDao.getWorkoutExercisesByScheduleId(
+            List<WorkoutExercise> workoutExerciseList =
+                    workoutExerciseDao.getWorkoutExercisesByScheduleId(
                     scheduleId);
             if (workoutExerciseList == null || workoutExerciseList.isEmpty()) {
                 callback.onDataNotAvailable();
@@ -48,7 +60,8 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
     @Override
     public void updateWorkoutExercises(List<WorkoutExercise> workoutExerciseList) {
         ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<WorkoutExercise> oldWorkoutExerciseList = workoutExerciseDao.getWorkoutExercisesByScheduleId(
+            List<WorkoutExercise> oldWorkoutExerciseList =
+                    workoutExerciseDao.getWorkoutExercisesByScheduleId(
                     workoutExerciseList.get(0).getScheduleId());
 
             List<WorkoutExercise> exercisesToDelete = new ArrayList<>(oldWorkoutExerciseList);
@@ -58,15 +71,25 @@ public class WorkoutExerciseLocalDataSource implements IWorkoutExerciseDataSourc
                 workoutExerciseDao.deleteWorkoutExercise(workoutExercise);
             }
 
+            Log.d(TAG, "updateWorkoutExercises:" + workoutExerciseList) ;
             workoutExerciseDao.insertWorkoutExercises(workoutExerciseList);
         });
     }
 
     @Override
     public void deleteWorkoutExercises(long scheduleId) {
-        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> {
-            workoutExerciseDao.deleteWorkoutExercisesByScheduleId(scheduleId);
-        });
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> workoutExerciseDao.deleteWorkoutExercisesByScheduleId(scheduleId));
+    }
+
+    @Override
+    public void saveExerciseCompleted(ExerciseCompleted exerciseCompleted) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> exerciseCompletedDao.insertExerciseCompleted(exerciseCompleted));
+    }
+
+    @Override
+    public void getExercisesCompleted(String userId,
+                                      IWorkoutExercisesRepository.GetExercisesCompletedCallback callback) {
+        ExerciseRoomDatabase.databaseWriteExecutor.execute(() -> callback.onSuccess(exerciseCompletedDao.getExercisesCompleted(userId)));
     }
 
 }

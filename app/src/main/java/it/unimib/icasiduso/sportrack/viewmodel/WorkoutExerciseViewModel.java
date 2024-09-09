@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unimib.icasiduso.sportrack.data.repository.workout_exercise.IWorkoutExercisesRepository;
+import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
 import it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise;
 
 
@@ -18,6 +19,7 @@ public class WorkoutExerciseViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isLoadingLiveData = new MutableLiveData<>();
     //TODO Cambiare List<WorkoutExercise> con <Result> e gestire le eccezioni
     private final MutableLiveData<List<WorkoutExercise>> workoutExercisesLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<ExerciseCompleted>> exercisesCompletedLiveData  = new MutableLiveData<>();
 
     private final IWorkoutExercisesRepository workoutExerciseRepository;
 
@@ -94,6 +96,27 @@ public class WorkoutExerciseViewModel extends ViewModel {
                     });
         }
     }
+
+    public void saveExerciseCompleted(ExerciseCompleted exerciseCompleted) {
+        workoutExerciseRepository.saveExerciseCompleted(exerciseCompleted);
+    }
+
+    public MutableLiveData<List<ExerciseCompleted>> getExercisesCompleted(String userId) {
+        workoutExerciseRepository.getExercisesCompleted(userId, new IWorkoutExercisesRepository.GetExercisesCompletedCallback(){
+            @Override
+            public void onSuccess(List<ExerciseCompleted> exercisesCompleted) {
+               exercisesCompletedLiveData.postValue(exercisesCompleted);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+
+        });
+        return exercisesCompletedLiveData;
+    }
+
 
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {

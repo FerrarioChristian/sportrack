@@ -65,6 +65,7 @@ public class ExerciseViewModel extends ViewModel {
             public void onSuccess(Exercise exercise) {
                 setIsLoading(false);
                 result.postValue(exercise);
+                exerciseLiveData.postValue(exercise);
             }
 
             @Override
