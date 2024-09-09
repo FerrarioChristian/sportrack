@@ -25,19 +25,19 @@ public class TimeUtils {
 
         switch (dayOfWeek) {
             case Calendar.SUNDAY:
-                return App.getInstance().getString(R.string.sunday);
+                return App.getRes().getString(R.string.sunday);
             case Calendar.MONDAY:
-                return App.getInstance().getString(R.string.monday);
+                return App.getRes().getString(R.string.monday);
             case Calendar.TUESDAY:
-                return App.getInstance().getString(R.string.tuesday);
+                return App.getRes().getString(R.string.tuesday);
             case Calendar.WEDNESDAY:
-                return App.getInstance().getString(R.string.wednesday);
+                return App.getRes().getString(R.string.wednesday);
             case Calendar.THURSDAY:
-                return App.getInstance().getString(R.string.thursday);
+                return App.getRes().getString(R.string.thursday);
             case Calendar.FRIDAY:
-                return App.getInstance().getString(R.string.friday);
+                return App.getRes().getString(R.string.friday);
             case Calendar.SATURDAY:
-                return App.getInstance().getString(R.string.saturday);
+                return App.getRes().getString(R.string.saturday);
             default:
                 return "Error";
         }

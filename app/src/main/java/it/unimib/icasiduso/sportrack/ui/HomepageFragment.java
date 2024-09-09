@@ -8,7 +8,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,7 +89,7 @@ public class HomepageFragment extends Fragment {
 
         // Check the current night mode
         boolean isNightMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-        if (isNightMode) binding.imageViewUser.setColorFilter(getContext().getColor(R.color.md_theme_onPrimary));
+        if (isNightMode) binding.imageViewUser.setColorFilter(requireContext().getColor(R.color.md_theme_onPrimary));
 
 
         observeViewModel();
@@ -185,8 +184,7 @@ public class HomepageFragment extends Fragment {
 
         Map<LocalDate, Integer> activityMap = new HashMap<>();
         for (ExerciseCompleted exercise : exerciseCompletedList) {
-            LocalDate date = null;
-            date = LocalDate.parse(exercise.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            LocalDate date = LocalDate.parse(exercise.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             int level = activityMap.getOrDefault(date, 0);
             activityMap.put(date, Math.min(level + 1, 30));
         }
@@ -253,23 +251,19 @@ public class HomepageFragment extends Fragment {
             dayView.setLayoutParams(params);
             binding.heatmapGrid.addView(dayView, params);
 
-            dayView.setOnClickListener(v -> {
-                        Toast.makeText(requireContext(), getContext().getString(R.string.exercise_done_toast) + " " + activityLevel, Toast.LENGTH_SHORT).show();
-                    });
+            dayView.setOnClickListener(v -> Toast.makeText(requireContext(), getContext().getString(R.string.exercise_done_toast) + " " + activityLevel, Toast.LENGTH_SHORT).show());
 
             currentDate = currentDate.plusDays(1);
         }
     }
 
     private int calculateCellDims() {
-
         DisplayMetrics displayMetrics = new DisplayMetrics();
         if (getActivity() != null) {
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         }
-        int screenWidth = displayMetrics.widthPixels - Math.round(120 * (displayMetrics.densityDpi / 160f));
-        int cellDims = screenWidth / 7;
-        return cellDims;
+        int screenWidth = displayMetrics.widthPixels - Math.round(130 * (displayMetrics.densityDpi / 160f));
+        return screenWidth / 7;
     }
 
     //Dall'array activityData restituisce l'indice del giorno con il maggior numero di esercizi
