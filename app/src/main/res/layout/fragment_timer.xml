@@ -58,7 +58,6 @@
             android:id="@+id/timer_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00:00:00"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="40sp"
             android:textStyle="bold"
@@ -74,7 +73,6 @@
             android:id="@+id/pause_timer_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00:00:00"
             android:textColor="@color/md_theme_onBackground"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -161,7 +159,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/nextSeries" />
+                android:text="@string/nextSeries"
+                tools:ignore="InefficientWeight" />
 
             <!-- Pause Button -->
 

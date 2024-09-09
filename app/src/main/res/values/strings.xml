@@ -88,4 +88,16 @@
     <string name="workout_end">Workout finished in</string>
     <string name="banner" translatable="false">Banner</string>
     <string name="play">Play</string>
+    <string name="exercise_activity_status" translatable="false">exercise_activity_status</string>
+    <string name="info_icon" translatable="false">info_icon</string>
+    <string name="title_sport" translatable="false">SPORT</string>
+    <string name="title_track" translatable="false">TRACK</string>
+    <string name="activity_map">Activity Heatmap</string>
+    <string name="most_trained_muscle">Most trained Muscle</string>
+    <string name="motivation_homapge">Keep going!</string>
+    <string name="top_day">Best day</string>
+    <string name="heatmap_first_description">Complete your first workout to see the heatmap!</string>
+    <string name="end_pause_before">Finish your pause first!</string>
+    <string name="start_timer_before">Start the timer before!</string>
+    <string name="exercise_done_toast">Exercises done:</string>
 </resources>

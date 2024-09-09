@@ -90,6 +90,7 @@ dependencies {
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("it.xabaras.android:recyclerview-swipedecorator:1.4")
 
+    //noinspection GradlePath
     implementation(files("/libs/timeit-release.aar"))
 
 

@@ -2,16 +2,20 @@ package it.unimib.icasiduso.sportrack.ui;
 
 import static it.unimib.icasiduso.sportrack.utils.Constants.CAROUSEL_IMAGES;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +41,7 @@ import it.unimib.icasiduso.sportrack.databinding.FragmentHomepageBinding;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
 import it.unimib.icasiduso.sportrack.model.exercise.ExerciseCompleted;
 import it.unimib.icasiduso.sportrack.utils.ServiceLocator;
+import it.unimib.icasiduso.sportrack.utils.TextParser;
 import it.unimib.icasiduso.sportrack.utils.TimeUtils;
 import it.unimib.icasiduso.sportrack.viewmodel.ExerciseViewModel;
 import it.unimib.icasiduso.sportrack.viewmodel.WorkoutExerciseViewModel;
@@ -82,6 +87,11 @@ public class HomepageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Check the current night mode
+        boolean isNightMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        if (isNightMode) binding.imageViewUser.setColorFilter(getContext().getColor(R.color.md_theme_onPrimary));
+
 
         observeViewModel();
         initializeCarousel();
@@ -132,7 +142,7 @@ public class HomepageFragment extends Fragment {
         }
 
         if (mostUsedMuscle != null) {
-            binding.muscleName.setText(mostUsedMuscle);
+            binding.muscleName.setText(TextParser.parseText(mostUsedMuscle));
         }
     }
 
@@ -176,8 +186,11 @@ public class HomepageFragment extends Fragment {
             LocalDate date = null;
             date = LocalDate.parse(exercise.getDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             int level = activityMap.getOrDefault(date, 0);
-            activityMap.put(date, Math.min(level + 1, 9));
+            activityMap.put(date, Math.min(level + 1, 30));
         }
+
+        int cellWidth = calculateCellWidth();
+        int cellHeight = calculateCellHeight();
 
         LocalDate currentDate = startDate;
         for (int i = 0; i < 35; i++) {
@@ -226,8 +239,8 @@ public class HomepageFragment extends Fragment {
 
 
             GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = 110;
-            params.height = 110;
+            params.width = cellWidth;
+            params.height = cellWidth;
             params.setMargins(8, 8, 8, 8); // Adjust margins as needed
 
             float[] radii = new float[8];
@@ -239,8 +252,34 @@ public class HomepageFragment extends Fragment {
             dayView.setLayoutParams(params);
             binding.heatmapGrid.addView(dayView, params);
 
+            dayView.setOnClickListener(v -> {
+                        Toast.makeText(requireContext(), getContext().getString(R.string.exercise_done_toast) + " " + activityLevel, Toast.LENGTH_SHORT).show();
+                    });
+
             currentDate = currentDate.plusDays(1);
         }
+    }
+
+    private int calculateCellWidth() {
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        if (getActivity() != null) {
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        }
+        int screenWidth = displayMetrics.widthPixels - Math.round(120 * (displayMetrics.densityDpi / 160f));
+        int cellWidth = screenWidth / 7;
+        return cellWidth;
+    }
+
+    private int calculateCellHeight() {
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        if (getActivity() != null) {
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        }
+        int screenWidth = displayMetrics.widthPixels - Math.round(120 * (displayMetrics.densityDpi / 160f));
+        int cellheight = screenWidth / 7;
+        return cellheight;
     }
 
     //Dall'array activityData restituisce l'indice del giorno con il maggior numero di esercizi
@@ -271,6 +310,7 @@ public class HomepageFragment extends Fragment {
         CarouselRecyclerViewAdapter adapter = new CarouselRecyclerViewAdapter(getContext(),
                 carouselImages);
         binding.recycler.setAdapter(adapter);
+
     }
 
 

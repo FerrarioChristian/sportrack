@@ -1,5 +1,6 @@
 package it.unimib.icasiduso.sportrack.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.List;
 import it.unimib.icasiduso.sportrack.App;
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.model.exercise.Exercise;
+import it.unimib.icasiduso.sportrack.utils.TextParser;
 
 public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRecyclerViewAdapter.ExerciseViewHolder> {
     private final OnItemClickListener onItemClickListener;
@@ -64,8 +66,7 @@ public class ExerciseRecyclerViewAdapter extends RecyclerView.Adapter<ExerciseRe
         }
 
         public void bind(Exercise exercise) {
-            //TODO Parsare nome esercizio
-            textViewExerciseName.setText(exercise.getName());
+            textViewExerciseName.setText(exercise.getMuscle());
             textViewExerciseDifficulty.setText(App.getRes()
                     .getString(R.string.difficulty, exercise.getDifficulty()));
         }

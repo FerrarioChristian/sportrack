@@ -173,17 +173,21 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
 
         MaterialButton playButton = binding.playButton;
         playButton.setOnClickListener(v -> {
-            if (playButton.getText().equals(requireContext().getString(R.string.pause))) {
-                if (stopwatch.isStarted()) {
-                    stopwatch.pause();
-                    playButton.setText(requireContext().getString(R.string.play));
-                    binding.nextButton.setClickable(false);
-                }
-            } else {
-                if (stopwatch.isPaused()) {
-                    stopwatch.resume();
-                    playButton.setText(requireContext().getString(R.string.pause));
-                    binding.nextButton.setClickable(true);
+            ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
+            if (pause_watch.isStarted()) Toast.makeText(getContext(), requireContext().getString(R.string.end_pause_before), Toast.LENGTH_SHORT).show();
+            else {
+                if (playButton.getText().equals(requireContext().getString(R.string.pause))) {
+                    if (stopwatch.isStarted()) {
+                        stopwatch.pause();
+                        playButton.setText(requireContext().getString(R.string.play));
+                        statIcon.setImageResource(R.drawable.baseline_alarm_off_24);
+                    }
+                } else {
+                    if (stopwatch.isPaused()) {
+                        stopwatch.resume();
+                        playButton.setText(requireContext().getString(R.string.pause));
+                        statIcon.setImageResource(R.drawable.baseline_directions_run_24);
+                    }
                 }
             }
         });
@@ -191,7 +195,8 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             deleteChildren(0);
         });
         binding.nextButton.setOnClickListener(v -> {
-            nextExercise();
+            if (stopwatch.isPaused()) Toast.makeText(getContext(), requireContext().getString(R.string.start_timer_before), Toast.LENGTH_SHORT).show();
+            else nextExercise();
         });
         binding.exitButton.setOnClickListener(v -> {
             TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action =

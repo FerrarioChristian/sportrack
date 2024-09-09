@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="-8dp"
         android:fontFamily="@font/darkcollegefont"
-        android:text="SPORT"
+        android:text="@string/title_sport"
         android:textColor="@color/md_theme_onSurface"
         android:textSize="45sp"
         app:layout_constraintBottom_toBottomOf="@id/imageViewUser"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="-8dp"
         android:fontFamily="@font/darkcollegefont"
-        android:text="TRACK"
+        android:text="@string/title_track"
         android:textColor="@color/md_theme_onSurface"
         android:textSize="45sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewUser"
@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Activity Map"
+        android:text="@string/activity_map"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         android:textColor="?attr/colorOnSurface"
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Completa il tuo primo workout per visualizzare la mappa dell'attività!"
+            android:text="@string/heatmap_first_description"
             android:textStyle="bold" />
 
         <!-- Add Views programmatically in your Activity or Fragment -->
@@ -128,7 +128,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Most trained Muscle:"
+                    android:text="@string/most_trained_muscle"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="@color/md_theme_onSurface" />
 
@@ -137,7 +137,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="muscle name"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     android:textColor="@color/md_theme_onSurface"
                     android:textStyle="bold" />
@@ -146,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Keep going!"
+                    android:text="@string/motivation_homapge"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="@color/md_theme_onSurface"
                     android:textStyle="bold" />
@@ -179,7 +178,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Best day of the month:"
+                    android:text="@string/top_day"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="@color/md_theme_onSurface" />
 
@@ -188,7 +187,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="day name"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     android:textColor="@color/md_theme_onSurface"
                     android:textStyle="bold" />
@@ -198,7 +196,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="date"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="@color/md_theme_onSurface"
                     android:textStyle="bold" />
