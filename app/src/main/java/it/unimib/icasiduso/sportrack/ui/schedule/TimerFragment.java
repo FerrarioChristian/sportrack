@@ -23,9 +23,12 @@ import com.yashovardhan99.timeit.Timer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import it.unimib.icasiduso.sportrack.R;
 import it.unimib.icasiduso.sportrack.data.repository.exercise.IExerciseRepository;
@@ -45,14 +48,18 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
     private List<Exercise> timerExercises = new ArrayList<>();
     private List<WorkoutExercise> workoutExercises = new ArrayList<>();
     private boolean dataRetrieved = false;
-    private int exerciseNumber = 0;
     private long scheduleId;
-    private Timer pause_watch = new Timer(5000);
+    private Timer pause_watch = new Timer(1000);
     private FragmentTimerBinding binding;
     private Stopwatch stopwatch;
 
+    private int totalWorkoutExercisesCount = 0;
+    private int exercisesLoadedCount = 0;
+
     private WorkoutExerciseViewModel workoutExerciseViewModel;
     private ExerciseViewModel exerciseViewModel;
+
+    private Map<Long, Integer> workoutExerciseIndexMap;
 
     public TimerFragment() {
     }
@@ -106,6 +113,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                     if (result != null && !result.isEmpty() && !dataRetrieved) {
                         // Salvo i risultati e avvia la creazione degli elementi nella pagina
                         workoutExercises = result;
+                        totalWorkoutExercisesCount = workoutExercises.size();
                         dataRetrieved = true;
                         startCreation();
                     }
@@ -114,57 +122,99 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
 
     // Inizializza la creazione degli elementi prelevando l'esercizio corrispondente dal viewmodel
     private void startCreation() {
-        for (int x = 0; x < workoutExercises.size(); x++) {
-            int finalX = x;
-            exerciseViewModel.getExerciseById(workoutExercises.get(x).getExerciseId())
+        exercisesLoadedCount = 0; // Reset counter
+        for (WorkoutExercise workoutExercise : workoutExercises) {
+            exerciseViewModel.getExerciseById(workoutExercise.getExerciseId())
                     .observe(getViewLifecycleOwner(), exercise -> {
-                        // Prelevo i dati di ogni exercise preso dal workoutExercise e creo l'elemento
-                        timerExercises.add(exercise);
-                        createNewChildrens(exercise, finalX);
+                        if (exercise != null) {
+                            // Aggiunge gli esercizi alla lista
+                            timerExercises.add(exercise);
+                            exercisesLoadedCount++;
+
+                            // Controlla se tutti gli esercizi sono stati caricati
+                            if (exercisesLoadedCount == totalWorkoutExercisesCount) {
+                                createNewChildrens();
+                            }
+                        }
                     });
+
+
+
+        }
+
+    }
+
+
+    private void createIndexMap() {
+        // Crea una nuova mappa HashMap per memorizzare gli ID degli esercizi e i loro indici
+        workoutExerciseIndexMap = new HashMap<>();
+        // Itera attraverso tutti gli esercizi nella lista workoutExercises
+        for (int i = 0; i < workoutExercises.size(); i++) {
+            // Aggiunge ogni ID di esercizio alla mappa con il suo indice nella lista
+            workoutExerciseIndexMap.put(workoutExercises.get(i).getExerciseId(), i);
         }
     }
 
-    // Crea l'elemento nella pagina settandone i dati e l'onclick
-    private void createNewChildrens(Exercise exercise, int x) {
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-
-        View inflatedView = inflater.inflate(R.layout.workout_exercise_timer_item,
-                binding.dynamicList,
-                false);
-
-        TextView seriesTextView = inflatedView.findViewById(R.id.exerciseSeries);
-        String seriesString =
-                requireContext().getString(R.string.series_left) + " " + workoutExercises.get(
-                x).getSeries();
-        seriesTextView.setText(seriesString);
-
-        TextView repTextView = inflatedView.findViewById(R.id.exerciseRepetitions);
-        String repsString = requireContext().getString(R.string.of) + " " + workoutExercises.get(x)
-                .getRepetitions() + " " + requireContext().getString(R.string.rep_left);
-        repTextView.setText(repsString);
-
-        TextView nameTextView = inflatedView.findViewById(R.id.exerciseName);
-        nameTextView.setText(exercise.getName());
-
-        TextView additionalInfoTextView = inflatedView.findViewById(R.id.additionalInfo);
-        String instrString =
-                "\n\n" + requireContext().getString(R.string.further_details) + "\n" + exercise.getInstructions();
-        additionalInfoTextView.setText(instrString);
-
-        binding.dynamicList.addView(inflatedView);
-
-        inflatedView.setOnClickListener(v -> {
-            ConstraintLayout additionalContent =
-                    inflatedView.findViewById(R.id.additionalContent);
-            if (additionalContent.getVisibility() == View.GONE) {
-                additionalContent.setVisibility(View.VISIBLE);
-            } else {
-                additionalContent.setVisibility(View.GONE);
+    private List<Exercise> reorderTimerExercises() {
+        // Crea una nuova lista di esercizi con la stessa dimensione della lista workoutExercises
+        List<Exercise> reorderedTimerExercises = new ArrayList<>(Collections.nCopies(workoutExercises.size(), null));
+        // Itera attraverso tutti gli esercizi nella lista timerExercises
+        for (Exercise exercise : timerExercises) {
+            // Recupera l'indice dell'esercizio dalla mappa workoutExerciseIndexMap usando l'ID dell'esercizio
+            Integer index = workoutExerciseIndexMap.get(exercise.getId());
+            // Se l'indice esiste nella mappa, inserisce l'esercizio nella lista ordinata all'indice corretto
+            if (index != null) {
+                reorderedTimerExercises.set(index, exercise);
             }
-        });
+        }
+        return reorderedTimerExercises;
+    }
 
-        returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
+    // Crea gli elementi nella pagina settandone i dati e l'onclick
+    private void createNewChildrens(/*int x*/) {
+        createIndexMap(); // Crea la mappa degli indici
+        List<Exercise> reorderedTimerExercises = reorderTimerExercises(); // Ordina l'array timerExercises in base al workoutExercise
+
+        // Usa la lista per creare gli elementi
+        for (int x = 0; x < reorderedTimerExercises.size(); x++) {
+            Exercise exercise = reorderedTimerExercises.get(x);
+            if (exercise != null) {
+                WorkoutExercise workoutExercise = workoutExercises.get(x);
+
+                LayoutInflater inflater = requireActivity().getLayoutInflater();
+                View inflatedView = inflater.inflate(R.layout.workout_exercise_timer_item, binding.dynamicList, false);
+
+                TextView seriesTextView = inflatedView.findViewById(R.id.exerciseSeries);
+                String seriesString = requireContext().getString(R.string.series_left) + " " + workoutExercise.getSeries();
+                seriesTextView.setText(seriesString);
+
+                TextView repTextView = inflatedView.findViewById(R.id.exerciseRepetitions);
+                String repsString = requireContext().getString(R.string.of) + " " + workoutExercise.getRepetitions() + " " + requireContext().getString(R.string.rep_left);
+                repTextView.setText(repsString);
+
+                TextView nameTextView = inflatedView.findViewById(R.id.exerciseName);
+                nameTextView.setText(exercise.getName());
+
+                TextView additionalInfoTextView = inflatedView.findViewById(R.id.additionalInfo);
+                String instrString = "\n\n" + requireContext().getString(R.string.further_details) + "\n" + exercise.getInstructions();
+                additionalInfoTextView.setText(instrString);
+
+                binding.dynamicList.addView(inflatedView);
+
+                inflatedView.setOnClickListener(v -> {
+                    ConstraintLayout additionalContent =
+                            inflatedView.findViewById(R.id.additionalContent);
+                    if (additionalContent.getVisibility() == View.GONE) {
+                        additionalContent.setVisibility(View.VISIBLE);
+                    } else {
+                        additionalContent.setVisibility(View.GONE);
+                    }
+                });
+
+                returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
+            }
+        }
+
     }
 
     // Imposta i listener dei vari button nella pagina con i relativi controlli
@@ -212,14 +262,15 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
 
     // Gestisce il next exercise, se ci sono esercizi rimasti avvio il timer, valuta quante serie sono rimaste ed in caso passa al figlio successivo eleminando quello terminato e salvandolo nel database
     private void nextExercise() {
-        if (childrenLeft() != 0) {
+        if (!workoutExercises.isEmpty()) {
             binding.nextButton.setClickable(false);
 
             pause_watch.setTextView(binding.pauseTimerText);
             binding.pauseTimerText.setVisibility(View.VISIBLE);
 
             TextView seriesTextView = returnFirstChildren().findViewById(R.id.exerciseSeries);
-            int remainingSeries = Integer.parseInt(seriesTextView.getText().toString().split(": ")[1]);
+
+            int remainingSeries = workoutExercises.get(0).getSeries();
 
             ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
 
@@ -228,10 +279,12 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                         requireContext().getString(R.string.series_left) + " " + (remainingSeries - 1);
                 seriesTextView.setText(seriesString);
                 statIcon.setImageResource(R.drawable.baseline_airline_seat_recline_normal_24);
+
+                workoutExercises.get(0).setSeries(remainingSeries - 1);
                 pause_watch.start();
             } else {
-                deleteChildren(1);
                 saveObject();
+                deleteChildren(1);
             }
 
             pause_watch.setOnTickListener(new Timer.OnTickListener() {
@@ -252,9 +305,9 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
 
     // Salva l'esercizio eseguito nel database
     private void saveObject() {
-        String userId = workoutExercises.get(exerciseNumber).getUserId();
-        long workoutExerciseId = workoutExercises.get(exerciseNumber).getId();
-        long externalExerciseId = timerExercises.get(exerciseNumber).getId();
+        String userId = workoutExercises.get(0).getUserId();
+        long workoutExerciseId = workoutExercises.get(0).getId();
+        long externalExerciseId = timerExercises.get(0).getId();
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         String formattedDate = dateFormat.format(date);
@@ -264,7 +317,7 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                 formattedDate);
 
         workoutExerciseViewModel.saveExerciseCompleted(newSave);
-        exerciseNumber++;
+        //exerciseNumber++;
     }
 
     //Ritorna la view del primo elemento nella lista dinamica
@@ -272,27 +325,20 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
         return binding.dynamicList.getChildAt(0);
     }
 
-    //Ritorna il numero di figli nella lista dinamica
-    private int childrenLeft() {
-        return binding.dynamicList.getChildCount();
-    }
-
     //Elimina il primo figlio della lista
     private void deleteChildren(int i) {
         View firstChild = binding.dynamicList.getChildAt(0);
         binding.dynamicList.removeView(firstChild);
+        timerExercises.remove(0);
+        workoutExercises.remove(0);
 
         //In caso ci siano 0 figli rimasti il timer termina, viene mostrato il toast con il tempo di esecuzione e ritorna al fragment precedente
-        if (childrenLeft() == 0) {
-            Toast.makeText(requireContext(),
-                    requireContext().getString(R.string.workout_end) + " " + TimeUtils.convertMsToTime(
-                            stopwatch.getElapsedTime()) + "!",
+        if (workoutExercises.isEmpty()) {
+            Toast.makeText(requireContext(),requireContext().getString(R.string.workout_end) + " " + TimeUtils.convertMsToTime(stopwatch.getElapsedTime()) + "!",
                     Toast.LENGTH_SHORT).show();
-            NavOptions navOptions = new NavOptions.Builder()
-                    .setPopUpTo(R.id.timerFragment, true)  // Replace with the correct ID of TimerFragment
+            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.timerFragment, true)  // Replace with the correct ID of TimerFragment
                     .build();
-            TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action =
-                    TimerFragmentDirections.actionTimerFragmentToListWorkoutExercisesFragment(
+            TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action = TimerFragmentDirections.actionTimerFragmentToListWorkoutExercisesFragment(
                     scheduleId);
             Navigation.findNavController(requireView()).navigate(action, navOptions);
         } else {

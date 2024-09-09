@@ -3,17 +3,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="exercise"
-            type="it.unimib.icasiduso.sportrack.model.exercise.Exercise" />
-
-        <variable
-            name="workoutExercise"
-            type="it.unimib.icasiduso.sportrack.model.exercise.WorkoutExercise" />
-    </data>
-
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
