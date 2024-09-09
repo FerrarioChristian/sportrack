@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -192,17 +193,21 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
             }
         });
         binding.skipButton.setOnClickListener(v -> {
-            deleteChildren(0);
+            if (pause_watch.isStarted()) Toast.makeText(getContext(), requireContext().getString(R.string.end_pause_before), Toast.LENGTH_SHORT).show();
+            else deleteChildren(0);
         });
         binding.nextButton.setOnClickListener(v -> {
             if (stopwatch.isPaused()) Toast.makeText(getContext(), requireContext().getString(R.string.start_timer_before), Toast.LENGTH_SHORT).show();
             else nextExercise();
         });
         binding.exitButton.setOnClickListener(v -> {
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.timerFragment, true)  // Replace with the correct ID of TimerFragment
+                    .build();
             TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action =
                     TimerFragmentDirections.actionTimerFragmentToListWorkoutExercisesFragment(
-                    scheduleId);
-            Navigation.findNavController(requireView()).navigate(action);
+                            scheduleId);
+            Navigation.findNavController(requireView()).navigate(action, navOptions);
         });
     }
 
@@ -286,10 +291,13 @@ public class TimerFragment extends Fragment implements Timer.OnTickListener {
                     requireContext().getString(R.string.workout_end) + " " + TimeUtils.convertMsToTime(
                             stopwatch.getElapsedTime()) + "!",
                     Toast.LENGTH_SHORT).show();
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.timerFragment, true)  // Replace with the correct ID of TimerFragment
+                    .build();
             TimerFragmentDirections.ActionTimerFragmentToListWorkoutExercisesFragment action =
                     TimerFragmentDirections.actionTimerFragmentToListWorkoutExercisesFragment(
                     scheduleId);
-            Navigation.findNavController(requireView()).navigate(action);
+            Navigation.findNavController(requireView()).navigate(action, navOptions);
         } else {
             returnFirstChildren().findViewById(R.id.statusIcon).setVisibility(View.VISIBLE);
             ImageView statIcon = returnFirstChildren().findViewById(R.id.statusIcon);
